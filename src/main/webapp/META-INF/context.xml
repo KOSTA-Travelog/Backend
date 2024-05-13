@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+    <Resource name="jdbc/sun" auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@192.168.0.111:1521:xe"
+              username="sun" password="sun"
+              maxTotal="20" maxIdle="10"
+              maxWaitMillis="-1"/>
+</Context>
