@@ -1,8 +1,5 @@
 package kosta.travelog.servlet;
 
-
-import com.google.gson.Gson;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
