@@ -1,13 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>JSP - Hello World</title>
-</head>
-<body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
-</body>
-</html>
+<%@ page contentType="application/json; charset=UTF-8" %>
+<%@ page import="com.google.gson.Gson" %><%@ page import="java.util.Map"%>
+<%
+    Map<String, String> data = (Map<String, String>) request.getAttribute("data");
+    Gson gson = new Gson();
+    String jsonResponse = gson.toJson(data);
+    out.print(jsonResponse);
+%>
