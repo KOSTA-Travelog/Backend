@@ -22,7 +22,7 @@ public class FrontControllerServlet extends HttpServlet {
             resp.sendRedirect(url.getPage());
         }
         else {
-            req.getRequestDispatcher("/" + url.getPage()).forward(req, resp);
+            req.getRequestDispatcher("/api" + url.getPage()).forward(req, resp);
         }
     }
 }
