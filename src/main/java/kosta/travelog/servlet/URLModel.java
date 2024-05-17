@@ -1,16 +1,15 @@
 package kosta.travelog.servlet;
 
+import java.io.Serializable;
+import java.util.Objects;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class URLModel {
+public class URLModel implements Serializable {
+    private static final long serialVersionUID = 3103397263901988333L;
     private String page;
-    private Map<String, String> data;
     private boolean flag;
 
-    public URLModel(Map<String, String> data) {
-        this("index.jsp", data, false);
+    public URLModel() {
+        this("index.jsp", false);
     }
 
     public URLModel(String page) {
@@ -18,30 +17,8 @@ public class URLModel {
     }
 
     public URLModel(String page, boolean flag) {
-        this.page = page;
-        this.flag = flag;
-    }
-
-    public URLModel(String s, Map<String, String> data, boolean b) {
-        this.page = s;
-        this.data = data;
-        this.flag = b;
-    }
-
-    public String getPage() {
-        return page;
-    }
-
-    public void setPage(String page) {
-        this.page = page;
-    }
-
-    public Map<String, String> getData() {
-        return data;
-    }
-
-    public void setData(Map<String, String> data) {
-        this.data = data;
+        setPage(page);
+        setFlag(flag);
     }
 
     public boolean isFlag() {
@@ -52,36 +29,36 @@ public class URLModel {
         this.flag = flag;
     }
 
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
+    }
+
     @Override
-    public String toString() {
-        return "URLModel [page=" + page + ", flag=" + flag + "]";
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        URLModel urlModel = (URLModel) o;
+        return isFlag() == urlModel.isFlag() && Objects.equals(getPage(), urlModel.getPage());
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (flag ? 1231 : 1237);
-        result = prime * result + ((page == null) ? 0 : page.hashCode());
+        int result = Objects.hashCode(getPage());
+        result = 31 * result + Boolean.hashCode(isFlag());
         return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        URLModel other = (URLModel) obj;
-        if (flag != other.flag)
-            return false;
-        if (page == null) {
-            if (other.page != null)
-                return false;
-        } else if (!page.equals(other.page))
-            return false;
-        return true;
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("URLModel{");
+        sb.append("flag=").append(flag);
+        sb.append(", page='").append(page).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -1,6 +1,5 @@
 package kosta.travelog.servlet;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,18 +10,19 @@ import java.io.IOException;
 @WebServlet("/api/*")
 public class FrontControllerServlet extends HttpServlet {
 
+    @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
         // 1. cmd
         String cmd = req.getPathInfo();
         // 2. Action
         Action a = ActionFactory.getAction(cmd);
         URLModel url = a.execute(req);
         // 3. View
-        if(url.isFlag()) {
+        if (url.isFlag()) {
             resp.sendRedirect(url.getPage());
-        }
-        else {
-            req.getRequestDispatcher("/api" + url.getPage()).forward(req, resp);
+        } else {
+            req.getRequestDispatcher("/" + url.getPage()).forward(req, resp);
         }
     }
 }
