@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/api/*")
-public class FrontControllerServlet extends HttpServlet{
+public class FrontControllerServlet extends HttpServlet {
 
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 1. cmd
