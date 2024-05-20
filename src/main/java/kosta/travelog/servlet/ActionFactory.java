@@ -3,6 +3,7 @@ package kosta.travelog.servlet;
 
 import kosta.travelog.servlet.action.LoginAction;
 import kosta.travelog.servlet.action.LogoutAction;
+import kosta.travelog.servlet.action.PostListAction;
 
 public class ActionFactory {
 
@@ -14,6 +15,9 @@ public class ActionFactory {
                 break;
             case "/logout":
                 action = new LogoutAction();
+                break;
+            case "/postList":
+                action = new PostListAction();
                 break;
         }
         return action;
