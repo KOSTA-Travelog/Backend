@@ -26,7 +26,7 @@ public class CommentDAOImpl implements CommentDAO {
                     return CommentVO.builder()
                             .commentId(rs.getInt("COMMENT_ID"))
                             .postComment(rs.getString("POST_COMMENT"))
-                            .commentDate(LocalDate.parse(rs.getString("COMMENT_DATE")))
+                            .commentDate(rs.getDate("COMMENT_DATE").toLocalDate())
                             .commentStatus(rs.getString("COMMENT_STATUS").charAt(0))
                             .postId(rs.getInt("POST_ID"))
                             .userId(rs.getString("USER_ID"))
@@ -40,13 +40,13 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public int getCommentCount(int postId) throws SQLException, DatabaseQueryException {
+    public int getCommentCount(int postId) throws DatabaseQueryException {
         String sql = Query.GET_COMMENT_COUNT;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, postId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("COUNT(comment_id)");
+                    return rs.getInt("count");
                 }
             }
         } catch (SQLException e) {
@@ -66,11 +66,7 @@ public class CommentDAOImpl implements CommentDAO {
             ps.setString(4, String.valueOf(commentStatus));
             ps.setInt(5, postId);
             ps.setString(6, userId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    // ?
-                }
-            }
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new DatabaseQueryException(e.getMessage());
         }
