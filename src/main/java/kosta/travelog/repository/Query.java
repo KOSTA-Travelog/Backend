@@ -12,6 +12,12 @@ public interface Query {
     String DELETE_POST_IMAGE = "delete from post_images where image_id=?";
     String DELETE_POST = "update posts SET post_status=0 where post_id=?";
     String POST = "SELECT post_id, post_title, post_description, post_hashtag, post_date, post_status, user_id FROM Posts WHERE post_id = ?";
-    String POST_IMAGE_List = "select image_id, images, post_id from post_images where post_id = ?";
+    String POST_IMAGE_LIST = "select image_id, images, post_id from post_images where post_id = ?";
     String COUNT_USER_POST = "SELECT COUNT(post_id) FROM posts WHERE user_id=?";
+
+    String GET_COMMENT = "SELECT comment_id, post_comment, comment_date, user_id FROM Comments WHERE comment_status=? and post_id=?";
+    String GET_COMMENT_COUNT = "SELECT COUNT(comment_id) FROM Comments WHERE post_id = ?";
+    String ADD_COMMENT = "INSERT INTO comments (comment_id, post_comment, comment_date, comment_status, post_id, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+    String UPDATE_COMMENT = "UPDATE comments SET post_comment=? WHERE comment_id=?";
+    String DELETE_COMMENT = "UPDATE comments SET comment_status=? WHERE comment_id=?";
 }
