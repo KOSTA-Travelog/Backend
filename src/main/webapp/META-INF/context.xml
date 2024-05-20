@@ -7,4 +7,5 @@
               username="sun" password="sun"
               maxTotal="20" maxIdle="10"
               maxWaitMillis="-1"/>
+    <resources mapping="/dist/**" location="/"/>
 </Context>
