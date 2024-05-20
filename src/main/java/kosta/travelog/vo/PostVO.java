@@ -8,8 +8,8 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PostVO {
-
     private int postId;
     private String postTitle;
     private String postDescription;
@@ -19,5 +19,4 @@ public class PostVO {
     private String userId;
     private int imageId;
     private String images;
-
 }

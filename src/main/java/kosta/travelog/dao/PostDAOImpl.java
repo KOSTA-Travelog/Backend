@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PostDAOImpl implements PostDAO {
 
-    Connection conn;
+    private final Connection conn;
 
     public PostDAOImpl(Connection conn) {
         this.conn = conn;
@@ -28,7 +28,6 @@ public class PostDAOImpl implements PostDAO {
 
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
-
             while (rs.next()) {
                 postList.add(new PostVO(rs.getInt("post_id"),
                         rs.getString("post_title"),
@@ -42,9 +41,6 @@ public class PostDAOImpl implements PostDAO {
                 ));
             }
             return postList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
         }
     }
 
