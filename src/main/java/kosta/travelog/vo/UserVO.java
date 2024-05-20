@@ -28,4 +28,13 @@ public class UserVO implements Serializable {
     private LocalDate registrationDate;
     private String userStatus;
     private String bio;
+    
+    public UserVO(String userId, String profileImage, String nickname, String userStatus, String bio){
+    	super();
+		this.userId = userId;
+		this.profileImage = profileImage;
+		this.nickname = nickname;
+		this.userStatus = userStatus;
+		this.bio = bio;
+    }
 }
