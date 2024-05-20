@@ -59,7 +59,7 @@ public class UserDAOImpl implements UserDAO {
 			e.printStackTrace();
 		}
 
-		return null;
+		return result;
 	}
 
 	@Override
