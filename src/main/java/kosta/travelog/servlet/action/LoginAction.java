@@ -32,7 +32,7 @@ public class LoginAction implements Action {
                     .build());
             log.info("member: {}", member);
             if (member != null) {
-                request.setAttribute("user", member);
+                request.getSession().setAttribute("user", member);
                 request.setAttribute("data", new ResponseModel(200, "success"));
             } else {
                 request.setAttribute("data", new ResponseModel(400, "fail"));
@@ -44,6 +44,6 @@ public class LoginAction implements Action {
             log.info("Query Error:{}", e.getMessage());
             request.setAttribute("data", new ResponseModel(500, "fail"));
         }
-        return new URLModel("index.jsp");
+        return new URLModel("response.jsp");
     }
 }

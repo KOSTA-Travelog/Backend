@@ -79,6 +79,6 @@ public class ResponseModel implements Serializable {
         if (message == null) {
             message = "";
         }
-        return String.format("{status:%d, data:%s, message:\"%s\"}", status, data, message);
+        return String.format("{\"status\":%d, \"data\":%s, \"message\":\"%s\"}", status, data, message);
     }
 }

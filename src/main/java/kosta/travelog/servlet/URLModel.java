@@ -9,7 +9,7 @@ public class URLModel implements Serializable {
     private boolean flag;
 
     public URLModel() {
-        this("index.jsp", false);
+        this("response.jsp", false);
     }
 
     public URLModel(String page) {
@@ -55,10 +55,9 @@ public class URLModel implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("URLModel{");
-        sb.append("flag=").append(flag);
-        sb.append(", page='").append(page).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "URLModel{" + "flag=" + flag +
+                ", page='" + page + '\'' +
+                '}';
+        return sb;
     }
 }
