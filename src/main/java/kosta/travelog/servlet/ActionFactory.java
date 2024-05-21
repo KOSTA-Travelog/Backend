@@ -1,6 +1,5 @@
 package kosta.travelog.servlet;
 
-
 import kosta.travelog.servlet.action.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,6 +33,11 @@ public class ActionFactory {
             case "/posts/remove":
                 action = new RemovePostAction();
                 break;
+            case "/searchNickname":
+            	action = new SearchNicknameAction();
+            	break;
+            case "/loadProfile":
+            	action = new LoadProfileAction();
             case "/posts/feed":
                 action = new GetPostAction();
                 break;
@@ -46,7 +50,6 @@ public class ActionFactory {
             case "/posts/user/count":
                 action = new CountUserPostAction();
                 break;
-
         }
         return action;
     }
