@@ -33,7 +33,7 @@ public class PostDAOImpl implements PostDAO {
                         rs.getString("post_title"),
                         rs.getString("post_description"),
                         rs.getString("post_hashtag"),
-                        rs.getString("post_date"),
+                        rs.getDate("post_date").toLocalDate(),
                         rs.getString("post_status").charAt(0),
                         rs.getString("user_id"),
                         rs.getInt("image_id"),
