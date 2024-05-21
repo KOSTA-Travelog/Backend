@@ -4,7 +4,6 @@ import kosta.travelog.repository.Query;
 import kosta.travelog.vo.PostVO;
 import lombok.extern.slf4j.Slf4j;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +24,6 @@ public class PostDAOImpl implements PostDAO {
 
         String sql = Query.POST_LIST;
         List<PostVO> postList = new ArrayList<>();
-
 
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -108,7 +106,6 @@ public class PostDAOImpl implements PostDAO {
             pstmt.setInt(1, imageId);
             pstmt.executeUpdate();
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,7 +148,6 @@ public class PostDAOImpl implements PostDAO {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

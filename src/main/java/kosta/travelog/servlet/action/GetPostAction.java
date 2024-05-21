@@ -14,13 +14,19 @@ import java.io.IOException;
 public class GetPostAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException {
+        ResponseModel responseModel = null;
 
-        JsonObject json = new JsonObject();
+        try {
+            JsonObject json = new JsonObject();
 
-        json.addProperty("data", new PostService().post(Integer.parseInt(request.getParameter("postId"))).toString());
+            json.addProperty("data", new PostService().post(Integer.parseInt(request.getParameter("postId"))).toString());
+            responseModel = new ResponseModel(200, json, "success");
 
-        request.setAttribute("data", new ResponseModel(200, json, "success"));
-
+        } catch (DatabaseConnectException e) {
+            responseModel = new ResponseModel(500, "Server Error");
+        } finally {
+            request.setAttribute("data", responseModel);
+        }
         return new URLModel();
     }
 }

@@ -14,15 +14,22 @@ import java.io.IOException;
 public class SetPostAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException {
-        boolean result = new PostService().editPost(PostVO.builder().postTitle(request.getParameter("postTitle"))
-                .postDescription(request.getParameter("postDescription"))
-                .postHashtag(request.getParameter("postHashtag"))
-                .postStatus(request.getParameter("postStatus").charAt(0))
-                .postId(Integer.parseInt(request.getParameter("postId"))).build());
 
-        if (result) {
-            request.setAttribute("data", new ResponseModel(200, "success"));
+        try {
+            boolean result = new PostService().editPost(PostVO.builder().postTitle(request.getParameter("postTitle"))
+                    .postDescription(request.getParameter("postDescription"))
+                    .postHashtag(request.getParameter("postHashtag"))
+                    .postStatus(request.getParameter("postStatus").charAt(0))
+                    .postId(Integer.parseInt(request.getParameter("postId"))).build());
+
+            if (result) {
+                request.setAttribute("data", new ResponseModel(200, "success"));
+            }
+
+        } catch (DatabaseConnectException e) {
+            throw new RuntimeException(e);
         }
+
 
         return new URLModel();
     }

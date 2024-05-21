@@ -6,30 +6,29 @@ import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
-import kosta.travelog.vo.PostVO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.List;
 
 public class ImageListAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException {
 
-        JsonObject json = new JsonObject();
-
-        List<PostVO> vo = null;
+        ResponseModel responseModel = null;
         try {
-            vo = new PostService().imageList(Integer.parseInt(request.getParameter("postId")));
+            JsonObject json = new JsonObject();
+
+            json.addProperty("data", new PostService().imageList(Integer.parseInt(request.getParameter("postId"))).toString());
+
+            responseModel = new ResponseModel(200, json, "success");
+
         } catch (DatabaseConnectException e) {
-            throw new RuntimeException(e);
+            responseModel = new ResponseModel(500, "Server Error");
+
+        } finally {
+            request.setAttribute("data", responseModel);
         }
-
-        json.addProperty("imageList", vo.toString());
-
-        request.setAttribute("data", new ResponseModel(200, json, "success"));
-
         return new URLModel();
     }
 }

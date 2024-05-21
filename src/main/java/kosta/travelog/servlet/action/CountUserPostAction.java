@@ -16,13 +16,17 @@ import java.io.IOException;
 public class CountUserPostAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException {
+        ResponseModel responseModel = null;
+        try {
+            JsonObject json = new JsonObject();
+            json.addProperty("data", new PostService().countUserPostNumber(request.getParameter("userId")));
+            responseModel = new ResponseModel(200, json, "success");
 
-        JsonObject json = new JsonObject();
-
-        json.addProperty("data", new PostService().countUserPostNumber(request.getParameter("userId")));
-        
-        request.setAttribute("data", new ResponseModel(200, json, "success"));
-
+        } catch (DatabaseConnectException e) {
+            responseModel = new ResponseModel(500, "Server Error");
+        } finally {
+            request.setAttribute("data", responseModel);
+        }
         return new URLModel();
     }
 }

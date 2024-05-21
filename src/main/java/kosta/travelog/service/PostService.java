@@ -2,6 +2,7 @@ package kosta.travelog.service;
 
 import kosta.travelog.dao.PostDAO;
 import kosta.travelog.dao.PostDAOImpl;
+import kosta.travelog.dto.PostImageDTO;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.vo.PostVO;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class PostService {
             return data;
         }
     }
+
 
     public boolean createPost(PostVO post) {
 
@@ -115,10 +117,17 @@ public class PostService {
         return true;
     }
 
-    public List<PostVO> imageList(int postId) {
-        List<PostVO> images = new ArrayList<>();
+    public List<PostImageDTO> imageList(int postId) {
+        List<PostImageDTO> images = new ArrayList<>();
         try (Connection conn = dataSource.getConnection()) {
-            images.addAll(new PostDAOImpl(conn).getPostImageList(postId));
+            List<PostVO> vo = (ArrayList<PostVO>) new PostDAOImpl(conn).getPostImageList(postId);
+            for (PostVO post : vo) {
+                images.add(PostImageDTO.builder()
+                        .imageId(post.getImageId())
+                        .images(post.getImages())
+                        .postId(post.getPostId()).build());
+            }
+
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
