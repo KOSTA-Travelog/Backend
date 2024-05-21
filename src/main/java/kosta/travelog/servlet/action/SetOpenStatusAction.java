@@ -23,7 +23,7 @@ public class SetOpenStatusAction implements Action {
         } catch (DatabaseConnectException e) {
             throw new RuntimeException(e);
         }
-        
+
         return new URLModel();
     }
 }
