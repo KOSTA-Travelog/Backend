@@ -18,6 +18,7 @@ import java.util.List;
 @Slf4j
 public class PostService {
     private final DataSource dataSource;
+
     public PostService() throws DatabaseConnectException {
         try {
             Context context = new InitialContext();
@@ -33,22 +34,108 @@ public class PostService {
 
         List<PostVO> data = new ArrayList<>();
 
-
         try (Connection conn = dataSource.getConnection()) {
-            try{
-                PostDAO dao = new PostDAOImpl(conn);
-                data = (ArrayList) dao.getPostList();
-                log.info(data.toString());
-
-            } catch(Exception e) {
-
-            }
-
-        } catch(Exception e) {
-
+            PostDAO dao = new PostDAOImpl(conn);
+            data = (ArrayList) dao.getPostList();
+            log.info(data.toString());
+            return data;
         }
-        return data;
     }
 
+    public boolean createPost(PostVO post) {
 
+        try (Connection conn = dataSource.getConnection()) {
+            new PostDAOImpl(conn).addPost(post);
+
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean createImage(PostVO post) {
+        try (Connection conn = dataSource.getConnection()) {
+            new PostDAOImpl(conn).addImage(post);
+
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean editPostStatus(char postStatus, int postId) {
+        try (Connection conn = dataSource.getConnection()) {
+            new PostDAOImpl(conn).setPostStatus(postStatus, postId);
+
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deletePostImage(int imageId) {
+        try (Connection conn = dataSource.getConnection()) {
+            new PostDAOImpl(conn).removePostImage(imageId);
+
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deletePost(int postId) {
+        try (Connection conn = dataSource.getConnection()) {
+            new PostDAOImpl(conn).removePost(postId);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public PostVO post(int postId) {
+        PostVO post = null;
+        try (Connection conn = dataSource.getConnection()) {
+            post = new PostDAOImpl(conn).getPost(postId);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+        return post;
+    }
+
+    public boolean editPost(PostVO post) {
+        try (Connection conn = dataSource.getConnection()) {
+            new PostDAOImpl(conn).setPost(post);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public List<PostVO> imageList(int postId) {
+        List<PostVO> images = null;
+        try (Connection conn = dataSource.getConnection()) {
+            images = (ArrayList) new PostDAOImpl(conn).getPostImageList(postId);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+        return images;
+    }
+
+    public int countUserPostNumber(String userId) {
+        int num = 0;
+        try (Connection conn = dataSource.getConnection()) {
+            num = new PostDAOImpl(conn).countUserPost(userId);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+        return num;
+    }
 }
+
+
