@@ -1,9 +1,10 @@
 package kosta.travelog.servlet;
 
-
+import kosta.travelog.servlet.action.LoadProfileAction;
 import kosta.travelog.servlet.action.LoginAction;
 import kosta.travelog.servlet.action.LogoutAction;
 import kosta.travelog.servlet.action.PostListAction;
+import kosta.travelog.servlet.action.SearchNicknameAction;
 
 public class ActionFactory {
 
@@ -19,6 +20,11 @@ public class ActionFactory {
             case "/postList":
                 action = new PostListAction();
                 break;
+            case "/searchNickname":
+            	action = new SearchNicknameAction();
+            	break;
+            case "/loadProfile":
+            	action = new LoadProfileAction();
         }
         return action;
     }
