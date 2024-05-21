@@ -11,22 +11,19 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @Slf4j
-public class PostListAction implements Action {
+public class CountUserPostAction implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException {
         ResponseModel responseModel = null;
         try {
             JsonObject json = new JsonObject();
-            json.addProperty("data", new PostService().postList().toString());
+            json.addProperty("data", new PostService().countUserPostNumber(request.getParameter("userId")));
             responseModel = new ResponseModel(200, json, "success");
+
         } catch (DatabaseConnectException e) {
-            log.error(e.getMessage());
             responseModel = new ResponseModel(500, "Server Error");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         } finally {
             request.setAttribute("data", responseModel);
         }

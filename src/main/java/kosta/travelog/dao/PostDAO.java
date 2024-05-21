@@ -10,30 +10,30 @@ public interface PostDAO {
     Collection<PostVO> getPostList() throws SQLException;
 
     /*   사진 삽입*/
-    boolean addImage();
+    void addImage(PostVO vo);
 
     /*   게시글 작성*/
-    boolean addPost();
+    void addPost(PostVO vo);
 
     /*    공개 상태 변경(request값 받기)*/
-    boolean setPostStatus();
-
-    /*    게시글 수정*/
-    boolean setPost();
+    void setPostStatus(char postStatus, int postId);
 
     /*  사진 삭제*/
-    boolean removePostImage();
+    void removePostImage(int imageId);
 
     /*   게시글 삭제*/
-    boolean removePost();
+    void removePost(int postId);
 
     /*  게시글 조회*/
-    Collection<PostVO> getPost();
+    PostVO getPost(int postId);
+
+    /*    게시글 수정*/
+    void setPost(PostVO vo);
 
     /*    게시글 사진 불러오기*/
-    Collection<PostVO> getPostImageList();
+    Collection<PostVO> getPostImageList(int postId);
 
     /*   특정 사용자의 게시글 수*/
-    int countUserPost();
+    int countUserPost(String userId);
 
 }
