@@ -8,38 +8,46 @@ import lombok.extern.slf4j.Slf4j;
 public class ActionFactory {
 
     public static Action getAction(String cmd) {
-        Action a = null;
+        Action action = null;
         log.info(cmd);
         switch (cmd) {
+            case "/login":
+                action = new LoginAction();
+                break;
+            case "/logout":
+                action = new LogoutAction();
+                break;
+            case "/postList":
+                action = new PostListAction();
             case "/posts":
-                a = new PostListAction();
+                action = new PostListAction();
                 break;
             case "/posts/create":
-                a = new AddPostAction();
+                action = new AddPostAction();
                 break;
             case "/posts/image":
-                a = new AddPostImageAction();
+                action = new AddPostImageAction();
                 break;
             case "/posts/openStatus":
-                a = new SetOpenStatusAction();
+                action = new SetOpenStatusAction();
                 break;
             case "/posts/remove":
-                a = new RemovePostAction();
+                action = new RemovePostAction();
                 break;
             case "/posts/feed":
-                a = new GetPostAction();
+                action = new GetPostAction();
                 break;
             case "/posts/feed/set":
-                a = new SetPostAction();
+                action = new SetPostAction();
                 break;
             case "/posts/imageList":
-                a = new ImageListAction();
+                action = new ImageListAction();
                 break;
             case "/posts/user/count":
-                a = new CountUserPostAction();
+                action = new CountUserPostAction();
                 break;
 
         }
-        return a;
+        return action;
     }
 }

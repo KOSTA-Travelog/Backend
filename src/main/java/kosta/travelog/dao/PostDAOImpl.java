@@ -4,15 +4,17 @@ import kosta.travelog.repository.Query;
 import kosta.travelog.vo.PostVO;
 import lombok.extern.slf4j.Slf4j;
 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
 @Slf4j
 public class PostDAOImpl implements PostDAO {
 
-    Connection conn;
+    private final Connection conn;
 
     public PostDAOImpl(Connection conn) {
         this.conn = conn;

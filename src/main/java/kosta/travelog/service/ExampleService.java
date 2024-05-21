@@ -1,6 +1,6 @@
 package kosta.travelog.service;
 
-import kosta.travelog.execption.DatabaseConnectException;
+import kosta.travelog.exception.DatabaseConnectException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;

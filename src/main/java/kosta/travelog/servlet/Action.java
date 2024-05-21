@@ -1,6 +1,7 @@
 package kosta.travelog.servlet;
 
-import kosta.travelog.execption.DatabaseConnectException;
+
+import kosta.travelog.exception.DatabaseConnectException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

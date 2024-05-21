@@ -1,4 +1,4 @@
-package kosta.travelog.execption;
+package kosta.travelog.exception;
 
 public class DatabaseConnectException extends Exception{
     public DatabaseConnectException() {

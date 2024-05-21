@@ -1,7 +1,7 @@
 package kosta.travelog.servlet.action;
 
 import com.google.gson.JsonObject;
-import kosta.travelog.execption.DatabaseConnectException;
+import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -19,7 +19,12 @@ public class ImageListAction implements Action {
 
         JsonObject json = new JsonObject();
 
-        List<PostVO> vo = new PostService().imageList(Integer.parseInt(request.getParameter("postId")));
+        List<PostVO> vo = null;
+        try {
+            vo = new PostService().imageList(Integer.parseInt(request.getParameter("postId")));
+        } catch (DatabaseConnectException e) {
+            throw new RuntimeException(e);
+        }
 
         json.addProperty("imageList", vo.toString());
 
