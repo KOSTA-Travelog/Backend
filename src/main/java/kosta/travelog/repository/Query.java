@@ -39,7 +39,8 @@ public interface Query {
     String INSERT_ASK_COMMUNITY_MEMBER = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, 1, '52e1c6de-43ea-4817-8290-7a5957efa869', 2)";
     String UPDATE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 1 WHERE community_member_id = 3";
     String DELETE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 0 WHERE community_member_id = 113";
-
+    String INSERT_CREATOR_TO_COMMUNITY_USERS = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, 21, '1bf45a45-44f8-4326-a1ef-30c82f097b31', 1)";
+    
     /* CommunityManagerDAO */
     String MY_COMMUNITY_LIST = "select c.community_id, c.community_title,c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, m.countMember from communities c inner join (select community_id, user_id, count(community_member_id) as countMember from communities_users where community_member_status = 1 group by community_id, user_id) m on c.community_id = m.community_id where m.user_id = 'ef4d94f6-8fc2-42dd-b2bf-78c127765d3f' and c.community_status = 1 order by m.countMember desc";
     String ALL_COMMUNITY_LIST = "select c.community_id, c.community_title,c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, m.member_count from communities c inner join (select community_id, member_count from community_member_count_view) m on c.community_id = m.community_id where c.community_status = 1 order by m.member_count desc";
