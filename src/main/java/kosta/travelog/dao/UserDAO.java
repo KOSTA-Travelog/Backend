@@ -8,7 +8,7 @@ import java.util.Collection;
 public interface UserDAO {
     UserVO login(UserVO user) throws DatabaseQueryException;
 
-	Collection<UserVO> searchUser(String nickname);
+	Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException;
 
 	UserVO getProfile(String userId) throws DatabaseQueryException;
 }

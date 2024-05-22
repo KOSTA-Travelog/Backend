@@ -13,43 +13,71 @@ public class ActionFactory {
             case "/login":
                 action = new LoginAction();
                 break;
+
             case "/logout":
                 action = new LogoutAction();
                 break;
-            case "/postList":
-                action = new PostListAction();
+
             case "/posts":
                 action = new PostListAction();
                 break;
+
             case "/posts/create":
                 action = new AddPostAction();
                 break;
+
             case "/posts/image":
                 action = new AddPostImageAction();
                 break;
+
             case "/posts/openStatus":
                 action = new SetOpenStatusAction();
                 break;
+
             case "/posts/remove":
                 action = new RemovePostAction();
                 break;
+
             case "/searchNickname":
-            	action = new SearchNicknameAction();
-            	break;
-            case "/loadProfile":
-            	action = new LoadProfileAction();
+                action = new SearchNicknameAction();
+                break;
+
+            case "/getProfile":
+                action = new GetProfileAction();
+                break;
+
             case "/posts/feed":
                 action = new GetPostAction();
                 break;
-            case "/posts/feed/set":
+
+            case "/posts/feed/edit":
                 action = new SetPostAction();
                 break;
+
             case "/posts/imageList":
                 action = new ImageListAction();
                 break;
+
             case "/posts/user/count":
                 action = new CountUserPostAction();
                 break;
+
+            case "/communities/detail":
+                action = new GetCommunityDetailAction();
+                break;
+
+            case "/communities/create":
+                action = new AddCommunityACtion();
+                break;
+
+            case "/communities/edit":
+                action = new SetCommunityAction();
+                break;
+
+            case "/communities/remove":
+                action = new RemoveCommunityAction();
+                break;
+
         }
         return action;
     }
