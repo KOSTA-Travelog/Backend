@@ -3,6 +3,7 @@ package kosta.travelog.dto;
 import com.google.gson.JsonObject;
 import lombok.*;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter
@@ -16,7 +17,7 @@ public class CommunityDTO {
     private String communityTitle;
     private String communityDescription;
     private String communityHashtag;
-    private LocalDate communityDate;
+    private LocalDate communityDate;	
     private String communityImage;
     private char communityStatus;
     private int countMember;

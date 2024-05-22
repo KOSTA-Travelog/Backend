@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class CommunityVO {
     private int communityId;
     private String communityTitle;
@@ -20,18 +21,6 @@ public class CommunityVO {
     private String communityImage;
     private char communityStatus;
     private String userId;
+    private int memberCount;
 
-    @Override
-    public String toString() {
-        JsonObject json = new JsonObject();
-        json.addProperty("communityId", this.getCommunityId());
-        json.addProperty("communityTitle", this.getCommunityTitle());
-        json.addProperty("communityDescription", this.getCommunityDescription());
-        json.addProperty("communityHashtag", this.getCommunityHashtag());
-        json.addProperty("communityDate", String.valueOf(this.getCommunityDate()));
-        json.addProperty("communityImage", this.getCommunityImage());
-        json.addProperty("communityStatus", this.getCommunityStatus());
-        json.addProperty("userId", this.getUserId());
-        return json.toString();
-    }
 }

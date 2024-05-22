@@ -25,11 +25,11 @@ public interface Query {
     String UPDATE_COMMENT = "UPDATE comments SET post_comment=? WHERE comment_id=?";
 
     /* Communities*/
-    String COMMUNITY = "SELECT c.community_id , c.community_title , c.community_description , c.community_hashtag , c.community_date , c.community_image, c.community_status,c.user_id, v.member_count FROM communities c JOIN community_member_count_view v ON v.community_id = c.community_id WHERE c.community_id = 21 AND c.community_status = 1";
-    String INSERT_COMMUNITY = "INSERT INTO Communities (community_id, community_title, community_description, community_hashtag, community_date, community_image, community_status, user_id) VALUES (community_id.nextval, '커뮤생성제목', '커뮤생성소개글', '#커뮤 #생성', SYSDATE, NULL, 1, '2722ce8a-b435-42e9-b83e-c9e4a5998233')";
+    String COMMUNITY = "SELECT c.community_id , c.community_title , c.community_description , c.community_hashtag , c.community_date , c.community_image, c.community_status, v.member_count FROM communities c JOIN community_member_count_view v ON v.community_id = c.community_id WHERE c.community_id = ? AND c.community_status = 1";
+    String INSERT_COMMUNITY = "INSERT INTO Communities (community_id, community_title, community_description, community_hashtag, community_date, community_image, community_status, user_id) VALUES (community_id.nextval, ?, ?, ?, SYSDATE, ?, ?, ?)";
 
-    String UPDATE_COMMUNITY = "UPDATE Communities SET community_title = '커뮤제목수정',community_description = '커뮤소개글 수정',community_hashtag = '#커뮤태그 #수정',community_date = sysdate,community_image = 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=2882&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',community_status = 2 WHERE community_id = 21";
-    String DELETE_COMMUNITY = "UPDATE Communities SET community_status=0 WHERE community_id = 21";
+    String UPDATE_COMMUNITY = "UPDATE Communities SET community_title = ?,community_description = ?,community_hashtag = ?,community_date = sysdate,community_image = ?,community_status = ? WHERE community_id = ?";
+    String DELETE_COMMUNITY = "UPDATE Communities SET community_status=0 WHERE community_id = ?";
 
     /* Communities_posts*/
     String INSERT_COMMUNITY_POST = "INSERT INTO Communities_posts (community_post_id, community_id, post_id) VALUES (community_id.nextval, 21, 12)";

@@ -76,14 +76,16 @@ public class CommentDAOImpl implements CommentDAO {
     public void updateComment(int commentId, String postComment) throws DatabaseQueryException {
         String sql = Query.UPDATE_COMMENT;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-
+        	ps.setInt(2, commentId);
+        	ps.setString(1, postComment);
+        	ps.executeUpdate();
         } catch (SQLException e) {
             throw new DatabaseQueryException(e.getMessage());
         }
     }
 
     @Override
-    public void deleteComment(int commentId, char commentStatus) {
-
+    public void deleteComment(int commentId, char commentStatus)  {
+    	
     }
 }
