@@ -3,12 +3,13 @@ package kosta.travelog.dao;
 import kosta.travelog.dto.CommunityDTO;
 import kosta.travelog.dto.CountMemberDTO;
 import kosta.travelog.dto.InviteMemberDTO;
+import kosta.travelog.exception.DatabaseQueryException;
 
 import java.util.Collection;
 
 public interface CommunityManagerDAO {
     /* 커뮤니티 목록 불러오기(myCommunities) community_member_status = 1인 경우만*/
-    Collection<CommunityDTO> myCommunityList();
+    Collection<CommunityDTO> myCommunityList() throws DatabaseQueryException;
 
     /* 커뮤니티 목록 불러오기(AllCommunities)*/
     Collection<CommunityDTO> allCommunityList();

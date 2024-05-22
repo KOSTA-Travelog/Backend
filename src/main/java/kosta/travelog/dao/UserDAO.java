@@ -10,5 +10,5 @@ public interface UserDAO {
 
 	Collection<UserVO> searchUser(String nickname);
 
-	UserVO loadProfile(String userId) throws DatabaseQueryException;
+	UserVO getProfile(String userId) throws DatabaseQueryException;
 }

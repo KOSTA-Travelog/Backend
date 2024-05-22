@@ -43,7 +43,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public Collection<UserVO> searchUser(String nickname) {
-		String sql = Query.SEARCHUSER;
+		String sql = Query.SEARCH_USER;
 		Collection<UserVO> result = new ArrayList<UserVO>();
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, nickname);
@@ -61,8 +61,8 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public UserVO loadProfile(String userId) throws DatabaseQueryException {
-		String sql = Query.LOADPROFILE;
+	public UserVO getProfile(String userId) throws DatabaseQueryException {
+		String sql = Query.GET_PROFILE;
 		UserVO result = null;
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, userId);

@@ -66,7 +66,7 @@ public class AccountService {
     		return null;
     	}
     	try {
-			return new UserDAOImpl(dataSource.getConnection()).loadProfile(userId);
+			return new UserDAOImpl(dataSource.getConnection()).getProfile(userId);
 		} catch (SQLException e) {
 			throw new DatabaseConnectException("dataSource에서 connection을 받아오지 못했습니다.\n" +
 					String.format("%s %S", this.getClass(), e.getMessage())
