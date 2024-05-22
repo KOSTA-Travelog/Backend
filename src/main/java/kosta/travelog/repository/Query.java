@@ -2,8 +2,8 @@ package kosta.travelog.repository;
 
 public interface Query {
     String LOGIN = "SELECT user_id, nickname, profile_image,user_status FROM users WHERE email = ? AND password = ?";
-    String SEARCHUSER = "SELECT user_id,nickname, bio, profile_image, user_status FROM users WHERE nickname LIKE ?";
-    String LOADPROFILE = "SELECT user_id,nickname, bio, profile_image, user_status FROM users WHERE user_id = ?";
+    String SEARCH_USER = "SELECT user_id,nickname, bio, profile_image, user_status FROM users WHERE nickname LIKE ?";
+    String GET_PROFILE = "SELECT user_id,nickname, bio, profile_image, user_status FROM users WHERE user_id = ?";
 
     /*Posts + Post_images*/
     String POST_LIST = "SELECT p.post_id, p.post_title, p.post_description, p.post_hashtag, p.post_date, p.post_status, p.user_id, i.image_id, i.images FROM Posts p INNER JOIN POST_IMAGES i on p.POST_ID = i.POST_ID WHERE post_status = 1 order by post_date desc";

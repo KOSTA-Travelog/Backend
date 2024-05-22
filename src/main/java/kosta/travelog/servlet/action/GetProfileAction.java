@@ -1,6 +1,7 @@
 package kosta.travelog.servlet.action;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,25 +13,29 @@ import kosta.travelog.service.AccountService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
+import lombok.extern.slf4j.Slf4j;
 
-public class SearchNicknameAction implements Action {
+@Slf4j
+public class GetProfileAction implements Action {
+
 	@Override
 	public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
-		String nickname = request.getParameter("nickname");
+		String userId = request.getParameter("userId");
 		ResponseModel responseModel = null;
+		JsonObject json = new JsonObject();
 		try {
-			JsonObject json = new JsonObject();
-			json.addProperty("data", new AccountService().searchUser(nickname).toString());
+			json.addProperty("data", new AccountService().getProfile(userId).toString());
 			responseModel = new ResponseModel(200, json, "success");
+		} catch (DatabaseQueryException e) {
+			log.error(e.getMessage());
+			responseModel = new ResponseModel(500, "Server Error");
 		} catch (DatabaseConnectException e) {
-            responseModel = new ResponseModel(500, "Server Error");
-        } catch (DatabaseQueryException e) {
-        	throw new RuntimeException(e);
-        } finally {
-            request.setAttribute("data", responseModel);
-        }
+			throw new RuntimeException(e);
+		} finally {
+			request.setAttribute("data", responseModel);
+		}
 		
-		return new URLModel("response.jsp");
+		return new URLModel();
 	}
 
 }

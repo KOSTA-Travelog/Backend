@@ -42,8 +42,8 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public Collection<UserVO> searchUser(String nickname) {
-		String sql = Query.SEARCHUSER;
+	public Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException {
+		String sql = Query.SEARCH_USER;
 		Collection<UserVO> result = new ArrayList<UserVO>();
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, nickname);
@@ -54,15 +54,15 @@ public class UserDAOImpl implements UserDAO {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DatabaseQueryException("프로필 검색 쿼리 실행에 실패했습니다. \n" + e.getMessage());
 		}
 
 		return result;
 	}
 
 	@Override
-	public UserVO loadProfile(String userId) throws DatabaseQueryException {
-		String sql = Query.LOADPROFILE;
+	public UserVO getProfile(String userId) throws DatabaseQueryException {
+		String sql = Query.GET_PROFILE;
 		UserVO result = null;
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, userId);
