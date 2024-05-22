@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 @Slf4j
 public class CommunityDAOImpl implements CommunityDAO {
 
@@ -99,4 +100,5 @@ public class CommunityDAOImpl implements CommunityDAO {
             throw new DatabaseQueryException(e.getMessage());
         }
     }
+
 }
