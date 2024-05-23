@@ -6,7 +6,7 @@ public interface Query {
     String GET_PROFILE = "SELECT user_id,nickname, bio, profile_image, user_status FROM users WHERE user_id = ?";
 
     /*Posts + Post_images*/
-    String POST_LIST = "SELECT p.post_id, p.post_title, p.post_description, p.post_hashtag, p.post_date, p.post_status, p.user_id, i.image_id, i.images FROM Posts p INNER JOIN POST_IMAGES i on p.POST_ID = i.POST_ID WHERE post_status = 1 order by post_date desc";
+    String POST_LIST = "SELECT p.post_id, p.post_title, p.post_description, p.post_hashtag, p.post_date, p.post_status, p.user_id, i.image_id, i.images FROM Posts p LEFT OUTER JOIN POST_IMAGES i on p.POST_ID = i.POST_ID WHERE post_status = 1 order by post_date desc";
     String INSERT_POST_IMAGE = "INSERT INTO Post_images (image_id, images, post_id) VALUES (image_id.nextval, ?, ?)";
     String INSERT_POST = "INSERT INTO Posts (post_id, post_title, post_description, post_hashtag, post_date, post_status, user_id) VALUES (post_id.nextval, 'this is post title', 'this is post description', '#test', sysdate, 1, '235ddd1f-c51f-47bf-8aec-575220580504')";
     String UPDATE_POST_STATUS = "update posts set post_status = ? where post_id = ?";
@@ -39,7 +39,8 @@ public interface Query {
     String INSERT_ASK_COMMUNITY_MEMBER = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, ?, '52e1c6de-43ea-4817-8290-7a5957efa869', 2)";
     String UPDATE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 1 WHERE community_member_id = ?";
     String DELETE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 0 WHERE community_member_id = 113";
-
+    String INSERT_CREATOR_TO_COMMUNITY_USERS = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, 21, '1bf45a45-44f8-4326-a1ef-30c82f097b31', 1)";
+    
     /* CommunityManagerDAO */
     String MY_COMMUNITY_LIST = "SELECT c.community_id, c.community_title,c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, m.countMember FROM communities c INNER JOIN (SELECT community_id, user_id, count(community_member_id) as countMember FROM communities_users WHERE community_member_status = 1 GROUP BY community_id, user_id) m on c.community_id = m.community_id where m.user_id = ? and c.community_status = 1 order by m.countMember desc";
     String ALL_COMMUNITY_LIST = "SELECT c.community_id, c.community_title,c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, m.member_count FROM communities c INNER JOIN (SELECT community_id, member_count FROM community_member_count_view) m ON c.community_id = m.community_id WHERE c.community_status = 1 ORDER BY m.member_count desc";

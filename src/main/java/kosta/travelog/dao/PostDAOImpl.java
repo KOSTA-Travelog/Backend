@@ -42,7 +42,7 @@ public class PostDAOImpl implements PostDAO {
                 ));
             }
             return postList;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             throw e;
         }
@@ -59,7 +59,7 @@ public class PostDAOImpl implements PostDAO {
 
             int result = pstmt.executeUpdate();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -78,7 +78,7 @@ public class PostDAOImpl implements PostDAO {
             int result = pstmt.executeUpdate();
 
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -93,7 +93,7 @@ public class PostDAOImpl implements PostDAO {
 
             int result = pstmt.executeUpdate();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -106,7 +106,7 @@ public class PostDAOImpl implements PostDAO {
             pstmt.setInt(1, imageId);
             pstmt.executeUpdate();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -119,7 +119,7 @@ public class PostDAOImpl implements PostDAO {
             pstmt.setInt(1, postId);
             pstmt.executeUpdate();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -145,7 +145,7 @@ public class PostDAOImpl implements PostDAO {
                             .userId(rs.getString("user_id")).build();
                 }
 
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
 
@@ -167,7 +167,7 @@ public class PostDAOImpl implements PostDAO {
             pstmt.setInt(5, post.getPostId());
 
             pstmt.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
 
         }
     }
@@ -211,11 +211,11 @@ public class PostDAOImpl implements PostDAO {
                     countPost = rs.getInt(1);
                 }
 
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

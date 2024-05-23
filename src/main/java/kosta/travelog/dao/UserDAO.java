@@ -6,9 +6,9 @@ import kosta.travelog.vo.UserVO;
 import java.util.Collection;
 
 public interface UserDAO {
-    UserVO login(UserVO user) throws DatabaseQueryException;
+  UserVO login(UserVO user) throws DatabaseQueryException;
 
-    Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException;
+	Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException;
 
-    UserVO getProfile(String userId) throws DatabaseQueryException;
+   UserVO getProfile(String userId) throws DatabaseQueryException;
 }
