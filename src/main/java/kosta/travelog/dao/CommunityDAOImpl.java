@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import kosta.travelog.dto.CommunityDTO;
-import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.repository.Query;
 import kosta.travelog.vo.CommunityVO;
