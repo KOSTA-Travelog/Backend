@@ -7,7 +7,7 @@ public interface CommunityUserDAO {
     void askAddMember(CommunityUserVO vo);
 
     /*커뮤니티 멤버 추가(수락 완료)*/
-    void setMember();
+    void setMember(int communityMemberId);
 
     /* 커뮤니티 탈퇴하기*/
     void removeMember(int communityMemberId);
