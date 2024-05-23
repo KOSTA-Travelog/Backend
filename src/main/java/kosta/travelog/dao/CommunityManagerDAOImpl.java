@@ -190,11 +190,11 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO{
 	}
 
 	@Override
-	public Collection<CommunityPostDTO> communityPostListForGuest(char communityMemberStatus) throws DatabaseQueryException {
+	public Collection<CommunityPostDTO> communityPostListForGuest(int communityId) throws DatabaseQueryException {
 		String sql = Query.COMMUNITY_POST_LIST_FOR_GUEST;
 		List<CommunityPostDTO> postsForGuest = new ArrayList<>();
 		try(PreparedStatement ps = conn.prepareStatement(sql)){
-			ps.setString(1, String.valueOf(communityMemberStatus));
+			ps.setInt(1, communityId);
 			try(ResultSet rs = ps.executeQuery()){
 				while(rs.next()){
 					postsForGuest.add(new CommunityPostDTO(rs.getInt("post_id"),
@@ -214,11 +214,11 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO{
 	}
 
 	@Override
-	public Collection<CommunityPostDTO> communityPostListForMember(char communityMemberStatus) throws DatabaseQueryException {
+	public Collection<CommunityPostDTO> communityPostListForMember(int community_id) throws DatabaseQueryException {
 		String sql = Query.COMMUNITY_POST_LIST_FOR_MEMBER;
 		List<CommunityPostDTO> postsForMember = new ArrayList<>();
 		try(PreparedStatement ps = conn.prepareStatement(sql)){
-			ps.setString(1, String.valueOf(communityMemberStatus));
+			ps.setInt(1, community_id);
 			try(ResultSet rs = ps.executeQuery()){
 				while(rs.next()){
 					postsForMember.add(new CommunityPostDTO(rs.getInt("post_id"),

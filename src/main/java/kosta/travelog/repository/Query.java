@@ -48,6 +48,14 @@ public interface Query {
     String JOINED_COMMUNITY_LIST = "SELECT cu.community_id, c.community_title, c.community_hashtag, c.community_description, c.community_image, c.community_status, NVL(v.member_count, 0) as member_count FROM communities_users cu JOIN communities c ON cu.community_id = c.community_id JOIN community_member_count_view v ON v.community_id = cu.community_id WHERE cu.user_id = ? AND c.user_id <> cu.user_id";
     String WAITING_MEMBER_LIST = "select c.community_id, c.community_member_status, u.profile_image, u.nickname, u.bio from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 2";
     String CURRENT_MEMBER_LIST = "select c.community_id, c.community_member_status, u.profile_image, u.nickname, u.bio from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 1";
-    String COMMUNITY_POST_LIST_FOR_GUEST = "select a.post_id, a.post_date, a.post_status, b.community_post_id, b.community_id, image_id, images from posts a inner join communities_posts b on a.post_id = b.post_id inner join post_images c on a.post_id = b.post_id where a.post_status = 1 and b.community_id = 2 order by a.post_date desc";
-    String COMMUNITY_POST_LIST_FOR_MEMBER = "select a.post_id, a.post_date, a.post_status, b.community_post_id, b.community_id, image_id, images from posts a inner join communities_posts b on a.post_id = b.post_id inner join post_images c on a.post_id = b.post_id where (a.post_status = 1 or a.post_status =2) and b.community_id = 2 order by a.post_date desc";
+    String COMMUNITY_POST_LIST_FOR_GUEST = "select a.post_id, a.post_date, a.post_status, b.community_post_id, b.community_id, image_id, images from posts a inner join communities_posts b on a.post_id = b.post_id inner join post_images c on a.post_id = b.post_id where a.post_status = 1 and b.community_id = ? order by a.post_date desc";
+    String COMMUNITY_POST_LIST_FOR_MEMBER = "select a.post_id, a.post_date, a.post_status, b.community_post_id, b.community_id, image_id, images from posts a inner join communities_posts b on a.post_id = b.post_id inner join post_images c on a.post_id = b.post_id where (a.post_status = 1 or a.post_status =2) and b.community_id = ? order by a.post_date desc";
+
+    /* NotificationDAO */
+    String Add_Pending_Community_Member = "";
+    String ACCEPT_COMMUNITY_INVITE = "UPDATE Notifications SET notification_type='Y' WHERE notification_id=? and user_id2 = ?";   		
+    String REJECT_COMMUNITY_INVITE = "UPDATE Notifications SET notification_type='N' WHERE notification_id=? and user_id2 = ?";
+	String PENDING_MEMBER_LIST = "select u.nickname, u.bio, n.notification_type, n.community_id from users u inner join notifications n on u.user_id = n.user_id2 where community_id = ? and notification_type = ?";
+	String REMOVE_NOTIFICATION = "delete from notifications where notification_id =? and user_id2 = ?";
+	String NOTIFICATION_LIST = "select notification_id, notification_type, notification_read, user_id, user_id2, notification_date, community_id, follow_id, like_id, comment_id, comment_reply_id, community_member_id from notifications where user_id2 = ?";
 }

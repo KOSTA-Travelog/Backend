@@ -31,8 +31,8 @@ public interface CommunityManagerDAO {
     Collection<InviteMemberDTO> currentMemberList(int communityId) throws DatabaseQueryException;
 
     /* 커뮤니티 멤버 아닌 경우 커뮤니티 별 게시글 목록*/
-    Collection<CommunityPostDTO> communityPostListForGuest(char communityMemberStatus) throws DatabaseQueryException;
+    Collection<CommunityPostDTO> communityPostListForGuest(int communityId) throws DatabaseQueryException;
 
     /*커뮤니티 멤버인 경우 커뮤니티별 게시글 목록 */
-    Collection<CommunityPostDTO> communityPostListForMember(char communityMemberStatus) throws DatabaseQueryException;
+    Collection<CommunityPostDTO> communityPostListForMember(int communityId) throws DatabaseQueryException;
 }
