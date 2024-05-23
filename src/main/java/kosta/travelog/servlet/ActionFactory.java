@@ -79,6 +79,10 @@ public class ActionFactory {
                 action = new RemoveCommunityAction();
                 break;
 
+            case "/communities/myCommunity":
+                action = new GetMyCommunityListAction();
+                break;
+
         }
         return action;
     }
