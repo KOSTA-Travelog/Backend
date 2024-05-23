@@ -91,7 +91,7 @@ public class CommunityService {
     }
 
     /* CommunityManagerDAO */
-    /* 커뮤니티 목록 불러오기(myCommunities) community_member_status = 1인 경우만*/
+    /* 커뮤니티 목록 불러오기(myCommunities) community_member_status = 1인 경우만 (완)*/
     public List<CommunityDTO> getMyCommunityList(String userId) {
         List<CommunityDTO> dto = new ArrayList<>();
         try (Connection conn = dataSource.getConnection()) {
@@ -104,7 +104,7 @@ public class CommunityService {
         return dto;
     }
 
-    /* 커뮤니티 목록 불러오기(AllCommunities)*/
+    /* 커뮤니티 목록 불러오기(AllCommunities) (완)*/
     public List<CommunityDTO> getAllCommunityList() {
         List<CommunityDTO> dto = new ArrayList<>();
         try (Connection conn = dataSource.getConnection()) {

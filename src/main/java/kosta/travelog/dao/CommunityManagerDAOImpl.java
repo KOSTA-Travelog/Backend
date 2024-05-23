@@ -39,7 +39,7 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
                             rs.getDate("community_date").toLocalDate(),
                             rs.getString("community_image"),
                             rs.getString("community_status").charAt(0),
-                            rs.getInt("countMember")
+                            rs.getInt(8)
                     ));
                 }
             }
@@ -64,7 +64,7 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
                         rs.getDate("community_date").toLocalDate(),
                         rs.getString("community_image"),
                         rs.getString("community_status").charAt(0),
-                        rs.getInt("countMemmber")
+                        rs.getInt(8)
                 ));
             }
             return allCommunityList;
