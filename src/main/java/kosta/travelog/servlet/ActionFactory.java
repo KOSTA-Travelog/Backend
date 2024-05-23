@@ -40,12 +40,12 @@ public class ActionFactory {
 
             case "/searchNickname":
 
-            	action = new SearchNicknameAction();
-            	break;
-            
+                action = new SearchNicknameAction();
+                break;
+
             case "/getProfile":
-            	action = new GetProfileAction();
-            	break;
+                action = new GetProfileAction();
+                break;
 
             case "/posts/feed":
                 action = new GetPostAction();
