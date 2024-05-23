@@ -47,21 +47,21 @@ public class AccountService {
         }
     }
 
-    public Collection<UserVO> searchUser(String nickname) throws DatabaseConnectException{
+    public Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException{
     	if(nickname == null){
     		return null;
     	}
     	try {
 			return new UserDAOImpl(dataSource.getConnection()).searchUser(nickname);
 		} catch (SQLException e) {
-			throw new DatabaseConnectException("dataSource에서 connection을 받아오지 못했습니다.\n" +
+			throw new DatabaseQueryException("dataSource에서 connection을 받아오지 못했습니다.\n" +
 					String.format("%s %s", this.getClass(), e.getMessage())
 			);
 		}
     	
     }
     
-    public UserVO loadProfile(String userId) throws DatabaseQueryException, DatabaseConnectException{
+    public UserVO getProfile(String userId) throws DatabaseQueryException, DatabaseConnectException{
     	if(userId == null){
     		return null;
     	}

@@ -36,8 +36,9 @@ public class ActionFactory {
             case "/searchNickname":
             	action = new SearchNicknameAction();
             	break;
-            case "/loadProfile":
-            	action = new LoadProfileAction();
+            case "/getProfile":
+            	action = new GetProfileAction();
+            	break;
             case "/posts/feed":
                 action = new GetPostAction();
                 break;
