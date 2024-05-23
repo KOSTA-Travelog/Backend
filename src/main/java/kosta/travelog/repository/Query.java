@@ -40,7 +40,7 @@ public interface Query {
     String UPDATE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 1 WHERE community_member_id = ?";
     String DELETE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 0 WHERE community_member_id = 113";
     String INSERT_CREATOR_TO_COMMUNITY_USERS = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, 21, '1bf45a45-44f8-4326-a1ef-30c82f097b31', 1)";
-    
+
     /* CommunityManagerDAO */
     String MY_COMMUNITY_LIST = "SELECT c.community_id, c.community_title,c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, m.countMember FROM communities c INNER JOIN (SELECT community_id, user_id, count(community_member_id) as countMember FROM communities_users WHERE community_member_status = 1 GROUP BY community_id, user_id) m on c.community_id = m.community_id where m.user_id = ? and c.community_status = 1 order by m.countMember desc";
     String ALL_COMMUNITY_LIST = "SELECT c.community_id, c.community_title,c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, m.member_count FROM communities c INNER JOIN (SELECT community_id, member_count FROM community_member_count_view) m ON c.community_id = m.community_id WHERE c.community_status = 1 ORDER BY m.member_count desc";
@@ -54,9 +54,9 @@ public interface Query {
 
     /* NotificationDAO */
     String Add_Pending_Community_Member = "";
-    String ACCEPT_COMMUNITY_INVITE = "UPDATE Notifications SET notification_type='Y' WHERE notification_id=? and user_id2 = ?";   		
+    String ACCEPT_COMMUNITY_INVITE = "UPDATE Notifications SET notification_type='Y' WHERE notification_id=? and user_id2 = ?";
     String REJECT_COMMUNITY_INVITE = "UPDATE Notifications SET notification_type='N' WHERE notification_id=? and user_id2 = ?";
-	String PENDING_MEMBER_LIST = "select u.nickname, u.bio, n.notification_type, n.community_id from users u inner join notifications n on u.user_id = n.user_id2 where community_id = ? and notification_type = ?";
-	String REMOVE_NOTIFICATION = "delete from notifications where notification_id =? and user_id2 = ?";
-	String NOTIFICATION_LIST = "select notification_id, notification_type, notification_read, user_id, user_id2, notification_date, community_id, follow_id, like_id, comment_id, comment_reply_id, community_member_id from notifications where user_id2 = ?";
+    String PENDING_MEMBER_LIST = "select u.nickname, u.bio, n.notification_type, n.community_id from users u inner join notifications n on u.user_id = n.user_id2 where community_id = ? and notification_type = ?";
+    String REMOVE_NOTIFICATION = "delete from notifications where notification_id =? and user_id2 = ?";
+    String NOTIFICATION_LIST = "select notification_id, notification_type, notification_read, user_id, user_id2, notification_date, community_id, follow_id, like_id, comment_id, comment_reply_id, community_member_id from notifications where user_id2 = ?";
 }

@@ -41,7 +41,9 @@ public class PostDAOImpl implements PostDAO {
                         rs.getString("images")
                 ));
             }
+
             return postList;
+
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
