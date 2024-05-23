@@ -32,12 +32,12 @@ public interface Query {
     String DELETE_COMMUNITY = "UPDATE Communities SET community_status=0 WHERE community_id = ?";
 
     /* Communities_posts*/
-    String INSERT_COMMUNITY_POST = "INSERT INTO Communities_posts (community_post_id, community_id, post_id) VALUES (community_id.nextval, 21, 12)";
-    String DELETE_COMMUNITY_POST = "DELETE FROM Communities_posts WHERE community_post_id=26";
+    String INSERT_COMMUNITY_POST = "INSERT INTO Communities_posts (community_post_id, community_id, post_id) VALUES (community_id.nextval, ?, ?)";
+    String DELETE_COMMUNITY_POST = "DELETE FROM Communities_posts WHERE community_post_id=?";
 
     /* Communities_users */
-    String INSERT_ASK_COMMUNITY_MEMBER = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, 1, '52e1c6de-43ea-4817-8290-7a5957efa869', 2)";
-    String UPDATE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 1 WHERE community_member_id = 3";
+    String INSERT_ASK_COMMUNITY_MEMBER = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, ?, '52e1c6de-43ea-4817-8290-7a5957efa869', 2)";
+    String UPDATE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 1 WHERE community_member_id = ?";
     String DELETE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 0 WHERE community_member_id = 113";
 
     /* CommunityManagerDAO */
