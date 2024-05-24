@@ -28,11 +28,14 @@ public class AddPostImageAction implements Action {
         if (!dir.exists())
             dir.mkdirs();
 
+        log.info(saveDirectory);
         int maxPostSize = 15 * 1024 * 1024;
         String encoding = "UTF-8";
 
         MultipartRequest mr = new MultipartRequest(request, saveDirectory, maxPostSize, encoding);
-        String fileName = mr.getFilesystemName("images");
+
+        String fileName = mr.getParameter("image");
+        log.info(fileName);
 
         String ext = fileName.substring(fileName.lastIndexOf("."));
         String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
@@ -42,12 +45,11 @@ public class AddPostImageAction implements Action {
             PostImageDTO dto = new PostImageDTO();
             boolean result = new PostService().createImage(dto.builder().
                     postId(Integer.parseInt(request.getParameter("postId")))
-                    .imageId(Integer.parseInt(request.getParameter("imageId")))
-                    .images(newFileName).build());
+                    .images(fileName).build());
 
             JsonObject json = new JsonObject();
-            json.addProperty("data" , result);
-            request.setAttribute("data" , new ResponseModel(201, json, "created"));
+            json.addProperty("data", result);
+            request.setAttribute("data", new ResponseModel(201, json, "created"));
 
         } catch (DatabaseConnectException e) {
             throw new RuntimeException(e);

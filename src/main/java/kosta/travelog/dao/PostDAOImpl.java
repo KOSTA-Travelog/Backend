@@ -55,9 +55,8 @@ public class PostDAOImpl implements PostDAO {
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, image.getImageId());
-            pstmt.setString(2, image.getImages());
-            pstmt.setInt(3, image.getPostId());
+            pstmt.setString(1, image.getImages());
+            pstmt.setInt(2, image.getPostId());
 
             int result = pstmt.executeUpdate();
 
