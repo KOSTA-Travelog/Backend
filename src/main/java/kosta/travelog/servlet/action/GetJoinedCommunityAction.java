@@ -14,15 +14,16 @@ import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
 
-public class GetAllCommunityListAction implements Action {
+public class GetJoinedCommunityAction implements Action {
 
 	@Override
 	public URLModel execute(HttpServletRequest request)
 			throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
-		JsonObject json = new JsonObject();
+		ResponseModel responseModel = null;
 		
-		json.addProperty("data", new CommunityService().getAllCommunityList().toString());
-		request.setAttribute("data", new ResponseModel(200, json, "success"));
+		JsonObject json = new JsonObject();
+		json.addProperty("data", new CommunityService().getJoinedCommunityList(request.getParameter("userId")).toString());
+		responseModel = new ResponseModel(200, json, "success");
 		
 		return new URLModel();
 	}

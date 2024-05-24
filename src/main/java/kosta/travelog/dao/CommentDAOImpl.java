@@ -16,11 +16,11 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public CommentVO getComment(char commentStatus, int commentId) throws DatabaseQueryException {
+    public CommentVO getComment(char commentStatus, int postId) throws DatabaseQueryException {
         String sql = Query.GET_COMMENT;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, String.valueOf(commentStatus));
-            ps.setInt(2, commentId);
+            ps.setInt(2, postId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return CommentVO.builder()
@@ -58,15 +58,15 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public void addComment(int commentId, String postComment, LocalDate commentDate, char commentStatus, int postId, String userId) throws DatabaseQueryException {
+    public void addComment(CommentVO vo) throws DatabaseQueryException {
         String sql = Query.ADD_COMMENT;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, commentId);
-            ps.setString(2, postComment);
-            ps.setDate(3, Date.valueOf(commentDate));
-            ps.setString(4, String.valueOf(commentStatus));
-            ps.setInt(5, postId);
-            ps.setString(6, userId);
+            ps.setInt(1, vo.getCommentId());
+            ps.setString(2, vo.getPostComment());
+            ps.setDate(3, Date.valueOf(vo.getCommentDate()));
+            ps.setString(4, String.valueOf(vo.getCommentStatus()));
+            ps.setInt(5, vo.getPostId());
+            ps.setString(6, vo.getUserId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DatabaseQueryException(e.getMessage());
@@ -86,7 +86,13 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public void deleteComment(int commentId, char commentStatus) {
-
+    public void deleteComment(int commentId) throws DatabaseQueryException {
+    	String sql = Query.DELETE_COMMENT;
+    	try (PreparedStatement ps = conn.prepareStatement(sql)){
+    		ps.setInt(1, commentId);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+    		throw new DatabaseQueryException(e.getMessage());
+    	}
     }
 }
