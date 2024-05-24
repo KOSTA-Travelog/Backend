@@ -19,12 +19,12 @@ public interface Query {
     String POST_WITH_IMAGES = "SELECT p.post_id, p.post_title, p.post_description, p.post_hashtag, p.post_date, p.post_status, p.user_id, i.image_id, i.images FROM Posts p INNER JOIN POST_IMAGES i on p.POST_ID = i.POST_ID WHERE p.post_id = ?";
 
     /* Comment */
-    String GET_COMMENT = "SELECT comment_id, post_comment, comment_date, user_id FROM Comments WHERE comment_status=? and post_id=?";
-    String GET_COMMENT_COUNT = "SELECT COUNT(comment_id) AS count FROM Comments WHERE post_id = ?";
+    String GET_COMMENT = "SELECT comment_id, post_comment, comment_date, comment_status, post_id FROM Comments WHERE comment_status=1 and post_id = ?";
+    String COUNT_COMMENT = "SELECT COUNT(comment_id) FROM Comments WHERE post_id = ?";
     String ADD_COMMENT = "INSERT INTO comments (comment_id, post_comment, comment_date, comment_status, post_id, user_id) VALUES (comment_id.nextval, ?, sysdate, ?, ?, ?)";
-    String UPDATE_COMMENT = "UPDATE comments SET post_comment=? WHERE comment_id=?";
-    String DELETE_COMMENT = "UPDATE comments SET comment_status=0 WHERE comment_id=?";
-    
+    String INSERT_COMMENT = "UPDATE comments SET post_comment = ?,comment_date=sysdate, comment_status = ? WHERE comment_id = ?";
+    String DELETE_COMMENT = "UPDATE comments SET comment_status=0 WHERE comment_id = ?";
+
     /* Communities*/
     String COMMUNITY = "SELECT c.community_id , c.community_title , c.community_description , c.community_hashtag , c.community_date , c.community_image, c.community_status, v.member_count FROM communities c JOIN community_member_count_view v ON v.community_id = c.community_id WHERE c.community_id = ? AND c.community_status = 1";
     String INSERT_COMMUNITY = "INSERT INTO Communities (community_id, community_title, community_description, community_hashtag, community_date, community_image, community_status, user_id) VALUES (community_id.nextval, ?, ?, ?, SYSDATE, ?, ?, ?)";
