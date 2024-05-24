@@ -39,7 +39,6 @@ public class ActionFactory {
                 break;
 
             case "/searchNickname":
-
                 action = new SearchNicknameAction();
                 break;
 
