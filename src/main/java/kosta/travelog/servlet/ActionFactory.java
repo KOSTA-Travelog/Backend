@@ -83,6 +83,10 @@ public class ActionFactory {
                 action = new GetMyCommunityListAction();
                 break;
 
+            case "/allCommunity":
+                action = new GetAllCommunityListAction();
+                break;
+
         }
         return action;
     }
