@@ -8,12 +8,14 @@ import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
 import kosta.travelog.vo.CommunityVO;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class AddCommunityACtion implements Action {
+@Slf4j
+public class AddCommunityAction implements Action {
 
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {

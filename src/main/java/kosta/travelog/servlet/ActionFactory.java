@@ -42,7 +42,7 @@ public class ActionFactory {
                 action = new SearchNicknameAction();
                 break;
 
-            case "/getProfile":
+            case "/profile":
                 action = new GetProfileAction();
                 break;
 
@@ -67,7 +67,7 @@ public class ActionFactory {
                 break;
 
             case "/communities/create":
-                action = new AddCommunityACtion();
+                action = new AddCommunityAction();
                 break;
 
             case "/communities/edit":
@@ -117,7 +117,44 @@ public class ActionFactory {
             case "/communityPosts/remove":
                 action = new RemoveCommunityPostAction();
                 break;
+
+            case "/communities/member/add/pending":
+                action = new AddPendingMember();
+                break;
+
+            case "/communities/member/edit":
+                action = new AddMemberToCommunity();
+                break;
+
+            case "/communities/member/remove":
+                action = new RemoveCommunityMember();
+                break;
+
+            case "/signUp":
+                action = new AddUserAction();
+                break;
+
+            case "/findAccount":
+                action = new FindAccountAction();
+                break;
+
+            case "/checkUser":
+                action = new CheckAccountAction();
+                break;
+
+            case "/editPassword":
+                action = new SetPasswordAction();
+                break;
+
+            case "/withdrawal":
+                action = new RemoveAccountAction();
+                break;
+                
+            case "/editUserInfo":
+                action = new SetUserAction();
+                break;
         }
+
         return action;
     }
 }

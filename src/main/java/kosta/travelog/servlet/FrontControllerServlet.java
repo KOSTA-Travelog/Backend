@@ -26,8 +26,6 @@ public class FrontControllerServlet extends HttpServlet {
 
         URLModel url = a.execute(req);
 
-        log.info(String.valueOf(url));
-        
         // 3. View
         if (url.isFlag()) {
             resp.sendRedirect(url.getPage());

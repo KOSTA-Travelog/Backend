@@ -3,7 +3,15 @@ package kosta.travelog.repository;
 public interface Query {
     String LOGIN = "SELECT user_id, nickname, profile_image,user_status FROM users WHERE email = ? AND password = ?";
     String SEARCH_USER = "SELECT user_id,nickname, bio, profile_image, user_status FROM users WHERE nickname LIKE ?";
-    String GET_PROFILE = "SELECT user_id,nickname, bio, profile_image, user_status FROM users WHERE user_id = ?";
+    String GET_PROFILE = "SELECT user_id, nickname, bio, profile_image, user_status FROM users WHERE user_id = ?";
+
+    String UPDATE_USER_INFORMATION = "UPDATE users SET name=?, nickname=?, profile_image=?, password=?, phone_number=?, bio=? WHERE user_id = ?";
+    String SIGN_UP = "INSERT INTO users (user_id, name, email, password, phone_number, nickname, registration_date, user_status) VALUES ((SELECT SUBSTR(RAWTOHEX(SYS_GUID()), 1, 8) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 9, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 13, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 17, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 21, 12) AS uuid FROM dual), ?, ?, ?, ?, ?, SYSDATE, 1)";
+    String FIND_EMAIL = "SELECT email FROM users WHERE name = ? AND phone_number = ?";
+    String CHECK_USER = "SELECT user_id FROM users WHERE email = ? AND password = ?";
+    String UPDATE_PASSWORD = "UPDATE Users SET password = ? WHERE user_id = ?";
+    String WITHDRAWAL = "UPDATE Users SET user_status = 0 WHERE user_id = ?";
+
 
     /*Posts + Post_images*/
     String POST_LIST = "SELECT p.post_id, p.post_title, p.post_description, p.post_hashtag, p.post_date, p.post_status, p.user_id, i.image_id, i.images FROM Posts p LEFT OUTER JOIN POST_IMAGES i on p.POST_ID = i.POST_ID WHERE post_status = 1 order by post_date desc";
@@ -33,10 +41,10 @@ public interface Query {
     String DELETE_COMMUNITY = "UPDATE Communities SET community_status=0 WHERE community_id = ?";
 
     /* Communities_users */
-    String INSERT_ASK_COMMUNITY_MEMBER = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, ?, '52e1c6de-43ea-4817-8290-7a5957efa869', 2)";
+    String INSERT_COMMUNITY_PENDING_MEMBER = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, ?, ?, 2)";
     String UPDATE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 1 WHERE community_member_id = ?";
-    String DELETE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 0 WHERE community_member_id = 113";
-    String INSERT_CREATOR_TO_COMMUNITY_USERS = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, 21, '1bf45a45-44f8-4326-a1ef-30c82f097b31', 1)";
+    String DELETE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 0 WHERE community_member_id = ?";
+    String INSERT_CREATOR_TO_COMMUNITY_USERS = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, ?, ?, 1)";
 
     /* CommunityManagerDAO */
     String MY_COMMUNITY_LIST = "SELECT c.community_id, c.community_title,c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, m.countMember FROM communities c INNER JOIN (SELECT community_id, user_id, count(community_member_id) as countMember FROM communities_users WHERE community_member_status = 1 GROUP BY community_id, user_id) m on c.community_id = m.community_id where m.user_id = ? and c.community_status = 1 order by m.countMember desc";
@@ -47,7 +55,7 @@ public interface Query {
     String CURRENT_MEMBER_LIST = "select c.community_id, c.community_member_status, u.profile_image, u.nickname, u.bio from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 1";
 
     /* NotificationDAO */
-    String Add_Pending_Community_Member = "";
+    String INSERT_PENDING_COMMUNITY_MEMBER = "    INSERT INTO Notifications(notification_id, notification_type, notification_read, user_id, user_id2, notification_date, community_id) VALUES ('960a5149-03a6-492f-90a7-678f01ad93fb', 'R', 0, '52e1c6de-43ea-4817-8290-7a5957efa869', 'bb8d93ce-c92c-4c2a-9da0-cc8cfd24d61b', SYSDATE, 1)";
     String ACCEPT_COMMUNITY_INVITE = "UPDATE Notifications SET notification_type='Y' WHERE notification_id=? and user_id2 = ?";
     String REJECT_COMMUNITY_INVITE = "UPDATE Notifications SET notification_type='N' WHERE notification_id=? and user_id2 = ?";
     String PENDING_MEMBER_LIST = "select u.nickname, u.bio, n.notification_type, n.community_id from users u inner join notifications n on u.user_id = n.user_id2 where community_id = ? and notification_type = ?";
