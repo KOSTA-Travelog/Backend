@@ -25,6 +25,10 @@ public class AddCommunityACtion implements Action {
             String communityStatus = request.getParameter("communityStatus");
             String userId = request.getParameter("userId");
 
+            if (communityTitle == null || communityStatus == null || userId == null) {
+                throw new BadRequestException("Required inputs are missing.");
+            }
+
             boolean result = new CommunityService().createCommunity(CommunityVO.builder()
                     .communityTitle(communityTitle)
                     .communityDescription(communityDescription)
@@ -32,10 +36,6 @@ public class AddCommunityACtion implements Action {
                     .communityImage(communityImage)
                     .communityStatus(communityStatus.charAt(0))
                     .userId(userId).build());
-
-            if (communityTitle == null || communityStatus == null || userId == null) {
-                throw new BadRequestException("Required inputs are missing.");
-            }
 
             if (result) {
                 request.setAttribute("data", new ResponseModel(201, "created"));

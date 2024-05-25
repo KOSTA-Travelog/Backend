@@ -81,38 +81,42 @@ public class ActionFactory {
             case "/communities/myCommunity":
                 action = new GetMyCommunityListAction();
                 break;
-            
+
             case "/communities/allCommunity":
-            	action = new GetAllCommunityListAction();
-            	break;
-            	
-            case "/communities/communityMembers":
-            	action = new CountCommunityMemberAction();
-            	break;
-            	
-            case "/communities/myCreatedCommunity":
-            	action = new GetMyCreatedCommunityAction();
-            	break;
-            	
-            case "/communities/myJoinedCommunity":
-            	action = new GetJoinedCommunityAction();
-            	break;
-            	
-            case "/communities/pendingInvitationList":
-            	action = new GetPendingIvitationList();
-            	break;
-            	
-            case "/communities/currentMemberList":
-            	action = new GetCurrentMemberList();
-            	break;
-            	
-            case "/communities/communityPostForGuest":
-            	action = new GetCommunityPostListForGuest();
-            	break;
-            	
-            case "/communities/communityPostForMember":
-            	action = new GetCommunityPostListForMember();
-            	break;
+                action = new GetAllCommunityListAction();
+                break;
+
+            case "/communities/myCreated":
+                action = new GetMyCreatedCommunityAction();
+                break;
+
+            case "/communities/joined":
+                action = new GetJoinedCommunityAction();
+                break;
+
+            case "/communities/invitationList":
+                action = new GetPendingIvitationList();
+                break;
+
+            case "/communities/currentMember":
+                action = new GetCurrentMemberList();
+                break;
+
+            case "/communityPosts/guest":
+                action = new GetCommunityPostListForGuest();
+                break;
+
+            case "/communityPosts/member":
+                action = new GetCommunityPostListForMember();
+                break;
+
+            case "/communityPosts/create":
+                action = new AddCommunityPostAction();
+                break;
+
+            case "/communityPosts/remove":
+                action = new RemoveCommunityPostAction();
+                break;
         }
         return action;
     }

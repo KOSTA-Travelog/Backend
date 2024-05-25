@@ -1,8 +1,6 @@
 package kosta.travelog.dao;
 
 import kosta.travelog.dto.CommunityDTO;
-import kosta.travelog.dto.CommunityPostDTO;
-import kosta.travelog.dto.CountMemberDTO;
 import kosta.travelog.dto.InviteMemberDTO;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.repository.Query;
@@ -39,7 +37,7 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
                             rs.getDate("community_date").toLocalDate(),
                             rs.getString("community_image"),
                             rs.getString("community_status").charAt(0),
-                            rs.getInt("countMember")
+                            rs.getInt(8)
                     ));
                 }
             }
@@ -64,29 +62,10 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
                         rs.getDate("community_date").toLocalDate(),
                         rs.getString("community_image"),
                         rs.getString("community_status").charAt(0),
-                        rs.getInt("countMemmber")
+                        rs.getInt(8)
                 ));
             }
             return allCommunityList;
-        } catch (SQLException e) {
-            throw new DatabaseQueryException(e.getMessage());
-        }
-    }
-
-    @Override
-    public CountMemberDTO getCountMemberByCommunityId(int communityId) throws DatabaseQueryException {
-        String sql = Query.COUNT_COMMUNITY_MEMBER;
-        CountMemberDTO result = null;
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, communityId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    result = new CountMemberDTO(rs.getInt("community_id"),
-                            rs.getInt("member_count"));
-                }
-            }
-            return result;
-
         } catch (SQLException e) {
             throw new DatabaseQueryException(e.getMessage());
         }
@@ -100,14 +79,15 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
             ps.setString(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    myCreatedCommunityList.add(new CommunityDTO(rs.getInt("community_id"),
+                    myCreatedCommunityList.add(new CommunityDTO(
+                            rs.getInt("community_id"),
                             rs.getString("community_title"),
                             rs.getString("community_description"),
                             rs.getString("community_hashtag"),
                             rs.getDate("community_date").toLocalDate(),
                             rs.getString("community_image"),
                             rs.getString("community_status").charAt(0),
-                            rs.getInt("member_count")
+                            rs.getInt(8)
                     ));
                 }
             }
@@ -127,14 +107,15 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
             ps.setString(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    joinedCommunity.add(new CommunityDTO(rs.getInt("community_id"),
+                    joinedCommunity.add(new CommunityDTO(
+                            rs.getInt("community_id"),
                             rs.getString("community_title"),
                             rs.getString("community_description"),
                             rs.getString("community_hashtag"),
                             rs.getDate("community_date").toLocalDate(),
                             rs.getString("community_image"),
                             rs.getString("community_status").charAt(0),
-                            rs.getInt("member_count")
+                            rs.getInt(8)
                     ));
                 }
             }
@@ -170,6 +151,7 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
 
     }
 
+
     @Override
     public Collection<InviteMemberDTO> currentMemberList(int communityId) throws DatabaseQueryException {
         String sql = Query.CURRENT_MEMBER_LIST;
@@ -194,54 +176,5 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
 
     }
 
-    @Override
-    public Collection<CommunityPostDTO> communityPostListForGuest(int communityId) throws DatabaseQueryException {
-        String sql = Query.COMMUNITY_POST_LIST_FOR_GUEST;
-        List<CommunityPostDTO> postsForGuest = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, communityId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    postsForGuest.add(new CommunityPostDTO(rs.getInt("post_id"),
-                            rs.getDate("post_date").toLocalDate(),
-                            rs.getString("post_status").charAt(0),
-                            rs.getInt("community_post_id"),
-                            rs.getInt("community_id"),
-                            rs.getInt("image_id"),
-                            rs.getString("images")));
-                }
-            }
-            return postsForGuest;
-
-        } catch (SQLException e) {
-            throw new DatabaseQueryException(e.getMessage());
-        }
-    }
-
-    @Override
-    public Collection<CommunityPostDTO> communityPostListForMember(int community_id) throws DatabaseQueryException {
-        String sql = Query.COMMUNITY_POST_LIST_FOR_MEMBER;
-        List<CommunityPostDTO> postsForMember = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, community_id);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    postsForMember.add(new CommunityPostDTO(rs.getInt("post_id"),
-                            rs.getDate("post_date").toLocalDate(),
-                            rs.getString("post_status").charAt(0),
-                            rs.getInt("community_post_id"),
-                            rs.getInt("community_id"),
-                            rs.getInt("image_id"),
-                            rs.getString("images")));
-
-                }
-            }
-            return postsForMember;
-
-        } catch (SQLException e) {
-            throw new DatabaseQueryException(e.getMessage());
-        }
-
-    }
 
 }
