@@ -45,9 +45,10 @@ public class CommunityService {
         return dto;
     }
 
-    public boolean createCommunity(CommunityVO vo) {
+    public boolean createCommunity(CommunityVO community) {
         try (Connection conn = dataSource.getConnection()) {
-            new CommunityDAOImpl(conn).addCommunity(vo);
+            new CommunityDAOImpl(conn).addCommunity(community);
+//            new CommunityUserDAOImpl(conn).addCommunityCreatorToMember(communityUser);
 
         } catch (SQLException e) {
             log.error(e.getMessage());

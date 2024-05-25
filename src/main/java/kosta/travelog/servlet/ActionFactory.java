@@ -117,7 +117,22 @@ public class ActionFactory {
             case "/communityPosts/remove":
                 action = new RemoveCommunityPostAction();
                 break;
+
+            case "/communities/member/add/pending":
+                action = new AddPendingMember();
+                break;
+
+            case "/communities/member/edit":
+                action = new AddMemberToCommunity();
+                break;
+
+            case "/communities/member/remove":
+                action = new RemoveCommunityMember();
+                break;
+
+
         }
+
         return action;
     }
 }
