@@ -1,5 +1,6 @@
 package kosta.travelog.servlet.action;
 
+import kosta.travelog.dto.LoginDTO;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.AccountService;
@@ -26,13 +27,15 @@ public class LoginAction implements Action {
         log.info("req: {}", request.getParameter("pw"));
         try {
             AccountService service = new AccountService();
-            UserVO member = service.login(UserVO.builder()
+            LoginDTO member = service.login(UserVO.builder()
                     .email(request.getParameter("id"))
                     .password(request.getParameter("pw"))
                     .build());
             log.info("member: {}", member);
             if (member != null) {
                 request.getSession().setAttribute("user", member);
+//                request.getSession().setAttribute("userId", member.getUserId());
+
                 request.setAttribute("data", new ResponseModel(200, "success"));
             } else {
                 request.setAttribute("data", new ResponseModel(400, "fail"));

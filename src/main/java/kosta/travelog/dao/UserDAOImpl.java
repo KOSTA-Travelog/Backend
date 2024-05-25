@@ -30,8 +30,10 @@ public class UserDAOImpl implements UserDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 // user_id, nickname, profile_image,user_status
                 if (rs.next()) {
-                    return UserVO.builder().userId(rs.getString("USER_ID")).profileImage(rs.getString("PROFILE_IMAGE"))
-                            .nickname(rs.getString("NICKNAME")).userStatus(rs.getString("USER_STATUS").charAt(0)).build();
+                    return UserVO.builder().userId(rs.getString("USER_ID"))
+                            .profileImage(rs.getString("PROFILE_IMAGE"))
+                            .nickname(rs.getString("NICKNAME"))
+                            .userStatus(rs.getString("USER_STATUS").charAt(0)).build();
                 }
             }
         } catch (SQLException e) {

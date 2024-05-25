@@ -55,7 +55,7 @@ public interface Query {
     String CURRENT_MEMBER_LIST = "select c.community_id, c.community_member_status, u.profile_image, u.nickname, u.bio from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 1";
 
     /* NotificationDAO */
-    String INSERT_PENDING_COMMUNITY_MEMBER = "    INSERT INTO Notifications(notification_id, notification_type, notification_read, user_id, user_id2, notification_date, community_id) VALUES ('960a5149-03a6-492f-90a7-678f01ad93fb', 'R', 0, '52e1c6de-43ea-4817-8290-7a5957efa869', 'bb8d93ce-c92c-4c2a-9da0-cc8cfd24d61b', SYSDATE, 1)";
+    String INSERT_PENDING_COMMUNITY_MEMBER = "INSERT INTO Notifications(notification_id, notification_type, notification_read, user_id, user_id2, notification_date, community_id) VALUES ((SELECT SUBSTR(RAWTOHEX(SYS_GUID()), 1, 8) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 9, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 13, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 17, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 21, 12) AS uuid FROM dual),'R', 0, ?, ?, SYSDATE, ?)";
     String ACCEPT_COMMUNITY_INVITE = "UPDATE Notifications SET notification_type='Y' WHERE notification_id=? and user_id2 = ?";
     String REJECT_COMMUNITY_INVITE = "UPDATE Notifications SET notification_type='N' WHERE notification_id=? and user_id2 = ?";
     String PENDING_MEMBER_LIST = "select u.nickname, u.bio, n.notification_type, n.community_id from users u inner join notifications n on u.user_id = n.user_id2 where community_id = ? and notification_type = ?";
