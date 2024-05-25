@@ -12,11 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import kosta.travelog.dto.CommunityDTO;
-import kosta.travelog.exception.DatabaseQueryException;
-import kosta.travelog.repository.Query;
-import kosta.travelog.vo.CommunityVO;
-
 @Slf4j
 public class CommunityDAOImpl implements CommunityDAO {
 
@@ -51,6 +46,8 @@ public class CommunityDAOImpl implements CommunityDAO {
             }
         } catch (SQLException e) {
             throw new DatabaseQueryException(e.getMessage());
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
         }
         return result;
     }
@@ -97,7 +94,7 @@ public class CommunityDAOImpl implements CommunityDAO {
         String sql = Query.DELETE_COMMUNITY;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, communityId);
-            
+
             ps.executeUpdate();
 
         } catch (SQLException e) {

@@ -39,7 +39,6 @@ public class ActionFactory {
                 break;
 
             case "/searchNickname":
-
                 action = new SearchNicknameAction();
                 break;
 
@@ -83,6 +82,41 @@ public class ActionFactory {
                 action = new GetMyCommunityListAction();
                 break;
 
+            case "/communities/allCommunity":
+                action = new GetAllCommunityListAction();
+                break;
+
+            case "/communities/myCreated":
+                action = new GetMyCreatedCommunityAction();
+                break;
+
+            case "/communities/joined":
+                action = new GetJoinedCommunityAction();
+                break;
+
+            case "/communities/invitationList":
+                action = new GetPendingIvitationList();
+                break;
+
+            case "/communities/currentMember":
+                action = new GetCurrentMemberList();
+                break;
+
+            case "/communityPosts/guest":
+                action = new GetCommunityPostListForGuest();
+                break;
+
+            case "/communityPosts/member":
+                action = new GetCommunityPostListForMember();
+                break;
+
+            case "/communityPosts/create":
+                action = new AddCommunityPostAction();
+                break;
+
+            case "/communityPosts/remove":
+                action = new RemoveCommunityPostAction();
+                break;
         }
         return action;
     }

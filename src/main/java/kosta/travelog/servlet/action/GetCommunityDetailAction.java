@@ -1,6 +1,7 @@
 package kosta.travelog.servlet.action;
 
 import com.google.gson.JsonObject;
+import kosta.travelog.dto.CommunityDTO;
 import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
@@ -17,18 +18,24 @@ import java.io.IOException;
 @Slf4j
 public class GetCommunityDetailAction implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseQueryException {
         ResponseModel responseModel = null;
         try {
             JsonObject json = new JsonObject();
-            json.addProperty("data", new CommunityService().Community(Integer.parseInt(request.getParameter("communityId"))).toString());
+
+            CommunityDTO dto = new CommunityService().Community(Integer.parseInt(request.getParameter("communityId")));
+            if (dto == null) {
+                throw new BadRequestException("cannot find community");
+            }
+            json.addProperty("data", dto.toString());
             responseModel = new ResponseModel(200, json, "success");
+
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(400, e.getMessage());
         } catch (DatabaseConnectException e) {
             log.error(e.getMessage());
             responseModel = new ResponseModel(500, "Server Error");
-        } catch (BadRequestException e) {
-            log.error(e.getMessage());
-            responseModel = new ResponseModel(400, "Bad Request");
         } finally {
             request.setAttribute("data", responseModel);
         }

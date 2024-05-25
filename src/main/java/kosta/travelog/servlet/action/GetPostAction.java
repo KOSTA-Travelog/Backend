@@ -33,7 +33,7 @@ public class GetPostAction implements Action {
         } catch (DatabaseConnectException e) {
             responseModel = new ResponseModel(500, "Server Error");
         } catch (BadRequestException e) {
-            responseModel = new ResponseModel(400, "Bad Request");
+            responseModel = new ResponseModel(400, e.getMessage());
         } finally {
             request.setAttribute("data", responseModel);
         }

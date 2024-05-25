@@ -1,6 +1,5 @@
 package kosta.travelog.dao;
 
-import kosta.travelog.dto.NotificationUserDTO;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.repository.Query;
 import kosta.travelog.vo.NotificationVO;
@@ -50,30 +49,6 @@ public class NotificationDAOImpl implements NotificationDAO {
         } catch (SQLException e) {
             throw new DatabaseQueryException(e.getMessage());
         }
-    }
-
-    @Override
-    public Collection<NotificationUserDTO> pendingMemberList(int communityId, char notificationType) throws DatabaseQueryException {
-        String sql = Query.PENDING_MEMBER_LIST;
-        List<NotificationUserDTO> pendingMemberList = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, communityId);
-            ps.setString(2, String.valueOf(notificationType));
-
-            try (ResultSet rs = ps.executeQuery()) {
-                pendingMemberList.add(new NotificationUserDTO(rs.getString("nickname"),
-                        rs.getString("bio"),
-                        rs.getString("notification_type").charAt(0),
-                        rs.getInt("community_id")
-                ));
-            }
-            return pendingMemberList;
-			
-        } catch (SQLException e) {
-            throw new DatabaseQueryException(e.getMessage());
-        }
-
     }
 
     @Override

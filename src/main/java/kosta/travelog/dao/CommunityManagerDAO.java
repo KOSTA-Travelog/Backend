@@ -1,8 +1,6 @@
 package kosta.travelog.dao;
 
 import kosta.travelog.dto.CommunityDTO;
-import kosta.travelog.dto.CommunityPostDTO;
-import kosta.travelog.dto.CountMemberDTO;
 import kosta.travelog.dto.InviteMemberDTO;
 import kosta.travelog.exception.DatabaseQueryException;
 
@@ -14,9 +12,6 @@ public interface CommunityManagerDAO {
 
     /* 커뮤니티 목록 불러오기(AllCommunities)*/
     Collection<CommunityDTO> allCommunityList() throws DatabaseQueryException;
-
-    /* 커뮤니티별 멤버 수*/
-    CountMemberDTO getCountMemberByCommunityId(int communityId) throws DatabaseQueryException;
 
     /* 내가 만든 커뮤니티 목록*/
     Collection<CommunityDTO> userCreatedCommunityList(String userId) throws DatabaseQueryException;
@@ -30,9 +25,5 @@ public interface CommunityManagerDAO {
     /* (멤버변경)커뮤니티 멤버 목록 현재 멤버 community_member_status = 1*/
     Collection<InviteMemberDTO> currentMemberList(int communityId) throws DatabaseQueryException;
 
-    /* 커뮤니티 멤버 아닌 경우 커뮤니티 별 게시글 목록*/
-    Collection<CommunityPostDTO> communityPostListForGuest(int communityId) throws DatabaseQueryException;
 
-    /*커뮤니티 멤버인 경우 커뮤니티별 게시글 목록 */
-    Collection<CommunityPostDTO> communityPostListForMember(int communityId) throws DatabaseQueryException;
 }
