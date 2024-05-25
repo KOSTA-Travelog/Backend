@@ -67,7 +67,7 @@ public class ActionFactory {
                 break;
 
             case "/communities/create":
-                action = new AddCommunityACtion();
+                action = new AddCommunityAction();
                 break;
 
             case "/communities/edit":
@@ -130,7 +130,29 @@ public class ActionFactory {
                 action = new RemoveCommunityMember();
                 break;
 
+            case "/signUp":
+                action = new AddUserAction();
+                break;
 
+            case "/findAccount":
+                action = new FindAccountAction();
+                break;
+
+            case "/checkUser":
+                action = new CheckAccountAction();
+                break;
+
+            case "/editPassword":
+                action = new SetPasswordAction();
+                break;
+
+            case "/withdrawal":
+                action = new RemoveAccountAction();
+                break;
+                
+            case "/editUserInfo":
+                action = new SetUserAction();
+                break;
         }
 
         return action;

@@ -6,22 +6,23 @@ import kosta.travelog.vo.UserVO;
 import java.util.Collection;
 
 public interface UserDAO {
+
     Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException;
 
     UserVO login(UserVO user) throws DatabaseQueryException;
 
     UserVO getProfile(String userId) throws DatabaseQueryException;
 
-    UserVO addUser(UserVO user);
+    void addUser(UserVO user) throws DatabaseQueryException;
 
-    UserVO findUserEmail(UserVO user);
+    String findUserEmail(UserVO user) throws DatabaseQueryException;
 
-    UserVO checkUser(UserVO user);
+    String checkUser(UserVO user) throws DatabaseQueryException;
 
-    UserVO findPassword(UserVO user);
+    void setPassword(UserVO user) throws DatabaseQueryException;
 
-    UserVO removeUser(UserVO user);
+    void removeUser(String userId) throws DatabaseQueryException;
 
-    UserVO editUserInfo(UserVO user);
+    void setUserInfo(UserVO user) throws DatabaseQueryException;
 
 }

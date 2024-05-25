@@ -31,7 +31,7 @@ public class UserDAOImpl implements UserDAO {
                 // user_id, nickname, profile_image,user_status
                 if (rs.next()) {
                     return UserVO.builder().userId(rs.getString("USER_ID")).profileImage(rs.getString("PROFILE_IMAGE"))
-                            .nickname(rs.getString("NICKNAME")).userStatus(rs.getString("USER_STATUS")).build();
+                            .nickname(rs.getString("NICKNAME")).userStatus(rs.getString("USER_STATUS").charAt(0)).build();
                 }
             }
         } catch (SQLException e) {
@@ -46,11 +46,15 @@ public class UserDAOImpl implements UserDAO {
         String sql = Query.SEARCH_USER;
         Collection<UserVO> result = new ArrayList<UserVO>();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, nickname);
+            ps.setString(1, '%' + nickname + '%');
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    result.add(new UserVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                            rs.getString(5)));
+                    result.add(UserVO.builder()
+                            .userId(rs.getString("user_id"))
+                            .nickname(rs.getString("nickname"))
+                            .bio(rs.getString("bio"))
+                            .profileImage(rs.getString("profile_image"))
+                            .userStatus(rs.getString("user_status").charAt(0)).build());
                 }
             }
         } catch (SQLException e) {
@@ -68,9 +72,12 @@ public class UserDAOImpl implements UserDAO {
             ps.setString(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    result = new UserVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                            rs.getString(5));
-
+                    result = UserVO.builder()
+                            .userId(rs.getString("user_id"))
+                            .nickname(rs.getString("nickname"))
+                            .bio(rs.getString("bio"))
+                            .profileImage(rs.getString("profile_image"))
+                            .userStatus(rs.getString("user_status").charAt(0)).build();
                 }
             }
         } catch (SQLException e) {
@@ -79,33 +86,113 @@ public class UserDAOImpl implements UserDAO {
         return result;
     }
 
+    /**/
     @Override
-    public UserVO addUser(UserVO user) {
+    public void addUser(UserVO user) throws DatabaseQueryException {
+        String sql = Query.SIGN_UP;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getPhoneNumber());
+            ps.setString(5, user.getNickname());
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseQueryException(e.getMessage());
+        }
+    }
+
+
+    @Override
+    public String findUserEmail(UserVO user) throws DatabaseQueryException {
+        String sql = Query.FIND_EMAIL;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getPhoneNumber());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("email");
+                }
+
+            } catch (SQLException e) {
+                throw new DatabaseQueryException(e.getMessage());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
     @Override
-    public UserVO findUserEmail(UserVO user) {
+    public String checkUser(UserVO user) throws DatabaseQueryException {
+        String sql = Query.CHECK_USER;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPassword());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("user_id");
+                }
+
+            } catch (SQLException e) {
+                throw new DatabaseQueryException(e.getMessage());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
     @Override
-    public UserVO checkUser(UserVO user) {
-        return null;
+    public void setPassword(UserVO user) throws DatabaseQueryException {
+        String sql = Query.UPDATE_PASSWORD;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getPassword());
+            ps.setString(2, user.getUserId());
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseQueryException(e.getMessage());
+        }
     }
 
     @Override
-    public UserVO findPassword(UserVO user) {
-        return null;
+    public void removeUser(String userId) throws DatabaseQueryException {
+        String sql = Query.WITHDRAWAL;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, userId);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseQueryException(e.getMessage());
+        }
     }
 
     @Override
-    public UserVO removeUser(UserVO user) {
-        return null;
-    }
+    public void setUserInfo(UserVO user) throws DatabaseQueryException {
+        String sql = Query.UPDATE_USER_INFORMATION;
 
-    @Override
-    public UserVO editUserInfo(UserVO user) {
-        return null;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getNickname());
+            ps.setString(3, user.getProfileImage());
+            ps.setString(4, user.getPassword());
+            ps.setString(5, user.getPhoneNumber());
+            ps.setString(6, user.getBio());
+            ps.setString(7, user.getUserId());
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseQueryException(e.getMessage());
+        }
     }
 }

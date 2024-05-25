@@ -21,6 +21,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 
     @Override
     public void addPendingCommunityMember(NotificationVO vo) {
+        String sql = Query.INSERT_PENDING_COMMUNITY_MEMBER;
     }
 
     @Override

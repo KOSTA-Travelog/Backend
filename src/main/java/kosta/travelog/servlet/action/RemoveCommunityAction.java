@@ -16,10 +16,10 @@ public class RemoveCommunityAction implements Action {
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
 
         try {
-            boolean result = new CommunityService().deleteCommunity(Integer.parseInt(request.getParameter("communityId")));
-            if (result) {
-                request.setAttribute("result", new ResponseModel(200, "success"));
-            }
+            new CommunityService().deleteCommunity(Integer.parseInt(request.getParameter("communityId")));
+
+            request.setAttribute("result", new ResponseModel(200, "success"));
+
         } catch (DatabaseConnectException e) {
             request.setAttribute("data", new ResponseModel(500, "Server Error"));
         }

@@ -1,6 +1,7 @@
 package kosta.travelog.vo;
 
 
+import com.google.gson.JsonObject;
 import lombok.*;
 
 import java.io.Serializable;
@@ -26,15 +27,21 @@ public class UserVO implements Serializable {
     private String profileImage;
     private String nickname;
     private LocalDate registrationDate;
-    private String userStatus;
+    private char userStatus;
     private String bio;
 
-    public UserVO(String userId, String profileImage, String nickname, String userStatus, String bio) {
-        super();
-        this.userId = userId;
-        this.profileImage = profileImage;
-        this.nickname = nickname;
-        this.userStatus = userStatus;
-        this.bio = bio;
+    @Override
+    public String toString() {
+        JsonObject json = new JsonObject();
+        json.addProperty("userId", this.getUserId());
+        json.addProperty("name", this.getName());
+        json.addProperty("email", this.getEmail());
+        json.addProperty("phoneNumber", this.getPhoneNumber());
+        json.addProperty("profileImage", this.getProfileImage());
+        json.addProperty("nickname", this.getName());
+        json.addProperty("registrationDate", this.getRegistrationDate().toString());
+        json.addProperty("userStatus", this.getUserStatus());
+        json.addProperty("bio", this.getBio());
+        return json.toString();
     }
 }
