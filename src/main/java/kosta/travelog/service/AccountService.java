@@ -1,10 +1,10 @@
 package kosta.travelog.service;
 
-import kosta.travelog.dao.UserDAO;
 import kosta.travelog.dao.UserDAOImpl;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.UserVO;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -16,6 +16,7 @@ import java.util.Collection;
 /**
  * @author gyeoul
  */
+@Slf4j
 public class AccountService {
     private final DataSource dataSource;
 
@@ -47,31 +48,32 @@ public class AccountService {
         }
     }
 
-    public Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException{
-    	if(nickname == null){
-    		return null;
-    	}
-    	try {
-			return new UserDAOImpl(dataSource.getConnection()).searchUser(nickname);
-		} catch (SQLException e) {
-			throw new DatabaseQueryException("dataSource에서 connection을 받아오지 못했습니다.\n" +
-					String.format("%s %s", this.getClass(), e.getMessage())
-			);
-		}
-    	
+    public Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException {
+        if (nickname == null) {
+            return null;
+        }
+        try {
+            return new UserDAOImpl(dataSource.getConnection()).searchUser(nickname);
+        } catch (SQLException e) {
+            throw new DatabaseQueryException("dataSource에서 connection을 받아오지 못했습니다.\n" +
+                    String.format("%s %s", this.getClass(), e.getMessage())
+            );
+        }
+
     }
-    
-    public UserVO getProfile(String userId) throws DatabaseQueryException, DatabaseConnectException{
-    	if(userId == null){
-    		return null;
-    	}
-    	try {
-			return new UserDAOImpl(dataSource.getConnection()).getProfile(userId);
-		} catch (SQLException e) {
-			throw new DatabaseConnectException("dataSource에서 connection을 받아오지 못했습니다.\n" +
-					String.format("%s %S", this.getClass(), e.getMessage())
-			);
-		}
+
+    public UserVO getProfile(String userId) throws DatabaseQueryException, DatabaseConnectException {
+ 
+        if (userId == null) {
+            return null;
+        }
+        try {
+            return new UserDAOImpl(dataSource.getConnection()).getProfile(userId);
+        } catch (SQLException e) {
+            throw new DatabaseConnectException("dataSource에서 connection을 받아오지 못했습니다.\n" +
+                    String.format("%s %S", this.getClass(), e.getMessage())
+            );
+        }
     }
-    
+
 }

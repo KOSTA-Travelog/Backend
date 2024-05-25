@@ -78,4 +78,34 @@ public class UserDAOImpl implements UserDAO {
         }
         return result;
     }
+
+    @Override
+    public UserVO addUser(UserVO user) {
+        return null;
+    }
+
+    @Override
+    public UserVO findUserEmail(UserVO user) {
+        return null;
+    }
+
+    @Override
+    public UserVO checkUser(UserVO user) {
+        return null;
+    }
+
+    @Override
+    public UserVO findPassword(UserVO user) {
+        return null;
+    }
+
+    @Override
+    public UserVO removeUser(UserVO user) {
+        return null;
+    }
+
+    @Override
+    public UserVO editUserInfo(UserVO user) {
+        return null;
+    }
 }

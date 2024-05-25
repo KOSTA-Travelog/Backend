@@ -42,7 +42,7 @@ public class ActionFactory {
                 action = new SearchNicknameAction();
                 break;
 
-            case "/getProfile":
+            case "/profile":
                 action = new GetProfileAction();
                 break;
 
