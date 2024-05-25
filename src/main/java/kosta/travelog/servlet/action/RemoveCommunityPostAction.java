@@ -16,7 +16,7 @@ public class RemoveCommunityPostAction implements Action {
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
 
         try {
-            boolean result = new CommunityPostService().deleteCommunityPost(Integer.parseInt(request.getParameter("communityId")));
+            boolean result = new CommunityPostService().deleteCommunityPost(Integer.parseInt(request.getParameter("communityPostId")));
             if (result) {
                 request.setAttribute("result", new ResponseModel(200, "success"));
             }
