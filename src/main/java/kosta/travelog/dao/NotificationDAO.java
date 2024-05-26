@@ -10,7 +10,7 @@ public interface NotificationDAO {
     void addPendingCommunityMember(NotificationVO vo) throws DatabaseQueryException;
 
     /*커뮤니티 초대수락*/
-    void acceptCommunityInvite(String notificationId, String userId) throws DatabaseQueryException;
+    void acceptCommunityInvite(String notificationId) throws DatabaseQueryException;
 
     /*커뮤니티 초대거절*/
     void rejectCommunityInvite(String notificationId, String userId) throws DatabaseQueryException;

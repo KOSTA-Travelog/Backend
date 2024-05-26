@@ -50,7 +50,7 @@ public class CommunityUserDAOImpl implements CommunityUserDAO {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, communityMemberId);
 
-            int result = ps.executeUpdate();
+            ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
