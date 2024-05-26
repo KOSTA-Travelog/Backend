@@ -39,6 +39,7 @@ public class PostService {
         Connection conn = null;
         try {
             conn = dataSource.getConnection();
+            conn.setAutoCommit(false);
 
             List<PostVO> postData = (ArrayList<PostVO>) new PostDAOImpl(conn).getPostList();
 
@@ -59,12 +60,16 @@ public class PostService {
                         .build());
 
             }
+            conn.commit();
 
-            log.info(PostUser.toString());
-            return PostUser;
         } catch (DatabaseQueryException e) {
+            log.error(e.getMessage());
+            conn.rollback();
             throw new RuntimeException(e);
+        } finally {
+            conn.close();
         }
+        return PostUser;
     }
 
 
