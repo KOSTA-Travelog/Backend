@@ -2,7 +2,7 @@ package kosta.travelog.repository;
 
 public interface Query {
     String LOGIN = "SELECT user_id, nickname, profile_image,user_status FROM users WHERE email = ? AND password = ?";
-    String SEARCH_USER = "SELECT user_id,nickname, bio, profile_image, user_status FROM users WHERE nickname LIKE ?";
+    String SEARCH_USER = "SELECT user_id,nickname, bio, profile_image, user_status FROM users WHERE user_status = '1' AND nickname LIKE ?";
     String GET_PROFILE = "SELECT user_id, nickname, bio, profile_image, user_status FROM users WHERE user_id = ?";
 
     String UPDATE_USER_INFORMATION = "UPDATE users SET name=?, nickname=?, profile_image=?, password=?, phone_number=?, bio=? WHERE user_id = ?";
@@ -63,9 +63,8 @@ public interface Query {
     String NOTIFICATION_LIST = "select notification_id, notification_type, notification_read, user_id, user_id2, notification_date, community_id, follow_id, like_id, comment_id, comment_reply_id, community_member_id from notifications where user_id2 = ?";
 
     /*CommunityPostDAO */
-    String COMMUNITY_POST_LIST_FOR_GUEST = "select a.post_id, a.post_date, a.post_status, b.community_post_id, b.community_id, image_id, images from posts a inner join communities_posts b on a.post_id = b.post_id inner join post_images c on a.post_id = b.post_id where a.post_status = 1 and b.community_id = ? order by a.post_date desc";
-    String COMMUNITY_POST_LIST_FOR_MEMBER = "select a.post_id, a.post_date, a.post_status, b.community_post_id, b.community_id, image_id, images from posts a inner join communities_posts b on a.post_id = b.post_id inner join post_images c on a.post_id = b.post_id where (a.post_status = 1 or a.post_status =2) and b.community_id = ? order by a.post_date desc";
-
+    String COMMUNITY_POST_LIST_FOR_GUEST = "select post_id, post_date, post_status, community_post_id, community_id, image_id, images from (select a.post_id, a.post_date, a.post_status, b.community_post_id, b.community_id, image_id, images, row_number() over (partition by a.post_id ORDER BY image_id) as rn from posts a inner join communities_posts b on a.post_id = b.post_id inner join post_images c on a.post_id = b.post_id where a.post_status = 1 and b.community_id = ? order by a.post_date desc) subquery where rn = 1";
+    String COMMUNITY_POST_LIST_FOR_MEMBER = "select post_id, post_date, post_status, community_post_id, community_id, image_id, images from (select a.post_id, a.post_date, a.post_status, b.community_post_id, b.community_id, image_id, images, row_number() over (partition by a.post_id ORDER BY image_id) as rn from posts a inner join communities_posts b on a.post_id = b.post_id inner join post_images c on a.post_id = b.post_id where (a.post_status = 1 or a.post_status = 2) and b.community_id = ? order by a.post_date desc) subquery where rn = 1";
     String INSERT_COMMUNITY_POST = "INSERT INTO Communities_posts (community_post_id, community_id, post_id) VALUES (community_id.nextval, ?, ?)";
     String DELETE_COMMUNITY_POST = "DELETE FROM Communities_posts WHERE community_post_id=?";
 
