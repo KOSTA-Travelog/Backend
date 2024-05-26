@@ -1,6 +1,7 @@
 package kosta.travelog.service;
 
 import kosta.travelog.dao.UserDAOImpl;
+import kosta.travelog.dto.LoginDTO;
 import kosta.travelog.dto.UserProfileDTO;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
@@ -31,12 +32,16 @@ public class AccountService {
     }
 
 
-    public UserVO login(UserVO user) throws DatabaseConnectException, DatabaseQueryException {
+    public LoginDTO login(UserVO user) throws DatabaseConnectException, DatabaseQueryException {
         if (user == null) {
             return null;
         }
         try {
-            return new UserDAOImpl(dataSource.getConnection()).login(user);
+            UserVO vo = new UserDAOImpl(dataSource.getConnection()).login(user);
+            return LoginDTO.builder().userId(vo.getUserId())
+                    .profileImage(vo.getProfileImage())
+                    .nickname(vo.getNickname())
+                    .userStatus(vo.getUserStatus()).build();
         } catch (SQLException e) {
             throw new DatabaseConnectException("dataSource에서 connection을 받아오지 못했습니다.\n" +
                     String.format("%s %s", this.getClass(), e.getMessage())

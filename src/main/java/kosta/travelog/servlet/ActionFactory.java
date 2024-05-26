@@ -122,7 +122,7 @@ public class ActionFactory {
                 action = new AddPendingMember();
                 break;
 
-            case "/communities/member/edit":
+            case "/communities/member/add":
                 action = new AddMemberToCommunity();
                 break;
 
@@ -149,7 +149,7 @@ public class ActionFactory {
             case "/withdrawal":
                 action = new RemoveAccountAction();
                 break;
-                
+
             case "/editUserInfo":
                 action = new SetUserAction();
                 break;

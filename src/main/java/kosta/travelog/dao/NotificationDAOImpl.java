@@ -20,19 +20,30 @@ public class NotificationDAOImpl implements NotificationDAO {
     }
 
     @Override
-    public void addPendingCommunityMember(NotificationVO vo) {
+    public void addPendingCommunityMember(NotificationVO vo) throws DatabaseQueryException {
         String sql = Query.INSERT_PENDING_COMMUNITY_MEMBER;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, vo.getUserId());
+            ps.setString(2, vo.getUserId2());
+            ps.setString(3, String.valueOf(vo.getCommunityId()));
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DatabaseQueryException(e.getMessage());
+        }
     }
 
     @Override
-    public void acceptCommunityInvite(String notificationId, String userId) throws DatabaseQueryException {
+    public void acceptCommunityInvite(String notificationId) throws DatabaseQueryException {
         String sql = Query.ACCEPT_COMMUNITY_INVITE;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, notificationId);
-            ps.setNString(2, userId);
+            
+            ps.executeUpdate();
 
-            int result = ps.executeUpdate();
         } catch (SQLException e) {
             throw new DatabaseQueryException(e.getMessage());
         }
