@@ -122,6 +122,10 @@ public class ActionFactory {
                 action = new AddPendingMember();
                 break;
 
+            case "/communities/member/set":
+                action = new SetPendingMemberToCommunity();
+                break;
+
             case "/communities/member/add":
                 action = new AddMemberToCommunity();
                 break;
@@ -153,6 +157,7 @@ public class ActionFactory {
             case "/editUserInfo":
                 action = new SetUserAction();
                 break;
+
         }
 
         return action;

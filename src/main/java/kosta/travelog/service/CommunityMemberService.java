@@ -70,8 +70,7 @@ public class CommunityMemberService {
         }
         return true;
     }
-
-    /**/
+    
     public boolean editPendingMemberToMember(int communityMemberId, String notificationId) throws SQLException {
         Connection conn = null;
         try {
