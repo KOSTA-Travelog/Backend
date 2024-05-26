@@ -34,7 +34,7 @@ public class LoginAction implements Action {
             log.info("member: {}", member);
             if (member != null) {
                 request.getSession().setAttribute("user", member);
-//                request.getSession().setAttribute("userId", member.getUserId());
+                request.getSession().setAttribute("userId", member.getUserId());
 
                 request.setAttribute("data", new ResponseModel(200, "success"));
             } else {

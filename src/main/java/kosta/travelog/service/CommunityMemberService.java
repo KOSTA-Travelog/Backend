@@ -1,8 +1,11 @@
 package kosta.travelog.service;
 
 import kosta.travelog.dao.CommunityUserDAOImpl;
+import kosta.travelog.dao.NotificationDAOImpl;
 import kosta.travelog.exception.DatabaseConnectException;
+import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.CommunityUserVO;
+import kosta.travelog.vo.NotificationVO;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.naming.Context;
@@ -28,12 +31,19 @@ public class CommunityMemberService {
         }
     }
 
-    public boolean addUserToPendingList(CommunityUserVO vo) {
-        log.info("service");
-        try (Connection conn = dataSource.getConnection()) {
-            new CommunityUserDAOImpl(conn).addPendingMember(vo);
-        } catch (SQLException e) {
+    public boolean addUserToPendingList(CommunityUserVO user, NotificationVO notification) throws SQLException {
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+            conn.setAutoCommit(false);
+
+            new CommunityUserDAOImpl(conn).addPendingMember(user);
+            new NotificationDAOImpl(conn).addPendingCommunityMember(notification);
+
+            conn.commit();
+        } catch (SQLException | DatabaseQueryException e) {
             log.error(e.getMessage());
+            conn.rollback();
             return false;
         }
         return true;
