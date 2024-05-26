@@ -50,6 +50,7 @@ public class UserDAOImpl implements UserDAO {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, '%' + nickname + '%');
             try (ResultSet rs = ps.executeQuery()) {
+//                user_id, nickname, bio, profile_image, user_status
                 while (rs.next()) {
                     result.add(UserVO.builder()
                             .userId(rs.getString("user_id"))

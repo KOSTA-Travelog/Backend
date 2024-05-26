@@ -2,7 +2,7 @@ package kosta.travelog.repository;
 
 public interface Query {
     String LOGIN = "SELECT user_id, nickname, profile_image,user_status FROM users WHERE email = ? AND password = ?";
-    String SEARCH_USER = "SELECT user_id,nickname, bio, profile_image, user_status FROM users WHERE user_status = '1' AND nickname LIKE ?";
+    String SEARCH_USER = "SELECT user_id, nickname, bio, profile_image, user_status FROM users WHERE user_status = '1' AND nickname LIKE ?";
     String GET_PROFILE = "SELECT user_id, nickname, bio, profile_image, user_status FROM users WHERE user_id = ?";
 
     String UPDATE_USER_INFORMATION = "UPDATE users SET name=?, nickname=?, profile_image=?, password=?, phone_number=?, bio=? WHERE user_id = ?";
