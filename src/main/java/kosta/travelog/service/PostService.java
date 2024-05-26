@@ -1,10 +1,13 @@
 package kosta.travelog.service;
 
-import kosta.travelog.dao.PostDAO;
 import kosta.travelog.dao.PostDAOImpl;
+import kosta.travelog.dao.UserDAOImpl;
 import kosta.travelog.dto.PostImageDTO;
+import kosta.travelog.dto.PostUserDTO;
 import kosta.travelog.exception.DatabaseConnectException;
+import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.PostVO;
+import kosta.travelog.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.naming.Context;
@@ -31,13 +34,36 @@ public class PostService {
         }
     }
 
-    public List<PostVO> postList() throws SQLException {
-        List<PostVO> data;
-        try (Connection conn = dataSource.getConnection()) {
-            PostDAO dao = new PostDAOImpl(conn);
-            data = (List<PostVO>) dao.getPostList();
-            log.info(data.toString());
-            return data;
+    public List<PostUserDTO> postList() throws SQLException {
+        List<PostUserDTO> PostUser = new ArrayList<>();
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+
+            List<PostVO> postData = (ArrayList<PostVO>) new PostDAOImpl(conn).getPostList();
+
+            for (PostVO post : postData) {
+                UserVO user = new UserDAOImpl(conn).getProfile(post.getUserId());
+
+                PostUser.add(PostUserDTO.builder()
+                        .postId(post.getPostId())
+                        .postTitle(post.getPostTitle())
+                        .postDescription(post.getPostDescription())
+                        .postHashtag(post.getPostHashtag())
+                        .postDate(post.getPostDate())
+                        .postStatus(post.getPostStatus())
+                        .userId(post.getUserId())
+                        .profileImage(user.getProfileImage())
+                        .nickname(user.getNickname())
+                        .imageId(post.getImageId())
+                        .build());
+
+            }
+
+            log.info(PostUser.toString());
+            return PostUser;
+        } catch (DatabaseQueryException e) {
+            throw new RuntimeException(e);
         }
     }
 

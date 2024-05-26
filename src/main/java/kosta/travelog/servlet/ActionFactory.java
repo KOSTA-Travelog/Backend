@@ -106,7 +106,7 @@ public class ActionFactory {
                 action = new GetCommunityPostListForGuest();
                 break;
 
-            case "/communityPosts/member":
+            case "/communityPosts/memberPage":
                 action = new GetCommunityPostListForMember();
                 break;
 
