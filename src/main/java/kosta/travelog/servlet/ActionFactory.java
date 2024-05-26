@@ -106,7 +106,7 @@ public class ActionFactory {
                 action = new GetCommunityPostListForGuest();
                 break;
 
-            case "/communityPosts/member":
+            case "/communityPosts/memberPage":
                 action = new GetCommunityPostListForMember();
                 break;
 
@@ -120,6 +120,10 @@ public class ActionFactory {
 
             case "/communities/member/add/pending":
                 action = new AddPendingMember();
+                break;
+
+            case "/communities/member/set":
+                action = new SetPendingMemberToCommunity();
                 break;
 
             case "/communities/member/add":
@@ -153,6 +157,7 @@ public class ActionFactory {
             case "/editUserInfo":
                 action = new SetUserAction();
                 break;
+
         }
 
         return action;

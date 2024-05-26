@@ -20,7 +20,7 @@ public class GetCommunityPostListForGuest implements Action {
         ResponseModel responseModel = null;
         JsonObject json = new JsonObject();
 
-        json.addProperty("data", new CommunityPostService().getCommunityPostListForGuest(Integer.parseInt(request.getParameter("communityId"))).toString());
+        json.addProperty("data", new CommunityPostService().getCommunityPostListForGuest(Integer.parseInt(request.getParameter("id"))).toString());
         responseModel = new ResponseModel(200, json, "success");
 
         request.setAttribute("data", responseModel);

@@ -23,7 +23,6 @@ public class GetJoinedCommunityAction implements Action {
 
         JsonObject json = new JsonObject();
 
-        log.info(new CommunityService().getJoinedCommunityList(request.getParameter("userId")).toString());
         json.addProperty("data", new CommunityService().getJoinedCommunityList(request.getParameter("userId")).toString());
         responseModel = new ResponseModel(200, json, "success");
 
