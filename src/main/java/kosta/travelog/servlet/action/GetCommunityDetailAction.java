@@ -23,7 +23,7 @@ public class GetCommunityDetailAction implements Action {
         try {
             JsonObject json = new JsonObject();
 
-            CommunityDTO dto = new CommunityService().Community(Integer.parseInt(request.getParameter("communityId")));
+            CommunityDTO dto = new CommunityService().community(Integer.parseInt(request.getParameter("communityId")));
             if (dto == null) {
                 throw new BadRequestException("cannot find community");
             }

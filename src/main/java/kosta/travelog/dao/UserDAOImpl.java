@@ -46,11 +46,11 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException {
         String sql = Query.SEARCH_USER;
-        Collection<UserVO> result = new ArrayList<UserVO>();
+        Collection<UserVO> result = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, '%' + nickname + '%');
             try (ResultSet rs = ps.executeQuery()) {
-//                user_id, nickname, bio, profile_image, user_status
+                //                user_id, nickname, bio, profile_image, user_status
                 while (rs.next()) {
                     result.add(UserVO.builder()
                             .userId(rs.getString("user_id"))
@@ -93,6 +93,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void addUser(UserVO user) throws DatabaseQueryException {
         String sql = Query.SIGN_UP;
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, user.getName());
@@ -104,7 +105,7 @@ public class UserDAOImpl implements UserDAO {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DatabaseQueryException(e.getMessage());
+            throw new DatabaseQueryException("회원가입 쿼리 실행에 실패했습니다.\n" + e.getMessage());
         }
     }
 
@@ -114,18 +115,17 @@ public class UserDAOImpl implements UserDAO {
         String sql = Query.FIND_EMAIL;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, user.getName());
             ps.setString(2, user.getPhoneNumber());
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString("email");
                 }
-
-            } catch (SQLException e) {
-                throw new DatabaseQueryException(e.getMessage());
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseQueryException(e.getMessage());
         }
         return null;
     }
@@ -133,19 +133,19 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public String checkUser(UserVO user) throws DatabaseQueryException {
         String sql = Query.CHECK_USER;
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString("user_id");
                 }
-
-            } catch (SQLException e) {
-                throw new DatabaseQueryException(e.getMessage());
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseQueryException(e.getMessage());
         }
         return null;
     }
@@ -155,6 +155,7 @@ public class UserDAOImpl implements UserDAO {
         String sql = Query.UPDATE_PASSWORD;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, user.getPassword());
             ps.setString(2, user.getUserId());
 
@@ -184,6 +185,7 @@ public class UserDAOImpl implements UserDAO {
         String sql = Query.UPDATE_USER_INFORMATION;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, user.getName());
             ps.setString(2, user.getNickname());
             ps.setString(3, user.getProfileImage());
