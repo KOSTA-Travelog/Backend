@@ -1,6 +1,5 @@
 package kosta.travelog.vo;
 
-import com.google.gson.JsonObject;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -21,6 +20,4 @@ public class CommunityVO {
     private String communityImage;
     private char communityStatus;
     private String userId;
-    private int memberCount;
-
 }
