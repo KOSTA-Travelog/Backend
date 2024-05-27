@@ -52,13 +52,23 @@ public class CommunityService extends CommonService {
 
     public boolean createCommunity(CommunityVO community) {
         try (Connection conn = dataSource.getConnection()) {
+            String title = community.getCommunityTitle();
+
+            if (title == null) {
+                throw new BadRequestException("Required inputs are missing.");
+            }
+
             new CommunityDAOImpl(conn).addCommunity(community);
             //            new CommunityUserDAOImpl(conn).addCommunityCreatorToMember(communityUser);
+
 
         } catch (SQLException e) {
             log.error(e.getMessage());
             return false;
         } catch (DatabaseQueryException e) {
+            log.error(e.getMessage());
+            return false;
+        } catch (BadRequestException e) {
             log.error(e.getMessage());
             return false;
         }
