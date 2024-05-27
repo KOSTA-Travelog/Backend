@@ -61,6 +61,26 @@ public class ActionFactory {
             case "/posts/user/count":
                 action = new CountUserPostAction();
                 break;
+                
+            case "/comments/create":
+            	action = new AddCommentAction();
+            	break;
+            	
+            case "/comments/edit":
+            	action = new EditCommentAction();
+            	break;
+            	
+            case "/comments/delete":
+            	action = new DeleteCommentAction();
+            	break;
+            	
+            case "/comments/commentList":
+            	action = new CommentListAction();
+            	break;
+            	
+            case "/comments/countComment":
+            	action = new CountCommentAction();
+            	break;
 
             case "/communities/detail":
                 action = new GetCommunityDetailAction();
