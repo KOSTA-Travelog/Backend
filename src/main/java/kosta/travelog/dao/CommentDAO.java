@@ -4,6 +4,7 @@ import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.CommentVO;
 
 import java.sql.SQLException;
+import java.util.Collection;
 
 public interface CommentDAO {
 
@@ -13,7 +14,7 @@ public interface CommentDAO {
 
     void deleteComment(int commentId) throws DatabaseQueryException;
 
-    CommentVO getCommentListByPostId(int postId) throws SQLException, DatabaseQueryException;
+    Collection<CommentVO> getCommentListByPostId(int postId) throws SQLException, DatabaseQueryException;
 
     int countCommentByPostId(int postId) throws SQLException, DatabaseQueryException;
 

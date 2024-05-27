@@ -30,7 +30,7 @@ public interface Query {
     String GET_COMMENT = "SELECT comment_id, post_comment, comment_date, comment_status, post_id FROM Comments WHERE comment_status=1 and post_id = ?";
     String COUNT_COMMENT = "SELECT COUNT(comment_id) FROM Comments WHERE post_id = ?";
     String ADD_COMMENT = "INSERT INTO comments (comment_id, post_comment, comment_date, comment_status, post_id, user_id) VALUES (comment_id.nextval, ?, sysdate, ?, ?, ?)";
-    String INSERT_COMMENT = "UPDATE comments SET post_comment = ?,comment_date=sysdate, comment_status = ? WHERE comment_id = ?";
+    String UPDATE_COMMENT = "UPDATE comments SET post_comment = ?,comment_date=sysdate, comment_status = ? WHERE comment_id = ?";
     String DELETE_COMMENT = "UPDATE comments SET comment_status=0 WHERE comment_id = ?";
 
     /* Communities*/

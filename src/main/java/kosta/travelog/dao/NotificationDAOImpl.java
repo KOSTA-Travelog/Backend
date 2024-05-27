@@ -85,7 +85,8 @@ public class NotificationDAOImpl implements NotificationDAO {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
-                notificationList.add(new NotificationVO(rs.getString("notification_id"),
+            	while(rs.next()){
+            		notificationList.add(new NotificationVO(rs.getString("notification_id"),
                         rs.getString("notification_type").charAt(0),
                         rs.getString("notification_read").charAt(0),
                         rs.getString("user_id"),
@@ -97,7 +98,8 @@ public class NotificationDAOImpl implements NotificationDAO {
                         rs.getInt("comment_id"),
                         rs.getInt("comment_reply_id"),
                         rs.getInt("community_member_id")
-                ));
+            				));
+            	}
             }
             return notificationList;
 
