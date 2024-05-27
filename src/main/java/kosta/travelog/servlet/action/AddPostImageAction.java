@@ -2,12 +2,12 @@ package kosta.travelog.servlet.action;
 
 import com.google.gson.JsonObject;
 import com.oreilly.servlet.MultipartRequest;
-import kosta.travelog.dto.PostImageDTO;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
+import kosta.travelog.vo.PostImageVO;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
@@ -42,8 +42,8 @@ public class AddPostImageAction implements Action {
         String newFileName = now + ext;
 
         try {
-            PostImageDTO dto = new PostImageDTO();
-            boolean result = new PostService().createImage(dto.builder().
+            PostImageVO vo = new PostImageVO();
+            boolean result = new PostService().createImage(vo.builder().
                     postId(Integer.parseInt(request.getParameter("postId")))
                     .images(fileName).build());
 
