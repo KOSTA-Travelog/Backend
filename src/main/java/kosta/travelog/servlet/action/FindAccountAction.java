@@ -18,7 +18,7 @@ import java.io.IOException;
 @Slf4j
 public class FindAccountAction implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         ResponseModel responseModel = null;
 
         String name = request.getParameter("name");
@@ -40,12 +40,15 @@ public class FindAccountAction implements Action {
             json.addProperty("data", email);
             responseModel = new ResponseModel(200, json, "success");
 
-        } catch (BadRequestException e) {
-            responseModel = new ResponseModel(400, e.getMessage());
-
         } catch (DatabaseConnectException e) {
+            log.error(e.getMessage());
             responseModel = new ResponseModel(500, "Server Error");
-
+        } catch (DatabaseQueryException e) {
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(500, "데이터를 불러오지 못했습니다.");
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(400, e.getMessage());
         } finally {
             request.setAttribute("data", responseModel);
         }

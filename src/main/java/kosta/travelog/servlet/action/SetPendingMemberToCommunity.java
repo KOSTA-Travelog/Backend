@@ -1,7 +1,6 @@
 package kosta.travelog.servlet.action;
 
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.CommunityMemberService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -16,7 +15,7 @@ import java.sql.SQLException;
 @Slf4j
 public class SetPendingMemberToCommunity implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
 
         int communityMemberId = Integer.parseInt(request.getParameter("communityMemberId"));
         String notificationId = request.getParameter("notificationId");
