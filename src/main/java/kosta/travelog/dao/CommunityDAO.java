@@ -1,12 +1,11 @@
 package kosta.travelog.dao;
 
-import kosta.travelog.dto.CommunityDTO;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.CommunityVO;
 
 public interface CommunityDAO {
     /*communityId로 커뮤니티 정보 불러오기*/
-    CommunityDTO getCommunity(int communityId) throws DatabaseQueryException;
+    CommunityVO getCommunity(int communityId) throws DatabaseQueryException;
 
     /*커뮤니티 등록*/
     void addCommunity(CommunityVO vo) throws DatabaseQueryException;

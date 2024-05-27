@@ -34,7 +34,8 @@ public interface Query {
     String DELETE_COMMENT = "UPDATE comments SET comment_status=0 WHERE comment_id = ?";
 
     /* Communities*/
-    String COMMUNITY = "SELECT c.community_id , c.community_title , c.community_description , c.community_hashtag , c.community_date , c.community_image, c.community_status, v.member_count FROM communities c JOIN community_member_count_view v ON v.community_id = c.community_id WHERE c.community_id = ? AND c.community_status = 1";
+    String COMMUNITY = "SELECT community_id,community_title,community_description,community_hashtag,community_date,community_image,community_status FROM communities WHERE community_id = ? AND community_status = 1";
+    String COMMUNITY_MEMBER_COUNT = "SELECT member_count FROM community_member_count_view WHERE community_id = ?;";
     String INSERT_COMMUNITY = "INSERT INTO Communities (community_id, community_title, community_description, community_hashtag, community_date, community_image, community_status, user_id) VALUES (community_id.nextval, ?, ?, ?, SYSDATE, ?, ?, ?)";
 
     String UPDATE_COMMUNITY = "UPDATE Communities SET community_title = ?,community_description = ?,community_hashtag = ?,community_date = sysdate,community_image = ?,community_status = ? WHERE community_id = ?";

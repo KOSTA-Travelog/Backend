@@ -20,6 +20,4 @@ public class CommunityVO {
     private String communityImage;
     private char communityStatus;
     private String userId;
-    private int memberCount;
-
 }
