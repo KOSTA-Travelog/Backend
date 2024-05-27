@@ -2,7 +2,6 @@ package kosta.travelog.servlet.action;
 
 import com.google.gson.JsonObject;
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -25,9 +24,6 @@ public class CountUserPostAction implements Action {
         } catch (DatabaseConnectException e) {
             log.error(e.getMessage());
             responseModel = new ResponseModel(500, "Server Error");
-        } catch (DatabaseQueryException e) {
-            log.error(e.getMessage());
-            responseModel = new ResponseModel(500, "데이터를 불러오지 못했습니다.");
         } finally {
             request.setAttribute("data", responseModel);
         }
