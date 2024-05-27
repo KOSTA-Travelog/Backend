@@ -29,7 +29,7 @@ public class PostService {
             dataSource = (DataSource) context.lookup("java:comp/env/jdbc/sun");
         } catch (NamingException e) {
             throw new DatabaseConnectException("dataSource를 받아오지 못했습니다.\n" +
-                    String.format("%s %s", this.getClass(), e.getMessage())
+                    String.format("%s %s" , this.getClass(), e.getMessage())
             );
         }
     }
@@ -85,7 +85,8 @@ public class PostService {
         return true;
     }
 
-    public boolean createImage(PostVO post) {
+    public boolean createImage(PostImageDTO post) {
+
         try (Connection conn = dataSource.getConnection()) {
             new PostDAOImpl(conn).addImage(post);
 

@@ -1,5 +1,6 @@
 package kosta.travelog.dao;
 
+import kosta.travelog.dto.PostImageDTO;
 import kosta.travelog.repository.Query;
 import kosta.travelog.vo.PostVO;
 import lombok.extern.slf4j.Slf4j;
@@ -51,13 +52,13 @@ public class PostDAOImpl implements PostDAO {
     }
 
     @Override
-    public void addImage(PostVO post) {
+    public void addImage(PostImageDTO image) {
         String sql = Query.INSERT_POST_IMAGE;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, post.getPostTitle());
-            pstmt.setInt(2, post.getPostId());
+            pstmt.setString(1, image.getImages());
+            pstmt.setInt(2, image.getPostId());
 
             int result = pstmt.executeUpdate();
 

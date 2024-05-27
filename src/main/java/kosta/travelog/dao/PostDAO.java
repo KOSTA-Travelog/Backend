@@ -1,5 +1,6 @@
 package kosta.travelog.dao;
 
+import kosta.travelog.dto.PostImageDTO;
 import kosta.travelog.vo.PostVO;
 
 import java.sql.SQLException;
@@ -10,7 +11,7 @@ public interface PostDAO {
     Collection<PostVO> getPostList() throws SQLException;
 
     /*   사진 삽입*/
-    void addImage(PostVO vo);
+    void addImage(PostImageDTO dto);
 
     /*   게시글 작성*/
     void addPost(PostVO vo);
