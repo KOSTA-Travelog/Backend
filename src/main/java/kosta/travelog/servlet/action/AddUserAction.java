@@ -12,42 +12,37 @@ import kosta.travelog.vo.UserVO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class AddUserAction implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
+        ResponseModel data;
         try {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            String phoneNumber = request.getParameter("phoneNumber");
-            String nickname = request.getParameter("nickname");
-
-            if (name == null || email == null || password == null || phoneNumber == null || nickname == null) {
-                throw new BadRequestException("Required inputs are missing.");
-            }
-
-            boolean result = new AccountService().register(UserVO.builder()
-                    .name(name)
-                    .email(email)
-                    .password(password)
-                    .phoneNumber(phoneNumber)
-                    .nickname(nickname).build());
+            String passwordCheck = request.getParameter("passwordCheck");
+            boolean result = new AccountService()
+                    .register(UserVO.builder()
+                                    .name(request.getParameter("name"))
+                                    .email(request.getParameter("email"))
+                                    .password(request.getParameter("password"))
+                                    .phoneNumber(request.getParameter("phoneNumber"))
+                                    .nickname(request.getParameter("nickname")).build(),
+                            passwordCheck
+                    );
 
             if (result) {
-                request.setAttribute("data", new ResponseModel(201, "created"));
+                data = new ResponseModel(201, "created");
             } else {
-                throw new BadRequestException("Failed to create community.");
+                data = new ResponseModel(500, "회원가입에 실패했습니다.");
             }
 
         } catch (BadRequestException e) {
-            request.setAttribute("data", new ResponseModel(400, e.getMessage()));
+            data = new ResponseModel(400, e.getMessage());
         } catch (DatabaseConnectException e) {
-            request.setAttribute("data", new ResponseModel(500, "Server Error"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            data = new ResponseModel(500, "Server Error");
+        } catch (DatabaseQueryException e) {
+            data = new ResponseModel(500, "Server Error");
         }
+        request.setAttribute("data", data);
 
         return new URLModel();
     }
