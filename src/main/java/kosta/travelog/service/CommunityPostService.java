@@ -84,6 +84,5 @@ public class CommunityPostService {
         }
         return dto;
     }
-
-
+    
 }

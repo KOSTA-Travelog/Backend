@@ -163,5 +163,16 @@ public class CommunityService {
         return dto;
     }
 
+    public boolean isCommunityMember(int communityId, String userId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String nickname = new CommunityManagerDAOImpl(conn).getCommunityUserNickname(communityId, userId);
+            if (nickname != null) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 
 }

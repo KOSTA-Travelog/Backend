@@ -1,6 +1,5 @@
 package kosta.travelog.vo;
 
-import com.google.gson.JsonObject;
 import lombok.*;
 
 import java.time.LocalDate;

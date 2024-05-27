@@ -30,7 +30,7 @@ public interface Query {
     String GET_COMMENT = "SELECT comment_id, post_comment, comment_date, comment_status, post_id FROM Comments WHERE comment_status=1 and post_id = ?";
     String COUNT_COMMENT = "SELECT COUNT(comment_id) FROM Comments WHERE post_id = ?";
     String ADD_COMMENT = "INSERT INTO comments (comment_id, post_comment, comment_date, comment_status, post_id, user_id) VALUES (comment_id.nextval, ?, sysdate, ?, ?, ?)";
-    String INSERT_COMMENT = "UPDATE comments SET post_comment = ?,comment_date=sysdate, comment_status = ? WHERE comment_id = ?";
+    String INSERT_COMMENT = "UPDATE comments SET post_comment = ?, comment_date=sysdate, comment_status = ? WHERE comment_id = ?";
     String DELETE_COMMENT = "UPDATE comments SET comment_status=0 WHERE comment_id = ?";
 
     /* Communities*/
@@ -45,6 +45,7 @@ public interface Query {
     String UPDATE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 1 WHERE community_member_id = ?";
     String DELETE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 0 WHERE community_member_id = ?";
     String INSERT_CREATOR_TO_COMMUNITY_USERS = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, ?, ?, 1)";
+    String CHECK_COMMUNITY_USER = "select u.nickname from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 1 and c.user_id = ?";
 
     /* CommunityManagerDAO */
     String MY_COMMUNITY_LIST = "SELECT c.community_id, c.community_title,c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, m.countMember FROM communities c INNER JOIN (SELECT community_id, user_id, count(community_member_id) as countMember FROM communities_users WHERE community_member_status = 1 GROUP BY community_id, user_id) m on c.community_id = m.community_id where m.user_id = ? and c.community_status = 1 order by m.countMember desc";

@@ -176,5 +176,23 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
 
     }
 
+    @Override
+    public String getCommunityUserNickname(int communityId, String userId) {
+        String sql = Query.CHECK_COMMUNITY_USER;
+        String nickname = null;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, communityId);
+            ps.setString(2, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    nickname = rs.getString(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return nickname;
+    }
+
 
 }
