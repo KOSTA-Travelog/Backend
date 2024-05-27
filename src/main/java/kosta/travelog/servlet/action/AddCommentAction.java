@@ -31,9 +31,7 @@ public class AddCommentAction implements Action {
 		} catch (DatabaseConnectException e){
 			throw new RuntimeException(e);
 		}
-		return null;
-		
-	
+		return new URLModel();
 	}
 
 }
