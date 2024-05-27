@@ -2,7 +2,6 @@ package kosta.travelog.servlet.action;
 
 import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.CommunityService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -18,7 +17,7 @@ import java.io.IOException;
 public class AddCommunityAction implements Action {
 
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         try {
             String communityTitle = request.getParameter("communityTitle");
             String communityDescription = request.getParameter("communityDescription");

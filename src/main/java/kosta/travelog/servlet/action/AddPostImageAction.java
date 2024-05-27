@@ -3,6 +3,7 @@ package kosta.travelog.servlet.action;
 import com.google.gson.JsonObject;
 import com.oreilly.servlet.MultipartRequest;
 import kosta.travelog.exception.DatabaseConnectException;
+import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -41,6 +42,7 @@ public class AddPostImageAction implements Action {
         String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
         String newFileName = now + ext;
 
+        ResponseModel responseModel = null;
         try {
             PostImageVO vo = new PostImageVO();
             boolean result = new PostService().createImage(vo.builder().
@@ -49,10 +51,13 @@ public class AddPostImageAction implements Action {
 
             JsonObject json = new JsonObject();
             json.addProperty("data", result);
-            request.setAttribute("data", new ResponseModel(201, json, "created"));
+            responseModel = new ResponseModel(201, json, "created");
 
         } catch (DatabaseConnectException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(500, "Server Error");
+        } finally {
+            request.setAttribute("data", responseModel);
         }
 
         return new URLModel();

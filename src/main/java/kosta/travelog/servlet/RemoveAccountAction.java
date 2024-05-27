@@ -11,7 +11,8 @@ import java.io.IOException;
 
 public class RemoveAccountAction implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
+        ResponseModel responseModel = null;
         try {
             String userId = request.getParameter("userId");
             if (userId == null) {
@@ -20,13 +21,16 @@ public class RemoveAccountAction implements Action {
 
             new AccountService().cancelAccount(userId);
 
-            request.setAttribute("result", new ResponseModel(200, "success"));
+            responseModel = new ResponseModel(200, "success");
 
         } catch (DatabaseConnectException e) {
-            request.setAttribute("data", new ResponseModel(500, "Server Error"));
+            responseModel = new ResponseModel(500, "Server Error");
+        } catch (DatabaseQueryException e) {
+            responseModel = new ResponseModel(500, "데이터를 불러오지 못했습니다.");
         } catch (BadRequestException e) {
-            request.setAttribute("data", new ResponseModel(400, e.getMessage()));
-
+            responseModel = new ResponseModel(400, e.getMessage());
+        } finally {
+            request.setAttribute("data", responseModel);
         }
         return new URLModel();
     }
