@@ -135,7 +135,9 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
             ps.setInt(1, communityId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    waitingMembers.add(new InviteMemberDTO(rs.getInt("community_id"),
+                    waitingMembers.add(new InviteMemberDTO(
+                            rs.getInt("community_member_id"),
+                            rs.getInt("community_id"),
                             rs.getString("community_member_status").charAt(0),
                             rs.getString("profile_image"),
                             rs.getString("nickname"),
@@ -160,7 +162,9 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
             ps.setInt(1, communityId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    currentMembers.add(new InviteMemberDTO(rs.getInt("community_id"),
+                    currentMembers.add(new InviteMemberDTO(
+                            rs.getInt("community_member_id"),
+                            rs.getInt("community_id"),
                             rs.getString("community_member_status").charAt(0),
                             rs.getString("profile_image"),
                             rs.getString("nickname"),
