@@ -1,5 +1,6 @@
 package kosta.travelog.servlet.action;
 
+import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
@@ -15,12 +16,18 @@ public class RemovePostAction implements Action {
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
 
         try {
-            new PostService().deletePost(Integer.parseInt(request.getParameter("postId")));
+            boolean result = new PostService().deletePost(Integer.parseInt(request.getParameter("postId")));
 
-            request.setAttribute("result", new ResponseModel(200, "success"));
+            if (result) {
+                request.setAttribute("result", new ResponseModel(200, "success"));
+            } else {
+                throw new BadRequestException("Failed to delete post.");
+            }
 
         } catch (DatabaseConnectException e) {
-            throw new RuntimeException(e);
+            request.setAttribute("data", new ResponseModel(500, "Server Error"));
+        } catch (BadRequestException e) {
+            request.setAttribute("data", new ResponseModel(400, e.getMessage()));
         }
 
         return new URLModel();

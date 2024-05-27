@@ -23,13 +23,13 @@ public class CommunityPostDTO {
     @Override
     public String toString() {
         JsonObject json = new JsonObject();
-        json.addProperty("postId" , this.getPostId());
-        json.addProperty("postDate" , this.getPostDate().toString());
-        json.addProperty("postStatus" , this.getPostStatus());
-        json.addProperty("communityPostId" , this.getCommunityPostId());
-        json.addProperty("communityId" , this.getCommunityId());
-        json.addProperty("imageId" , this.getImageId());
-        json.addProperty("image" , this.getImage());
-        return super.toString();
+        json.addProperty("postId", this.getPostId());
+        json.addProperty("postDate", this.getPostDate().toString());
+        json.addProperty("postStatus", this.getPostStatus());
+        json.addProperty("communityPostId", this.getCommunityPostId());
+        json.addProperty("communityId", this.getCommunityId());
+        json.addProperty("imageId", this.getImageId());
+        json.addProperty("image", this.getImage());
+        return json.toString();
     }
 }

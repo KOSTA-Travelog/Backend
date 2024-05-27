@@ -23,6 +23,7 @@ public class FrontControllerServlet extends HttpServlet {
 
         // 2. Action
         Action a = ActionFactory.getAction(cmd);
+
         URLModel url = a.execute(req);
 
         // 3. View
