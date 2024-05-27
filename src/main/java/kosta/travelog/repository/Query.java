@@ -35,7 +35,7 @@ public interface Query {
 
     /* Communities*/
     String COMMUNITY = "SELECT community_id,community_title,community_description,community_hashtag,community_date,community_image,community_status FROM communities WHERE community_id = ? AND community_status = 1";
-    String COMMUNITY_MEMBER_COUNT = "SELECT member_count FROM community_member_count_view WHERE community_id = ?;";
+    String COMMUNITY_MEMBER_COUNT = "SELECT member_count FROM community_member_count_view WHERE community_id = ?";
     String INSERT_COMMUNITY = "INSERT INTO Communities (community_id, community_title, community_description, community_hashtag, community_date, community_image, community_status, user_id) VALUES (community_id.nextval, ?, ?, ?, SYSDATE, ?, ?, ?)";
 
     String UPDATE_COMMUNITY = "UPDATE Communities SET community_title = ?,community_description = ?,community_hashtag = ?,community_date = sysdate,community_image = ?,community_status = ? WHERE community_id = ?";

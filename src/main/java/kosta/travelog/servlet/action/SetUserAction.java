@@ -17,7 +17,8 @@ import java.io.IOException;
 @Slf4j
 public class SetUserAction implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
+        ResponseModel responseModel = null;
         try {
             String name = request.getParameter("name");
             String nickname = request.getParameter("nickname");
@@ -40,13 +41,19 @@ public class SetUserAction implements Action {
                     .bio(bio)
                     .userId(userId).build());
 
-            request.setAttribute("result", new ResponseModel(200, "success"));
+            responseModel = new ResponseModel(200, "success");
 
         } catch (DatabaseConnectException e) {
-            request.setAttribute("data", new ResponseModel(500, "Server Error"));
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(500, "Server Error");
+        } catch (DatabaseQueryException e) {
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(500, "데이터를 불러오지 못했습니다.");
         } catch (BadRequestException e) {
-            request.setAttribute("data", new ResponseModel(400, e.getMessage()));
-
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(400, e.getMessage());
+        } finally {
+            request.setAttribute("data", responseModel);
         }
         return new URLModel();
     }

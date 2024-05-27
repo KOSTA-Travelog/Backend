@@ -1,7 +1,6 @@
 package kosta.travelog.servlet.action;
 
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.CommunityPostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -13,7 +12,7 @@ import java.io.IOException;
 
 public class RemoveCommunityPostAction implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
 
         try {
             new CommunityPostService().deleteCommunityPost(Integer.parseInt(request.getParameter("communityPostId")));

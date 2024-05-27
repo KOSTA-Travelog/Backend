@@ -2,7 +2,6 @@ package kosta.travelog.servlet.action;
 
 import com.google.gson.JsonObject;
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.CommunityService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -16,11 +15,19 @@ import java.io.IOException;
 @Slf4j
 public class GetMyCommunityListAction implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
-        JsonObject json = new JsonObject();
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
 
-        json.addProperty("data", new CommunityService().getMyCommunityList(request.getParameter("userId")).toString());
-        request.setAttribute("data", new ResponseModel(200, json, "success"));
+        ResponseModel responseModel = null;
+        try {
+            JsonObject json = new JsonObject();
+            json.addProperty("data", new CommunityService().getMyCommunityList(request.getParameter("userId")).toString());
+            responseModel = new ResponseModel(200, json, "success");
+        } catch (DatabaseConnectException e) {
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(500, "Server Error");
+        } finally {
+            request.setAttribute("data", responseModel);
+        }
 
         return new URLModel();
     }

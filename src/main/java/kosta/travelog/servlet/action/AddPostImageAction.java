@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.oreilly.servlet.MultipartRequest;
 import kosta.travelog.dto.PostImageDTO;
 import kosta.travelog.exception.DatabaseConnectException;
+import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -41,18 +42,24 @@ public class AddPostImageAction implements Action {
         String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
         String newFileName = now + ext;
 
+        ResponseModel responseModel = null;
         try {
-            PostImageDTO dto = new PostImageDTO();
-            boolean result = new PostService().createImage(dto.builder().
+            boolean result = new PostService().createImage(PostImageDTO.builder().
                     postId(Integer.parseInt(request.getParameter("postId")))
                     .images(fileName).build());
 
             JsonObject json = new JsonObject();
             json.addProperty("data", result);
-            request.setAttribute("data", new ResponseModel(201, json, "created"));
+            responseModel = new ResponseModel(201, json, "created");
 
         } catch (DatabaseConnectException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(500, "Server Error");
+        } catch (DatabaseQueryException e) {
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(500, "데이터를 불러오지 못했습니다.");
+        } finally {
+            request.setAttribute("data", responseModel);
         }
 
         return new URLModel();

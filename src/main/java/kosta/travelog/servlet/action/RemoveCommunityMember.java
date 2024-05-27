@@ -2,7 +2,6 @@ package kosta.travelog.servlet.action;
 
 import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.CommunityMemberService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -16,23 +15,30 @@ import java.io.IOException;
 @Slf4j
 public class RemoveCommunityMember implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
+        ResponseModel responseModel = null;
         try {
             String communityMemberId = request.getParameter("communityMemberId");
-            if (communityMemberId == null || communityMemberId == "") {
+            if (communityMemberId == null || communityMemberId.isEmpty()) {
                 throw new BadRequestException("Required inputs are missing.");
             }
 
             boolean result = new CommunityMemberService().leaveCommunity(
                     Integer.parseInt(communityMemberId));
-
-            request.setAttribute("result", new ResponseModel(200, "success"));
+            if (result) {
+                responseModel = new ResponseModel(200, "success");
+            } else {
+                throw new BadRequestException("Failed to remove community member");
+            }
 
         } catch (DatabaseConnectException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(500, "Server Error");
         } catch (BadRequestException e) {
-            request.setAttribute("data", new ResponseModel(400, e.getMessage()));
-
+            log.error(e.getMessage());
+            responseModel = new ResponseModel(400, e.getMessage());
+        } finally {
+            request.setAttribute("data", responseModel);
         }
         return new URLModel();
     }

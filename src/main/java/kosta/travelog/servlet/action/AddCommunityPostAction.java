@@ -2,7 +2,6 @@ package kosta.travelog.servlet.action;
 
 import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.CommunityPostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -17,11 +16,11 @@ import java.io.IOException;
 @Slf4j
 public class AddCommunityPostAction implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         try {
             String communityId = request.getParameter("communityId");
             String postId = request.getParameter("postId");
-            
+
 
             if (communityId == null || postId == null) {
                 throw new BadRequestException("Required inputs are missing.");
