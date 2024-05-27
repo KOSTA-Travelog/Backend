@@ -44,8 +44,7 @@ public class AddPostImageAction implements Action {
 
         ResponseModel responseModel = null;
         try {
-            PostImageVO vo = new PostImageVO();
-            boolean result = new PostService().createImage(vo.builder().
+            boolean result = new PostService().createImage(PostImageDTO.builder().
                     postId(Integer.parseInt(request.getParameter("postId")))
                     .images(fileName).build());
 
