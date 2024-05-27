@@ -1,7 +1,5 @@
 package kosta.travelog.dao;
 
-import kosta.travelog.dto.CommunityDTO;
-import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.repository.Query;
 import kosta.travelog.vo.CommunityVO;
@@ -22,14 +20,14 @@ public class CommunityDAOImpl implements CommunityDAO {
     }
 
     @Override
-    public CommunityDTO getCommunity(int communityId) throws DatabaseQueryException {
+    public CommunityVO getCommunity(int communityId) throws DatabaseQueryException {
         String sql = Query.COMMUNITY;
-        CommunityDTO result = null;
+        CommunityVO result = null;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, communityId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    result = CommunityDTO.builder()
+                    result = CommunityVO.builder()
                             .communityId(rs.getInt(1))
                             .communityTitle(rs.getString(2))
                             .communityDescription(rs.getString(3))
@@ -37,17 +35,27 @@ public class CommunityDAOImpl implements CommunityDAO {
                             .communityDate(rs.getDate(5).toLocalDate())
                             .communityImage(rs.getString(6))
                             .communityStatus(rs.getString(7).charAt(0))
-                            .countMember(rs.getInt(8))
                             .build();
-                } else {
-                    log.warn("No data found for communityId: " + communityId);
-                    throw new BadRequestException("No data found for communityId: " + communityId);
                 }
             }
         } catch (SQLException e) {
             throw new DatabaseQueryException(e.getMessage());
-        } catch (BadRequestException e) {
-            throw new BadRequestException(e.getMessage());
+        }
+        return result;
+    }
+
+    public int getCommunityMemberCount(int communityId) throws DatabaseQueryException {
+        String sql = Query.COMMUNITY_MEMBER_COUNT;
+        int result = 0;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, communityId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseQueryException(e.getMessage());
         }
         return result;
     }

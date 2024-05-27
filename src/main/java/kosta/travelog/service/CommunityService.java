@@ -4,6 +4,7 @@ import kosta.travelog.dao.CommunityDAOImpl;
 import kosta.travelog.dao.CommunityManagerDAOImpl;
 import kosta.travelog.dto.CommunityDTO;
 import kosta.travelog.dto.InviteMemberDTO;
+import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.CommunityVO;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class CommunityService {
+public class CommunityService extends CommonService {
     private final DataSource dataSource;
 
     public CommunityService() throws DatabaseConnectException {
@@ -33,22 +34,26 @@ public class CommunityService {
         }
     }
 
-    public CommunityDTO Community(int communityId) {
-        CommunityDTO dto;
+    public CommunityDTO community(int communityId) throws BadRequestException, DatabaseConnectException, DatabaseQueryException {
+        CommunityDTO dto = null;
         try (Connection conn = dataSource.getConnection()) {
-            dto = new CommunityDAOImpl(conn).getCommunity(communityId);
+            CommunityVO vo = new CommunityDAOImpl(conn).getCommunity(communityId);
+            if (vo == null) {
+                log.warn("No data found for communityId: {}", communityId);
+                throw new BadRequestException("No data found for communityId: " + communityId);
+            }
+            dto = new CommunityDTO(vo, new CommunityDAOImpl(conn).getCommunityMemberCount(communityId));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (DatabaseQueryException e) {
-            throw new RuntimeException(e);
+            connectException(e);
         }
+
         return dto;
     }
 
     public boolean createCommunity(CommunityVO community) {
         try (Connection conn = dataSource.getConnection()) {
             new CommunityDAOImpl(conn).addCommunity(community);
-//            new CommunityUserDAOImpl(conn).addCommunityCreatorToMember(communityUser);
+            //            new CommunityUserDAOImpl(conn).addCommunityCreatorToMember(communityUser);
 
         } catch (SQLException e) {
             log.error(e.getMessage());
