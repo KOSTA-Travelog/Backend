@@ -25,7 +25,6 @@ public class AddPendingMember implements Action {
             String userId = request.getParameter("userId");
             String userId2 = (String) request.getSession().getAttribute("userId");
 
-            log.info(userId2);
             if (communityId == null || userId == null || userId2 == null) {
                 throw new BadRequestException("Required inputs are missing.");
             }

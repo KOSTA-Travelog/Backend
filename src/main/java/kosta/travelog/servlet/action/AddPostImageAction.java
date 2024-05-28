@@ -2,13 +2,13 @@ package kosta.travelog.servlet.action;
 
 import com.google.gson.JsonObject;
 import com.oreilly.servlet.MultipartRequest;
-import kosta.travelog.dto.PostImageDTO;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
+import kosta.travelog.vo.PostImageVO;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
@@ -44,8 +44,9 @@ public class AddPostImageAction implements Action {
 
         ResponseModel responseModel = null;
         try {
-            boolean result = new PostService().createImage(PostImageDTO.builder().
-                    postId(Integer.parseInt(request.getParameter("postId")))
+
+            boolean result = new PostService().createImage(PostImageDTO.builder()
+                    .postId(Integer.parseInt(request.getParameter("postId")))
                     .images(fileName).build());
 
             JsonObject json = new JsonObject();
@@ -55,10 +56,8 @@ public class AddPostImageAction implements Action {
         } catch (DatabaseConnectException e) {
             log.error(e.getMessage());
             responseModel = new ResponseModel(500, "Server Error");
-        } catch (DatabaseQueryException e) {
-            log.error(e.getMessage());
-            responseModel = new ResponseModel(500, "데이터를 불러오지 못했습니다.");
-        } finally {
+
+        }  finally {
             request.setAttribute("data", responseModel);
         }
 

@@ -25,5 +25,5 @@ public interface CommunityManagerDAO {
     /* (멤버변경)커뮤니티 멤버 목록 현재 멤버 community_member_status = 1*/
     Collection<InviteMemberDTO> currentMemberList(int communityId) throws DatabaseQueryException;
 
-
+    String getCommunityUserNickname(int communityId, String userId);
 }

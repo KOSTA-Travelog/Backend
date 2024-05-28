@@ -6,11 +6,13 @@ import kosta.travelog.service.CommunityService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+@Slf4j
 public class GetAllCommunityListAction implements Action {
 
     @Override
@@ -31,3 +33,4 @@ public class GetAllCommunityListAction implements Action {
     }
 
 }
+

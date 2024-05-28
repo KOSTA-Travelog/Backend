@@ -1,4 +1,4 @@
-package kosta.travelog.dto;
+package kosta.travelog.vo;
 
 import com.google.gson.JsonObject;
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostImageDTO {
+public class PostImageVO {
     private int postId;
     private int imageId;
     private String images;

@@ -27,8 +27,7 @@ public class SetPostAction implements Action {
             responseModel = new ResponseModel(200, "success");
         } catch (DatabaseConnectException e) {
             responseModel = new ResponseModel(500, "Server Error");
-        } catch (DatabaseQueryException e) {
-            responseModel = new ResponseModel(500, "데이터를 불러오지 못했습니다.");
+
         } finally {
             request.setAttribute("data", responseModel);
         }

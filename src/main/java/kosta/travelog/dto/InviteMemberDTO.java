@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class InviteMemberDTO {
+    private int communityMemberId;
     private int communityId;
     private char communityMemberStatus;
     private String profileImage;
@@ -19,11 +20,12 @@ public class InviteMemberDTO {
     @Override
     public String toString() {
         JsonObject json = new JsonObject();
-        json.addProperty("communityId" , this.getCommunityId());
-        json.addProperty("communityMemberStatus" , this.getCommunityMemberStatus());
-        json.addProperty("profileImage" , this.getProfileImage());
-        json.addProperty("nickname" , this.getNickname());
-        json.addProperty("bio" , this.getBio());
+        json.addProperty("communityMemberId", this.getCommunityMemberId());
+        json.addProperty("communityId", this.getCommunityId());
+        json.addProperty("communityMemberStatus", this.getCommunityMemberStatus());
+        json.addProperty("profileImage", this.getProfileImage());
+        json.addProperty("nickname", this.getNickname());
+        json.addProperty("bio", this.getBio());
 
         return json.toString();
     }
