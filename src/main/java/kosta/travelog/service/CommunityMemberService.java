@@ -2,6 +2,7 @@ package kosta.travelog.service;
 
 import kosta.travelog.dao.CommunityUserDAOImpl;
 import kosta.travelog.dao.NotificationDAOImpl;
+import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.CommunityUserVO;
@@ -46,6 +47,7 @@ public class CommunityMemberService {
             conn.rollback();
             return false;
         } finally {
+            conn.setAutoCommit(true);
             conn.close();
         }
         return true;
@@ -53,10 +55,17 @@ public class CommunityMemberService {
 
     public boolean enrollCommunityMember(CommunityUserVO vo) {
         try (Connection conn = dataSource.getConnection()) {
+
+            if (vo.getCommunityId() == 0 || vo.getUserId() == null) {
+                throw new BadRequestException("Required inputs are missing.");
+            }
+
             new CommunityUserDAOImpl(conn).addCommunityCreatorToMember(vo);
         } catch (SQLException e) {
             log.error(e.getMessage());
             return false;
+        } catch (BadRequestException e) {
+            throw new RuntimeException(e);
         }
         return true;
     }
@@ -70,7 +79,7 @@ public class CommunityMemberService {
         }
         return true;
     }
-    
+
     public boolean editPendingMemberToMember(int communityMemberId, String notificationId) throws SQLException {
         Connection conn = null;
         try {
@@ -90,6 +99,7 @@ public class CommunityMemberService {
             conn.rollback();
             return false;
         } finally {
+            conn.setAutoCommit(true);
             conn.close();
         }
         return true;

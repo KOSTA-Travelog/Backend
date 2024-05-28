@@ -4,6 +4,7 @@ import kosta.travelog.dao.CommunityDAOImpl;
 import kosta.travelog.dao.CommunityManagerDAOImpl;
 import kosta.travelog.dto.CommunityDTO;
 import kosta.travelog.dto.InviteMemberDTO;
+import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.CommunityVO;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class CommunityService {
+public class CommunityService extends CommonService {
     private final DataSource dataSource;
 
     public CommunityService() throws DatabaseConnectException {
@@ -33,27 +34,41 @@ public class CommunityService {
         }
     }
 
-    public CommunityDTO Community(int communityId) {
-        CommunityDTO dto;
+    public CommunityDTO community(int communityId) throws BadRequestException, DatabaseConnectException, DatabaseQueryException {
+        CommunityDTO dto = null;
         try (Connection conn = dataSource.getConnection()) {
-            dto = new CommunityDAOImpl(conn).getCommunity(communityId);
+            CommunityVO vo = new CommunityDAOImpl(conn).getCommunity(communityId);
+            if (vo == null) {
+                log.warn("No data found for communityId: {}", communityId);
+                throw new BadRequestException("No data found for communityId: " + communityId);
+            }
+            dto = new CommunityDTO(vo, new CommunityDAOImpl(conn).getCommunityMemberCount(communityId));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (DatabaseQueryException e) {
-            throw new RuntimeException(e);
+            connectException(e);
         }
+
         return dto;
     }
 
     public boolean createCommunity(CommunityVO community) {
         try (Connection conn = dataSource.getConnection()) {
+            String title = community.getCommunityTitle();
+
+            if (title == null) {
+                throw new BadRequestException("Required inputs are missing.");
+            }
+
             new CommunityDAOImpl(conn).addCommunity(community);
-//            new CommunityUserDAOImpl(conn).addCommunityCreatorToMember(communityUser);
+            //            new CommunityUserDAOImpl(conn).addCommunityCreatorToMember(communityUser);
+
 
         } catch (SQLException e) {
             log.error(e.getMessage());
             return false;
         } catch (DatabaseQueryException e) {
+            log.error(e.getMessage());
+            return false;
+        } catch (BadRequestException e) {
             log.error(e.getMessage());
             return false;
         }
@@ -163,5 +178,16 @@ public class CommunityService {
         return dto;
     }
 
+    public boolean isCommunityMember(int communityId, String userId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String nickname = new CommunityManagerDAOImpl(conn).getCommunityUserNickname(communityId, userId);
+            if (nickname != null) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 
 }

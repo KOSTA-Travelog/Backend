@@ -1,6 +1,7 @@
 package kosta.travelog.servlet.action;
 
 import kosta.travelog.exception.DatabaseConnectException;
+import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -13,8 +14,9 @@ import java.io.IOException;
 
 public class SetPostAction implements Action {
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
 
+        ResponseModel responseModel = null;
         try {
             new PostService().editPost(PostVO.builder().postTitle(request.getParameter("postTitle"))
                     .postDescription(request.getParameter("postDescription"))
@@ -22,12 +24,13 @@ public class SetPostAction implements Action {
                     .postStatus(request.getParameter("postStatus").charAt(0))
                     .postId(Integer.parseInt(request.getParameter("postId"))).build());
 
-            request.setAttribute("data", new ResponseModel(200, "success"));
-
+            responseModel = new ResponseModel(200, "success");
         } catch (DatabaseConnectException e) {
-            throw new RuntimeException(e);
-        }
+            responseModel = new ResponseModel(500, "Server Error");
 
+        } finally {
+            request.setAttribute("data", responseModel);
+        }
         return new URLModel();
     }
 }

@@ -2,10 +2,10 @@ package kosta.travelog.service;
 
 import kosta.travelog.dao.PostDAOImpl;
 import kosta.travelog.dao.UserDAOImpl;
-import kosta.travelog.dto.PostImageDTO;
 import kosta.travelog.dto.PostUserDTO;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
+import kosta.travelog.vo.PostImageVO;
 import kosta.travelog.vo.PostVO;
 import kosta.travelog.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +68,7 @@ public class PostService {
             throw new RuntimeException(e);
         } finally {
             conn.close();
+            conn.setAutoCommit(true);
         }
         return PostUser;
     }
@@ -85,7 +86,8 @@ public class PostService {
         return true;
     }
 
-    public boolean createImage(PostVO post) {
+    public boolean createImage(PostImageVO post) {
+
         try (Connection conn = dataSource.getConnection()) {
             new PostDAOImpl(conn).addImage(post);
 
@@ -148,16 +150,10 @@ public class PostService {
         return true;
     }
 
-    public List<PostImageDTO> imageList(int postId) {
-        List<PostImageDTO> images = new ArrayList<>();
+    public List<PostImageVO> imageList(int postId) {
+        List<PostImageVO> images = new ArrayList<>();
         try (Connection conn = dataSource.getConnection()) {
-            List<PostVO> vo = (ArrayList<PostVO>) new PostDAOImpl(conn).getPostImageList(postId);
-            for (PostVO post : vo) {
-                images.add(PostImageDTO.builder()
-                        .imageId(post.getImageId())
-                        .images(post.getImages())
-                        .postId(post.getPostId()).build());
-            }
+            images = (ArrayList<PostImageVO>) new PostDAOImpl(conn).getPostImageList(postId);
 
         } catch (SQLException e) {
             log.error(e.getMessage());

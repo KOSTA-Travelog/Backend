@@ -1,9 +1,9 @@
 package kosta.travelog.dto;
 
 import com.google.gson.JsonObject;
+import kosta.travelog.vo.CommunityVO;
 import lombok.*;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter
@@ -21,6 +21,17 @@ public class CommunityDTO {
     private String communityImage;
     private char communityStatus;
     private int countMember;
+
+    public CommunityDTO(CommunityVO vo, int memberCount) {
+        this.communityId = vo.getCommunityId();
+        this.communityTitle = vo.getCommunityTitle();
+        this.communityDescription = vo.getCommunityDescription();
+        this.communityHashtag = vo.getCommunityHashtag();
+        this.communityDate = vo.getCommunityDate();
+        this.communityImage = vo.getCommunityImage();
+        this.communityStatus = vo.getCommunityStatus();
+        this.countMember = memberCount;
+    }
 
     @Override
     public String toString() {

@@ -3,6 +3,7 @@ package kosta.travelog.service;
 import kosta.travelog.dao.UserDAOImpl;
 import kosta.travelog.dto.LoginDTO;
 import kosta.travelog.dto.UserProfileDTO;
+import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.UserVO;
@@ -14,10 +15,11 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-public class AccountService {
+public class AccountService extends CommonService {
     private final DataSource dataSource;
 
     public AccountService() throws DatabaseConnectException {
@@ -33,25 +35,40 @@ public class AccountService {
 
 
     public LoginDTO login(UserVO user) throws DatabaseConnectException, DatabaseQueryException {
+        UserVO vo = user;
         if (user == null) {
             return null;
         }
         try {
-            UserVO vo = new UserDAOImpl(dataSource.getConnection()).login(user);
-            return LoginDTO.builder().userId(vo.getUserId())
-                    .profileImage(vo.getProfileImage())
-                    .nickname(vo.getNickname())
-                    .userStatus(vo.getUserStatus()).build();
+            vo = new UserDAOImpl(dataSource.getConnection()).login(user);
         } catch (SQLException e) {
-            throw new DatabaseConnectException("dataSource에서 connection을 받아오지 못했습니다.\n" +
-                    String.format("%s %s", this.getClass(), e.getMessage())
-            );
+            connectException(e);
         }
+        return LoginDTO.builder().userId(vo.getUserId()).profileImage(vo.getProfileImage()).nickname(vo.getNickname()).userStatus(vo.getUserStatus()).build();
     }
 
-    public List<UserProfileDTO> searchUser(String nickname) throws DatabaseQueryException {
+    /* */
+    public boolean register(UserVO user, String vaildPassword) throws DatabaseQueryException, DatabaseConnectException, BadRequestException {
+        if (user == null) {
+            return false;
+        }
+        if (user.getName() == null || user.getEmail() == null || user.getPassword() == null || user.getPhoneNumber() == null || user.getNickname() == null) {
+            throw new BadRequestException("Required inputs are missing.");
+        }
+        if (user.getEmail().isEmpty() || !user.getPassword().equals(vaildPassword)) {
+            return false;
+        }
+        try {
+            new UserDAOImpl(dataSource.getConnection()).addUser(user);
+        } catch (SQLException e) {
+            connectException(e);
+        }
+        return true;
+    }
+
+    public List<UserProfileDTO> searchUser(String nickname) throws DatabaseQueryException, DatabaseConnectException {
         if (nickname == null) {
-            return null;
+            return Collections.emptyList();
         }
         List<UserProfileDTO> dto = new ArrayList<>();
         try {
@@ -66,15 +83,12 @@ public class AccountService {
                         .userStatus(user.getUserStatus()).build());
             }
         } catch (SQLException e) {
-            throw new DatabaseQueryException("dataSource에서 connection을 받아오지 못했습니다.\n" +
-                    String.format("%s %s", this.getClass(), e.getMessage())
-            );
+            connectException(e);
         }
         return dto;
     }
 
     public UserProfileDTO getProfile(String userId) throws DatabaseQueryException, DatabaseConnectException {
-
         if (userId == null) {
             return null;
         }
@@ -88,84 +102,53 @@ public class AccountService {
                     .profileImage(user.getProfileImage())
                     .userStatus(user.getUserStatus()).build();
         } catch (SQLException e) {
-            throw new DatabaseConnectException("dataSource에서 connection을 받아오지 못했습니다.\n" +
-                    String.format("%s %S", this.getClass(), e.getMessage())
-            );
+            connectException(e);
         }
         return dto;
     }
 
-    /* */
-    public boolean register(UserVO user) throws SQLException, DatabaseQueryException {
-        try {
-            new UserDAOImpl(dataSource.getConnection()).addUser(user);
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            return false;
-        } catch (DatabaseQueryException e) {
-            log.error(e.getMessage());
-            return false;
-        }
-        return true;
-    }
 
-    public String findAccount(UserVO user) {
+    public String findAccount(UserVO user) throws DatabaseQueryException, DatabaseConnectException {
         try {
             return new UserDAOImpl(dataSource.getConnection()).findUserEmail(user);
         } catch (SQLException e) {
-            log.error("SQL Exception: " + e.getMessage());
-            throw new RuntimeException(e);
-        } catch (DatabaseQueryException e) {
-            log.error("Database Query Exception: " + e.getMessage());
-            throw new RuntimeException(e);
+            connectException(e);
         }
+        return "";
     }
 
-    public String verifyUser(UserVO user) {
+    public String verifyUser(UserVO user) throws DatabaseConnectException, DatabaseQueryException {
         try {
             return new UserDAOImpl(dataSource.getConnection()).checkUser(user);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (DatabaseQueryException e) {
-            throw new RuntimeException(e);
+            connectException(e);
         }
+        return "";
     }
 
-    public boolean editPassword(UserVO user) {
+    public boolean editPassword(UserVO user) throws DatabaseConnectException, DatabaseQueryException {
         try {
             new UserDAOImpl(dataSource.getConnection()).setPassword(user);
         } catch (SQLException e) {
-            log.error(e.getMessage());
-            return false;
-        } catch (DatabaseQueryException e) {
-            log.error(e.getMessage());
-            return false;
+            connectException(e);
         }
         return true;
     }
 
-    public boolean cancelAccount(String userId) {
+    public boolean cancelAccount(String userId) throws DatabaseConnectException, DatabaseQueryException {
         try {
             new UserDAOImpl(dataSource.getConnection()).removeUser(userId);
         } catch (SQLException e) {
-            log.error(e.getMessage());
-            return false;
-        } catch (DatabaseQueryException e) {
-            log.error(e.getMessage());
-            return false;
+            connectException(e);
         }
         return true;
     }
 
-    public boolean editUserInfo(UserVO user) {
+    public boolean editUserInfo(UserVO user) throws DatabaseConnectException, DatabaseQueryException {
         try {
             new UserDAOImpl(dataSource.getConnection()).setUserInfo(user);
         } catch (SQLException e) {
-            log.error(e.getMessage());
-            return false;
-        } catch (DatabaseQueryException e) {
-            log.error(e.getMessage());
-            return false;
+            connectException(e);
         }
         return true;
     }

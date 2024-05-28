@@ -135,7 +135,9 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
             ps.setInt(1, communityId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    waitingMembers.add(new InviteMemberDTO(rs.getInt("community_id"),
+                    waitingMembers.add(new InviteMemberDTO(
+                            rs.getInt("community_member_id"),
+                            rs.getInt("community_id"),
                             rs.getString("community_member_status").charAt(0),
                             rs.getString("profile_image"),
                             rs.getString("nickname"),
@@ -160,7 +162,9 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
             ps.setInt(1, communityId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    currentMembers.add(new InviteMemberDTO(rs.getInt("community_id"),
+                    currentMembers.add(new InviteMemberDTO(
+                            rs.getInt("community_member_id"),
+                            rs.getInt("community_id"),
                             rs.getString("community_member_status").charAt(0),
                             rs.getString("profile_image"),
                             rs.getString("nickname"),
@@ -174,6 +178,24 @@ public class CommunityManagerDAOImpl implements CommunityManagerDAO {
             throw new DatabaseQueryException(e.getMessage());
         }
 
+    }
+
+    @Override
+    public String getCommunityUserNickname(int communityId, String userId) {
+        String sql = Query.CHECK_COMMUNITY_USER;
+        String nickname = null;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, communityId);
+            ps.setString(2, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    nickname = rs.getString(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return nickname;
     }
 
 

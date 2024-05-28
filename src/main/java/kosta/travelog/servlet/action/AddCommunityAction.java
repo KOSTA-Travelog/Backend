@@ -1,8 +1,8 @@
 package kosta.travelog.servlet.action;
 
+import kosta.travelog.dto.LoginDTO;
 import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.CommunityService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -18,18 +18,16 @@ import java.io.IOException;
 public class AddCommunityAction implements Action {
 
     @Override
-    public URLModel execute(HttpServletRequest request) throws ServletException, IOException, DatabaseConnectException, DatabaseQueryException {
+    public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         try {
+            LoginDTO member = (LoginDTO) request.getSession().getAttribute("user");
+            String userId = member.getUserId();
+
             String communityTitle = request.getParameter("communityTitle");
             String communityDescription = request.getParameter("communityDescription");
             String communityHashtag = request.getParameter("communityHashtag");
             String communityImage = request.getParameter("communityImage");
             String communityStatus = request.getParameter("communityStatus");
-            String userId = request.getParameter("userId");
-
-            if (communityTitle == null || communityStatus == null || userId == null) {
-                throw new BadRequestException("Required inputs are missing.");
-            }
 
             boolean result = new CommunityService().createCommunity(CommunityVO.builder()
                     .communityTitle(communityTitle)

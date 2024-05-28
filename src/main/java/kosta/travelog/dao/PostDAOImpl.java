@@ -1,6 +1,7 @@
 package kosta.travelog.dao;
 
 import kosta.travelog.repository.Query;
+import kosta.travelog.vo.PostImageVO;
 import kosta.travelog.vo.PostVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,13 +52,13 @@ public class PostDAOImpl implements PostDAO {
     }
 
     @Override
-    public void addImage(PostVO post) {
+    public void addImage(PostImageVO image) {
         String sql = Query.INSERT_POST_IMAGE;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, post.getPostTitle());
-            pstmt.setInt(2, post.getPostId());
+            pstmt.setString(1, image.getImages());
+            pstmt.setInt(2, image.getPostId());
 
             int result = pstmt.executeUpdate();
 
@@ -175,16 +176,16 @@ public class PostDAOImpl implements PostDAO {
     }
 
     @Override
-    public Collection<PostVO> getPostImageList(int postId) {
+    public Collection<PostImageVO> getPostImageList(int postId) {
         String sql = Query.POST_IMAGE_LIST;
-        List<PostVO> postImageList = new ArrayList<>();
+        List<PostImageVO> postImageList = new ArrayList<>();
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, postId);
 
             try (ResultSet rs = pstmt.executeQuery()) {
 
                 while (rs.next()) {
-                    postImageList.add(PostVO.builder()
+                    postImageList.add(PostImageVO.builder()
                             .imageId(rs.getInt("image_id"))
                             .images(rs.getString("images"))
                             .postId(rs.getInt("post_id")).build());

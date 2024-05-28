@@ -30,11 +30,12 @@ public interface Query {
     String GET_COMMENT = "SELECT comment_id, post_comment, comment_date, comment_status, post_id FROM Comments WHERE comment_status=1 and post_id = ?";
     String COUNT_COMMENT = "SELECT COUNT(comment_id) FROM Comments WHERE post_id = ?";
     String ADD_COMMENT = "INSERT INTO comments (comment_id, post_comment, comment_date, comment_status, post_id, user_id) VALUES (comment_id.nextval, ?, sysdate, ?, ?, ?)";
-    String UPDATE_COMMENT = "UPDATE comments SET post_comment = ?,comment_date=sysdate, comment_status = ? WHERE comment_id = ?";
+    String INSERT_COMMENT = "UPDATE comments SET post_comment = ?, comment_date=sysdate, comment_status = ? WHERE comment_id = ?";
     String DELETE_COMMENT = "UPDATE comments SET comment_status=0 WHERE comment_id = ?";
 
     /* Communities*/
-    String COMMUNITY = "SELECT c.community_id , c.community_title , c.community_description , c.community_hashtag , c.community_date , c.community_image, c.community_status, v.member_count FROM communities c JOIN community_member_count_view v ON v.community_id = c.community_id WHERE c.community_id = ? AND c.community_status = 1";
+    String COMMUNITY = "SELECT community_id,community_title,community_description,community_hashtag,community_date,community_image,community_status FROM communities WHERE community_id = ? AND community_status = 1";
+    String COMMUNITY_MEMBER_COUNT = "SELECT member_count FROM community_member_count_view WHERE community_id = ?";
     String INSERT_COMMUNITY = "INSERT INTO Communities (community_id, community_title, community_description, community_hashtag, community_date, community_image, community_status, user_id) VALUES (community_id.nextval, ?, ?, ?, SYSDATE, ?, ?, ?)";
 
     String UPDATE_COMMUNITY = "UPDATE Communities SET community_title = ?,community_description = ?,community_hashtag = ?,community_date = sysdate,community_image = ?,community_status = ? WHERE community_id = ?";
@@ -45,14 +46,15 @@ public interface Query {
     String UPDATE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 1 WHERE community_member_id = ?";
     String DELETE_COMMUNITY_MEMBER = "UPDATE Communities_users SET community_member_status = 0 WHERE community_member_id = ?";
     String INSERT_CREATOR_TO_COMMUNITY_USERS = "INSERT INTO Communities_users (community_member_id, community_join_date, community_id, user_id, community_member_status) VALUES (community_member_id.nextval, sysdate, ?, ?, 1)";
+    String CHECK_COMMUNITY_USER = "select u.nickname from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 1 and c.user_id = ?";
 
     /* CommunityManagerDAO */
     String MY_COMMUNITY_LIST = "SELECT c.community_id, c.community_title,c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, m.countMember FROM communities c INNER JOIN (SELECT community_id, user_id, count(community_member_id) as countMember FROM communities_users WHERE community_member_status = 1 GROUP BY community_id, user_id) m on c.community_id = m.community_id where m.user_id = ? and c.community_status = 1 order by m.countMember desc";
     String ALL_COMMUNITY_LIST = "SELECT c.community_id, c.community_title,c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, m.member_count FROM communities c INNER JOIN (SELECT community_id, member_count FROM community_member_count_view) m ON c.community_id = m.community_id WHERE c.community_status = 1 ORDER BY m.member_count desc";
     String MY_CREATED_COMMUNITY_LIST = "SELECT cu.community_id, c.community_title, c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, NVL(v.member_count, 0) as member_count FROM communities_users cu JOIN communities c ON cu.community_id = c.community_id JOIN community_member_count_view v ON v.community_id = cu.community_id WHERE cu.user_id = ? AND c.user_id = cu.user_id";
     String JOINED_COMMUNITY_LIST = "SELECT cu.community_id, c.community_title, c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, NVL(v.member_count, 0) as member_count FROM communities_users cu JOIN communities c ON cu.community_id = c.community_id JOIN community_member_count_view v ON v.community_id = cu.community_id WHERE cu.user_id = ? AND c.user_id <> cu.user_id";
-    String WAITING_MEMBER_LIST = "select c.community_id, c.community_member_status, u.profile_image, u.nickname, u.bio from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 2";
-    String CURRENT_MEMBER_LIST = "select c.community_id, c.community_member_status, u.profile_image, u.nickname, u.bio from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 1";
+    String WAITING_MEMBER_LIST = "select c.community_member_id, c.community_id, c.community_member_status, u.profile_image, u.nickname, u.bio from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 2";
+    String CURRENT_MEMBER_LIST = "select c.community_member_id, c.community_id, c.community_member_status, u.profile_image, u.nickname, u.bio from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 1";
 
     /* NotificationDAO */
     String INSERT_PENDING_COMMUNITY_MEMBER = "INSERT INTO Notifications(notification_id, notification_type, notification_read, user_id, user_id2, notification_date, community_id) VALUES ((SELECT SUBSTR(RAWTOHEX(SYS_GUID()), 1, 8) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 9, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 13, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 17, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 21, 12) AS uuid FROM dual),'R', 0, ?, ?, SYSDATE, ?)";

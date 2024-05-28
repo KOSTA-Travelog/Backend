@@ -178,6 +178,9 @@ public class ActionFactory {
                 action = new SetUserAction();
                 break;
 
+            case "/communityPosts":
+                action = new GetCommunityPostList();
+                break;
         }
 
         return action;

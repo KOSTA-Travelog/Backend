@@ -1,7 +1,6 @@
 package kosta.travelog.vo;
 
 
-import com.google.gson.JsonObject;
 import lombok.*;
 
 import java.io.Serializable;
@@ -29,19 +28,19 @@ public class UserVO implements Serializable {
     private LocalDate registrationDate;
     private char userStatus;
     private String bio;
-
-    @Override
-    public String toString() {
-        JsonObject json = new JsonObject();
-        json.addProperty("userId", this.getUserId());
-        json.addProperty("name", this.getName());
-        json.addProperty("email", this.getEmail());
-        json.addProperty("phoneNumber", this.getPhoneNumber());
-        json.addProperty("profileImage", this.getProfileImage());
-        json.addProperty("nickname", this.getName());
-        json.addProperty("registrationDate", this.getRegistrationDate().toString());
-        json.addProperty("userStatus", this.getUserStatus());
-        json.addProperty("bio", this.getBio());
-        return json.toString();
-    }
+    //
+    //    @Override
+    //    public String toString() {
+    //        JsonObject json = new JsonObject();
+    //        json.addProperty("userId", this.getUserId());
+    //        json.addProperty("name", this.getName());
+    //        json.addProperty("email", this.getEmail());
+    //        json.addProperty("phoneNumber", this.getPhoneNumber());
+    //        json.addProperty("profileImage", this.getProfileImage());
+    //        json.addProperty("nickname", this.getName());
+    //        json.addProperty("registrationDate", this.getRegistrationDate().toString());
+    //        json.addProperty("userStatus", this.getUserStatus());
+    //        json.addProperty("bio", this.getBio());
+    //        return json.toString();
+    //    }
 }
