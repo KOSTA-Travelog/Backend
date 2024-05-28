@@ -1,16 +1,9 @@
 package kosta.travelog.vo;
 
-import java.time.LocalDate;
-
 import com.google.gson.JsonObject;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,7 +11,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
 public class NotificationVO {
 	private String notificationId;
 	private char notificationType;

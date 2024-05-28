@@ -1,17 +1,7 @@
 package kosta.travelog.dto;
 
-import java.time.LocalDate;
-
 import com.google.gson.JsonObject;
-
-import kosta.travelog.vo.NotificationVO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
@@ -19,7 +9,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
 public class NotificationUserDTO {
 	private String nickname;
 	private String bio;

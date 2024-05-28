@@ -30,7 +30,6 @@ public class AddPostAction implements Action {
                     .postStatus(request.getParameter("postStatus").charAt(0))
                     .userId(userId).build();
 
-
             boolean post = new PostService().createPost(vo);
             if (post) {
                 responseModel = new ResponseModel(201, "Created");
@@ -39,10 +38,8 @@ public class AddPostAction implements Action {
             }
         } catch (DatabaseConnectException e) {
             responseModel = new ResponseModel(500, "Server Error");
-
-            request.setAttribute("result", responseModel);
-            
         }
+        request.setAttribute("result", responseModel);
         return new URLModel();
     }
 }
