@@ -71,4 +71,5 @@ public interface Query {
     String DELETE_COMMUNITY_POST = "DELETE FROM Communities_posts WHERE community_post_id=?";
 
 
+    String UPDATE_COMMENT = "UPDATE comments SET post_comment = ?, comment_date=sysdate, comment_status = ? WHERE comment_id = ?";
 }
