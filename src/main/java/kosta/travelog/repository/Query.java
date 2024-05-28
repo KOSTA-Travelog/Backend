@@ -11,6 +11,7 @@ public interface Query {
     String CHECK_USER = "SELECT user_id FROM users WHERE email = ? AND password = ?";
     String UPDATE_PASSWORD = "UPDATE Users SET password = ? WHERE user_id = ?";
     String WITHDRAWAL = "UPDATE Users SET user_status = 0 WHERE user_id = ?";
+    String GET_USERID_BY_NICKNAME = "select user_id from users where nickname = ?";
 
 
     /*Posts + Post_images*/

@@ -1,7 +1,7 @@
 package kosta.travelog.servlet.action;
 
-import kosta.travelog.dto.LoginDTO;
 import kosta.travelog.exception.DatabaseConnectException;
+import kosta.travelog.service.AccountService;
 import kosta.travelog.service.CommunityMemberService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -19,9 +19,9 @@ public class AddMemberToCommunityAction implements Action {
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         try {
             String communityId = request.getParameter("communityId");
+            String nickname = request.getParameter("nickname");
 
-            LoginDTO member = (LoginDTO) request.getSession().getAttribute("user");
-            String userId = member.getUserId();
+            String userId = new AccountService().getUserId(nickname);
 
             boolean result = new CommunityMemberService().enrollCommunityMember(CommunityUserVO.builder()
                     .communityId(Integer.parseInt(communityId))
