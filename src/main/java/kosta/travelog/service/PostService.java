@@ -67,8 +67,8 @@ public class PostService {
             conn.rollback();
             throw new RuntimeException(e);
         } finally {
-            conn.close();
             conn.setAutoCommit(true);
+            conn.close();
         }
         return PostUser;
     }

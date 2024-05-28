@@ -13,6 +13,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +22,7 @@ import java.util.List;
 @Slf4j
 public class AccountService extends CommonService {
     private final DataSource dataSource;
+
 
     public AccountService() throws DatabaseConnectException {
         try {
@@ -39,15 +41,14 @@ public class AccountService extends CommonService {
         if (user == null) {
             return null;
         }
-        try {
-            vo = new UserDAOImpl(dataSource.getConnection()).login(user);
+        try (Connection conn = dataSource.getConnection()) {
+            vo = new UserDAOImpl(conn).login(user);
         } catch (SQLException e) {
             connectException(e);
         }
         return LoginDTO.builder().userId(vo.getUserId()).profileImage(vo.getProfileImage()).nickname(vo.getNickname()).userStatus(vo.getUserStatus()).build();
     }
 
-    /* */
     public boolean register(UserVO user, String vaildPassword) throws DatabaseQueryException, DatabaseConnectException, BadRequestException {
         if (user == null) {
             return false;
@@ -58,8 +59,8 @@ public class AccountService extends CommonService {
         if (user.getEmail().isEmpty() || !user.getPassword().equals(vaildPassword)) {
             return false;
         }
-        try {
-            new UserDAOImpl(dataSource.getConnection()).addUser(user);
+        try (Connection conn = dataSource.getConnection()) {
+            new UserDAOImpl(conn).addUser(user);
         } catch (SQLException e) {
             connectException(e);
         }
@@ -71,8 +72,8 @@ public class AccountService extends CommonService {
             return Collections.emptyList();
         }
         List<UserProfileDTO> dto = new ArrayList<>();
-        try {
-            List<UserVO> vo = (ArrayList<UserVO>) new UserDAOImpl(dataSource.getConnection()).searchUser(nickname);
+        try (Connection conn = dataSource.getConnection()) {
+            List<UserVO> vo = (ArrayList<UserVO>) new UserDAOImpl(conn).searchUser(nickname);
 
             for (UserVO user : vo) {
                 dto.add(UserProfileDTO.builder()
@@ -93,8 +94,8 @@ public class AccountService extends CommonService {
             return null;
         }
         UserProfileDTO dto = null;
-        try {
-            UserVO user = new UserDAOImpl(dataSource.getConnection()).getProfile(userId);
+        try (Connection conn = dataSource.getConnection()) {
+            UserVO user = new UserDAOImpl(conn).getProfile(userId);
             dto = UserProfileDTO.builder()
                     .userId(user.getUserId())
                     .nickname(user.getNickname())
@@ -109,8 +110,8 @@ public class AccountService extends CommonService {
 
 
     public String findAccount(UserVO user) throws DatabaseQueryException, DatabaseConnectException {
-        try {
-            return new UserDAOImpl(dataSource.getConnection()).findUserEmail(user);
+        try (Connection conn = dataSource.getConnection()) {
+            return new UserDAOImpl(conn).findUserEmail(user);
         } catch (SQLException e) {
             connectException(e);
         }
@@ -118,8 +119,8 @@ public class AccountService extends CommonService {
     }
 
     public String verifyUser(UserVO user) throws DatabaseConnectException, DatabaseQueryException {
-        try {
-            return new UserDAOImpl(dataSource.getConnection()).checkUser(user);
+        try (Connection conn = dataSource.getConnection()) {
+            return new UserDAOImpl(conn).checkUser(user);
         } catch (SQLException e) {
             connectException(e);
         }
@@ -127,8 +128,8 @@ public class AccountService extends CommonService {
     }
 
     public boolean editPassword(UserVO user) throws DatabaseConnectException, DatabaseQueryException {
-        try {
-            new UserDAOImpl(dataSource.getConnection()).setPassword(user);
+        try (Connection conn = dataSource.getConnection()) {
+            new UserDAOImpl(conn).setPassword(user);
         } catch (SQLException e) {
             connectException(e);
         }
@@ -136,8 +137,8 @@ public class AccountService extends CommonService {
     }
 
     public boolean cancelAccount(String userId) throws DatabaseConnectException, DatabaseQueryException {
-        try {
-            new UserDAOImpl(dataSource.getConnection()).removeUser(userId);
+        try (Connection conn = dataSource.getConnection()) {
+            new UserDAOImpl(conn).removeUser(userId);
         } catch (SQLException e) {
             connectException(e);
         }
@@ -145,12 +146,22 @@ public class AccountService extends CommonService {
     }
 
     public boolean editUserInfo(UserVO user) throws DatabaseConnectException, DatabaseQueryException {
-        try {
-            new UserDAOImpl(dataSource.getConnection()).setUserInfo(user);
+        try (Connection conn = dataSource.getConnection()) {
+            new UserDAOImpl(conn).setUserInfo(user);
         } catch (SQLException e) {
             connectException(e);
         }
         return true;
+    }
+
+    public String getUserId(String nickname) throws DatabaseConnectException {
+        try (Connection conn = dataSource.getConnection()) {
+            return new UserDAOImpl(conn).getUserIdByNickname(nickname);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DatabaseQueryException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

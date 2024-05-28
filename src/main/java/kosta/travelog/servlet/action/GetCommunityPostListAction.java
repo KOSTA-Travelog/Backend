@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Slf4j
-public class GetCommunityPostList implements Action {
+public class GetCommunityPostListAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
 

@@ -2,7 +2,6 @@ package kosta.travelog.servlet.action;
 
 import kosta.travelog.dto.LoginDTO;
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -41,8 +40,9 @@ public class AddPostAction implements Action {
         } catch (DatabaseConnectException e) {
             responseModel = new ResponseModel(500, "Server Error");
 
-        request.setAttribute("result", responseModel);
-
+            request.setAttribute("result", responseModel);
+            
+        }
         return new URLModel();
     }
 }

@@ -15,5 +15,4 @@ public interface CommunityUserDAO {
     /* 커뮤니티 멤버 추가 community_member_status = 1*/
     void addCommunityCreatorToMember(CommunityUserVO vo);
 
-
 }

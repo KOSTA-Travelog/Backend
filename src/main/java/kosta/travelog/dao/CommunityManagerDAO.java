@@ -26,4 +26,7 @@ public interface CommunityManagerDAO {
     Collection<InviteMemberDTO> currentMemberList(int communityId) throws DatabaseQueryException;
 
     String getCommunityUserNickname(int communityId, String userId);
+
+    /* 특정 커뮤니티장의 닉네임 가져오기*/
+    String getCommunityCreatorNickname(int communityId);
 }

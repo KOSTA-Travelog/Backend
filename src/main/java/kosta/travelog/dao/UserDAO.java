@@ -25,4 +25,6 @@ public interface UserDAO {
 
     void setUserInfo(UserVO user) throws DatabaseQueryException;
 
+    String getUserIdByNickname(String nickname) throws DatabaseQueryException;
+
 }

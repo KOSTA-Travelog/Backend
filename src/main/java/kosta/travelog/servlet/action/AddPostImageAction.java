@@ -3,7 +3,6 @@ package kosta.travelog.servlet.action;
 import com.google.gson.JsonObject;
 import com.oreilly.servlet.MultipartRequest;
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -45,7 +44,7 @@ public class AddPostImageAction implements Action {
         ResponseModel responseModel = null;
         try {
 
-            boolean result = new PostService().createImage(PostImageDTO.builder()
+            boolean result = new PostService().createImage(PostImageVO.builder()
                     .postId(Integer.parseInt(request.getParameter("postId")))
                     .images(fileName).build());
 
@@ -57,7 +56,7 @@ public class AddPostImageAction implements Action {
             log.error(e.getMessage());
             responseModel = new ResponseModel(500, "Server Error");
 
-        }  finally {
+        } finally {
             request.setAttribute("data", responseModel);
         }
 

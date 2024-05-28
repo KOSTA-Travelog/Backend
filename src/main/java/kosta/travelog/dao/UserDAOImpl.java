@@ -200,4 +200,24 @@ public class UserDAOImpl implements UserDAO {
             throw new DatabaseQueryException(e.getMessage());
         }
     }
+
+    @Override
+    public String getUserIdByNickname(String nickname) throws DatabaseQueryException {
+        String sql = Query.GET_USERID_BY_NICKNAME;
+
+        String userId = null;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, nickname);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    userId = rs.getString("user_id");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseQueryException(e.getMessage());
+        }
+        return userId;
+    }
 }

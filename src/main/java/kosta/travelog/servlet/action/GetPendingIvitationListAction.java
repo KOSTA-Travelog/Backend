@@ -11,24 +11,21 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class GetCurrentMemberList implements Action {
+public class GetPendingIvitationListAction implements Action {
 
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         ResponseModel responseModel = null;
-
         try {
             JsonObject json = new JsonObject();
-            json.addProperty("data", new CommunityService().getCurrenetMemberList(Integer.parseInt(request.getParameter("communityId"))).toString());
+
+            json.addProperty("data", new CommunityService().getPendingInvitationList(Integer.parseInt(request.getParameter("communityId"))).toString());
             responseModel = new ResponseModel(200, json, "success");
         } catch (DatabaseConnectException e) {
             responseModel = new ResponseModel(500, "Server Error");
         } finally {
             request.setAttribute("data", responseModel);
         }
-
-        request.setAttribute("data", responseModel);
-
         return new URLModel();
     }
 

@@ -115,19 +115,19 @@ public class ActionFactory {
                 break;
 
             case "/communities/invitationList":
-                action = new GetPendingIvitationList();
+                action = new GetPendingIvitationListAction();
                 break;
 
             case "/communities/currentMember":
-                action = new GetCurrentMemberList();
+                action = new GetCurrentMemberListAction();
                 break;
 
             case "/communityPosts/guest":
-                action = new GetCommunityPostListForGuest();
+                action = new GetCommunityPostListForGuestAction();
                 break;
 
             case "/communityPosts/memberPage":
-                action = new GetCommunityPostListForMember();
+                action = new GetCommunityPostListForMemberAction();
                 break;
 
             case "/communityPosts/create":
@@ -139,19 +139,19 @@ public class ActionFactory {
                 break;
 
             case "/communities/member/add/pending":
-                action = new AddPendingMember();
+                action = new AddPendingMemberAction();
                 break;
 
             case "/communities/member/set":
-                action = new SetPendingMemberToCommunity();
+                action = new SetPendingMemberToCommunityAction();
                 break;
 
             case "/communities/member/add":
-                action = new AddMemberToCommunity();
+                action = new AddMemberToCommunityAction();
                 break;
 
             case "/communities/member/remove":
-                action = new RemoveCommunityMember();
+                action = new RemoveCommunityMemberAction();
                 break;
 
             case "/signUp":
@@ -179,7 +179,15 @@ public class ActionFactory {
                 break;
 
             case "/communityPosts":
-                action = new GetCommunityPostList();
+                action = new GetCommunityPostListAction();
+                break;
+
+            case "/communities/creator":
+                action = new GetCommunityCreatorAction();
+                break;
+
+            case "/nickname":
+                action = new GetUserNicknameAction();
                 break;
         }
 
