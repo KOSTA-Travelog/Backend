@@ -44,9 +44,9 @@ public class AddPostImageAction implements Action {
 
         ResponseModel responseModel = null;
         try {
-            PostImageVO vo = new PostImageVO();
-            boolean result = new PostService().createImage(vo.builder().
-                    postId(Integer.parseInt(request.getParameter("postId")))
+
+            boolean result = new PostService().createImage(PostImageDTO.builder()
+                    .postId(Integer.parseInt(request.getParameter("postId")))
                     .images(fileName).build());
 
             JsonObject json = new JsonObject();
@@ -56,6 +56,7 @@ public class AddPostImageAction implements Action {
         } catch (DatabaseConnectException e) {
             log.error(e.getMessage());
             responseModel = new ResponseModel(500, "Server Error");
+
         }  finally {
             request.setAttribute("data", responseModel);
         }

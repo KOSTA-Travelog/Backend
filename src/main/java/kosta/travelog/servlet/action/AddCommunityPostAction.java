@@ -21,6 +21,7 @@ public class AddCommunityPostAction implements Action {
             String communityId = request.getParameter("communityId");
             String postId = request.getParameter("postId");
 
+
             if (communityId == null || postId == null) {
                 throw new BadRequestException("Required inputs are missing.");
             }

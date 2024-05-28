@@ -2,6 +2,7 @@ package kosta.travelog.servlet.action;
 
 import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
+import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
@@ -26,6 +27,7 @@ public class SetOpenStatusAction implements Action {
             }
         } catch (DatabaseConnectException e) {
             responseModel = new ResponseModel(500, "Server Error");
+
         } catch (BadRequestException e) {
             responseModel = new ResponseModel(400, e.getMessage());
         } finally {
