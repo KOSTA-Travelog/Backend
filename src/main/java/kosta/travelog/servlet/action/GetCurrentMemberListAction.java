@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class GetCurrentMemberList implements Action {
+public class GetCurrentMemberListAction implements Action {
 
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {

@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class GetCommunityPostListForGuest implements Action {
+public class GetCommunityPostListForGuestAction implements Action {
 
     @Override
     public URLModel execute(HttpServletRequest request)

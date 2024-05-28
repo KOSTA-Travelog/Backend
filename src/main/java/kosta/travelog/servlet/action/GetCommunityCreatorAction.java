@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class GetCommunityCreator implements Action {
+public class GetCommunityCreatorAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         ResponseModel responseModel = null;

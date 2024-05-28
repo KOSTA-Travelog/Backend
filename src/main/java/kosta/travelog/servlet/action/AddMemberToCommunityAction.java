@@ -14,12 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Slf4j
-public class AddMemberToCommunity implements Action {
+public class AddMemberToCommunityAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         try {
             String communityId = request.getParameter("communityId");
-            
+
             LoginDTO member = (LoginDTO) request.getSession().getAttribute("user");
             String userId = member.getUserId();
 

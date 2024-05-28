@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @Slf4j
-public class AddPendingMember implements Action {
+public class AddPendingMemberAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         try {
