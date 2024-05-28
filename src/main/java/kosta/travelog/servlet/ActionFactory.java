@@ -161,6 +161,10 @@ public class ActionFactory {
             case "/communityPosts":
                 action = new GetCommunityPostList();
                 break;
+
+            case "/communities/creator":
+                action = new GetCommunityCreator();
+                break;
         }
 
         return action;
