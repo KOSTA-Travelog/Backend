@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @Slf4j
-public class SetPendingMemberToCommunity implements Action {
+public class SetPendingMemberToCommunityAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
 

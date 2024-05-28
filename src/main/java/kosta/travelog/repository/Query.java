@@ -11,6 +11,7 @@ public interface Query {
     String CHECK_USER = "SELECT user_id FROM users WHERE email = ? AND password = ?";
     String UPDATE_PASSWORD = "UPDATE Users SET password = ? WHERE user_id = ?";
     String WITHDRAWAL = "UPDATE Users SET user_status = 0 WHERE user_id = ?";
+    String GET_USERID_BY_NICKNAME = "select user_id from users where nickname = ?";
 
 
     /*Posts + Post_images*/
@@ -55,6 +56,7 @@ public interface Query {
     String JOINED_COMMUNITY_LIST = "SELECT cu.community_id, c.community_title, c.community_description, c.community_hashtag, c.community_date, c.community_image, c.community_status, NVL(v.member_count, 0) as member_count FROM communities_users cu JOIN communities c ON cu.community_id = c.community_id JOIN community_member_count_view v ON v.community_id = cu.community_id WHERE cu.user_id = ? AND c.user_id <> cu.user_id";
     String WAITING_MEMBER_LIST = "select c.community_member_id, c.community_id, c.community_member_status, u.profile_image, u.nickname, u.bio from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 2";
     String CURRENT_MEMBER_LIST = "select c.community_member_id, c.community_id, c.community_member_status, u.profile_image, u.nickname, u.bio from communities_users c inner join users u on c.user_id = u.user_id where community_id = ? and c.community_member_status = 1";
+    String Get_COMMUNITY_CREATOR_NICKNAME = "select u.nickname from communities c inner join users u on c.user_id = u.user_id where community_id = ?";
 
     /* NotificationDAO */
     String INSERT_PENDING_COMMUNITY_MEMBER = "INSERT INTO Notifications(notification_id, notification_type, notification_read, user_id, user_id2, notification_date, community_id) VALUES ((SELECT SUBSTR(RAWTOHEX(SYS_GUID()), 1, 8) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 9, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 13, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 17, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 21, 12) AS uuid FROM dual),'R', 0, ?, ?, SYSDATE, ?)";

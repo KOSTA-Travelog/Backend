@@ -40,7 +40,6 @@ public class AddPostAction implements Action {
             responseModel = new ResponseModel(500, "Server Error");
         }
         request.setAttribute("result", responseModel);
-
         return new URLModel();
     }
 }

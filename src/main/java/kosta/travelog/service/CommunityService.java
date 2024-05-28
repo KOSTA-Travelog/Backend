@@ -190,4 +190,18 @@ public class CommunityService extends CommonService {
         return false;
     }
 
+    public String getCreatorNickname(int communityId) {
+        String nickname = null;
+        try (Connection conn = dataSource.getConnection()) {
+            nickname = new CommunityManagerDAOImpl(conn).getCommunityCreatorNickname(communityId);
+            if (nickname == null) {
+                throw new BadRequestException("No data found for communityId: " + communityId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (BadRequestException e) {
+            throw new RuntimeException(e);
+        }
+        return nickname;
+    }
 }

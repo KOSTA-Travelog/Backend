@@ -54,6 +54,7 @@ public class AddPostImageAction implements Action {
         } catch (DatabaseConnectException e) {
             log.error(e.getMessage());
             responseModel = new ResponseModel(500, "Server Error");
+          
         } finally {
             request.setAttribute("data", responseModel);
         }
