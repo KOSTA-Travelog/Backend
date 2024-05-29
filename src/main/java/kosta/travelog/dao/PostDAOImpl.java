@@ -1,5 +1,6 @@
 package kosta.travelog.dao;
 
+import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.repository.Query;
 import kosta.travelog.vo.PostImageVO;
 import kosta.travelog.vo.PostVO;
@@ -68,9 +69,9 @@ public class PostDAOImpl implements PostDAO {
     }
 
     @Override
-    public void addPost(PostVO post) {
+    public long addPost(PostVO post) throws DatabaseQueryException {
         String sql = Query.INSERT_POST;
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, new String[]{"POST_ID"})) {
 
             pstmt.setString(1, post.getPostTitle());
             pstmt.setString(2, post.getPostDescription());
@@ -79,10 +80,19 @@ public class PostDAOImpl implements PostDAO {
             pstmt.setString(5, post.getUserId());
 
             int result = pstmt.executeUpdate();
-
-
+            if (result == 0) {
+                throw new DatabaseQueryException("Creating user failed, no rows affected.");
+            }
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    log.info(String.valueOf(generatedKeys.getLong(1)));
+                    return generatedKeys.getLong(1);
+                } else {
+                    throw new DatabaseQueryException("Creating user failed, no ID obtained.");
+                }
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseQueryException("Creating post failed");
         }
     }
 

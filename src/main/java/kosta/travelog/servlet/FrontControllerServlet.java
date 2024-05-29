@@ -1,9 +1,9 @@
 package kosta.travelog.servlet;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +12,12 @@ import java.io.IOException;
 
 @Slf4j
 @WebServlet("/api/*")
+@MultipartConfig(
+        maxFileSize = 1024 * 1024 * 20,      // 최대 파일크기 : 20MB
+        maxRequestSize = 1024 * 1024 * 20 * 5    // 한 요청 당 최대 크기 : 100MB
+)
 public class FrontControllerServlet extends HttpServlet {
 
-    @SneakyThrows
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");

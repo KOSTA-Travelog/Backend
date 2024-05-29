@@ -23,7 +23,7 @@ public interface Query {
     String DELETE_POST_IMAGE = "delete from post_images where image_id=?";
     String DELETE_POST = "update posts SET post_status=0 where post_id=?";
     String POST = "SELECT post_id, post_title, post_description, post_hashtag, post_date, post_status, user_id FROM Posts WHERE post_id = ?";
-    String POST_IMAGE_LIST = "select image_id, images, post_id from post_images where post_id = ?";
+    String POST_IMAGE_LIST = "select image_id, images, post_id from post_images where post_id = ? ORDER BY image_id ";
     String COUNT_USER_POST = "SELECT COUNT(post_id) FROM posts WHERE user_id=?";
     String POST_WITH_IMAGES = "SELECT p.post_id, p.post_title, p.post_description, p.post_hashtag, p.post_date, p.post_status, p.user_id, i.image_id, i.images FROM Posts p INNER JOIN POST_IMAGES i on p.POST_ID = i.POST_ID WHERE p.post_id = ?";
 
@@ -74,4 +74,9 @@ public interface Query {
 
 
     String UPDATE_COMMENT = "UPDATE comments SET post_comment = ?, comment_date=sysdate, comment_status = ? WHERE comment_id = ?";
+
+    String ADD_POST_IMAGE = "INSERT INTO post_images ( image_id, images, post_id ) VALUES ( image_id.nextval, ?, ? )";
+    String GET_POST_FIRST_IMAGE = "SELECT IMAGES FROM ( SELECT IMAGES FROM post_images WHERE post_id = ? ORDER BY image_id ) WHERE ROWNUM = 1";
+
+
 }

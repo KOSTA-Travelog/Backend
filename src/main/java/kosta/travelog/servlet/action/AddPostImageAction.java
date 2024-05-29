@@ -1,26 +1,59 @@
 package kosta.travelog.servlet.action;
 
-import com.google.gson.JsonObject;
-import com.oreilly.servlet.MultipartRequest;
+import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
-import kosta.travelog.service.PostService;
+import kosta.travelog.exception.DatabaseQueryException;
+import kosta.travelog.service.ImageService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
-import kosta.travelog.vo.PostImageVO;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import javax.servlet.http.Part;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Collection;
 
 @Slf4j
 public class AddPostImageAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
+
+        int postId = Integer.parseInt(request.getParameter("postId"));
+
+        Collection<Part> parts = request.getParts();
+        ImageService service;
+        try {
+            service = new ImageService();
+        } catch (DatabaseConnectException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        for (Part imagePart : parts) {
+            if (imagePart == null || imagePart.getSubmittedFileName() == null || imagePart.getSize() == 0) {
+                continue;
+            }
+            try {
+                service.addImage(imagePart, postId);
+            } catch (BadRequestException e) {
+                log.error(e.getMessage());
+                request.setAttribute("data", new ResponseModel(400, "bad request"));
+                return new URLModel();
+            } catch (DatabaseQueryException e) {
+                throw new RuntimeException(e);
+            } catch (DatabaseConnectException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        request.setAttribute("data", new ResponseModel(200, "success"));
+        return new URLModel();
+    }
+}
+
+/*
 
         String saveDirectory = request.getServletContext().getRealPath("upload");
 
@@ -58,7 +91,4 @@ public class AddPostImageAction implements Action {
         } finally {
             request.setAttribute("data", responseModel);
         }
-
-        return new URLModel();
-    }
-}
+*/

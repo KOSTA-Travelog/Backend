@@ -1,5 +1,6 @@
 package kosta.travelog.service;
 
+import kosta.travelog.dao.ImageDAOImpl;
 import kosta.travelog.dao.PostDAOImpl;
 import kosta.travelog.dao.UserDAOImpl;
 import kosta.travelog.dto.PostUserDTO;
@@ -45,6 +46,7 @@ public class PostService {
 
             for (PostVO post : postData) {
                 UserVO user = new UserDAOImpl(conn).getProfile(post.getUserId());
+                String imageUrl = new ImageDAOImpl(conn).getFirstImage(post.getPostId());
 
                 PostUser.add(PostUserDTO.builder()
                         .postId(post.getPostId())
@@ -57,6 +59,7 @@ public class PostService {
                         .profileImage(user.getProfileImage())
                         .nickname(user.getNickname())
                         .imageId(post.getImageId())
+                        .images(imageUrl)
                         .build());
 
             }
@@ -74,16 +77,15 @@ public class PostService {
     }
 
 
-    public boolean createPost(PostVO post) {
+    public long createPost(PostVO post) throws DatabaseQueryException, DatabaseConnectException {
 
         try (Connection conn = dataSource.getConnection()) {
-            new PostDAOImpl(conn).addPost(post);
+            return new PostDAOImpl(conn).addPost(post);
 
         } catch (SQLException e) {
             log.error(e.getMessage());
-            return false;
+            throw new DatabaseConnectException(e.getMessage());
         }
-        return true;
     }
 
     public boolean createImage(PostImageVO post) {
