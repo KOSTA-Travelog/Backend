@@ -78,6 +78,13 @@
             <artifactId>cos</artifactId>
             <version>05Nov2002</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.730</version>
+        </dependency>
+
     </dependencies>
 
     <build>
