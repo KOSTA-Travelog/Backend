@@ -27,4 +27,5 @@ public interface UserDAO {
 
     String getUserIdByNickname(String nickname) throws DatabaseQueryException;
 
+    UserVO getCurrentUserInfo(String userId) throws DatabaseQueryException;
 }

@@ -235,5 +235,27 @@ public class PostDAOImpl implements PostDAO {
         return countPost;
     }
 
+    @Override
+    public List<PostVO> getPostPrimaryImageByUserId(String userId) {
+        List<PostVO> post = new ArrayList<>();
+        String sql = Query.POST_FIRST_IMAGE_BY_USERID;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    post.add(PostVO.builder()
+                            .postId(rs.getInt("post_id"))
+                            .imageId(rs.getInt("image_id"))
+                            .images(rs.getString("images"))
+                            .build());
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return post;
+    }
+
 
 }

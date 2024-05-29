@@ -38,4 +38,6 @@ public interface PostDAO {
     /*   특정 사용자의 게시글 수*/
     int countUserPost(String userId);
 
+    Collection<PostVO> getPostPrimaryImageByUserId(String userId);
+
 }

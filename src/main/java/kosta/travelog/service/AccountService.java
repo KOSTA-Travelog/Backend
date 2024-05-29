@@ -2,6 +2,7 @@ package kosta.travelog.service;
 
 import kosta.travelog.dao.UserDAOImpl;
 import kosta.travelog.dto.LoginDTO;
+import kosta.travelog.dto.UserInfoDTO;
 import kosta.travelog.dto.UserProfileDTO;
 import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
@@ -50,15 +51,18 @@ public class AccountService extends CommonService {
     }
 
     public boolean register(UserVO user, String vaildPassword) throws DatabaseQueryException, DatabaseConnectException, BadRequestException {
+
         if (user == null) {
             return false;
         }
+
         if (user.getName() == null || user.getEmail() == null || user.getPassword() == null || user.getPhoneNumber() == null || user.getNickname() == null) {
             throw new BadRequestException("Required inputs are missing.");
         }
         if (user.getEmail().isEmpty() || !user.getPassword().equals(vaildPassword)) {
             return false;
         }
+
         try (Connection conn = dataSource.getConnection()) {
             new UserDAOImpl(conn).addUser(user);
         } catch (SQLException e) {
@@ -145,9 +149,22 @@ public class AccountService extends CommonService {
         return true;
     }
 
-    public boolean editUserInfo(UserVO user) throws DatabaseConnectException, DatabaseQueryException {
+    public boolean editUserInfo(UserVO user, String vaildPassword) throws DatabaseConnectException, DatabaseQueryException, BadRequestException {
+        log.info(user.getPassword());
+        log.info(vaildPassword);
+
+        if (!user.getPassword().equals(vaildPassword)) {
+            return false;
+        }
+
+        if (user.getName() == null || user.getPassword() == null || user.getPhoneNumber() == null || user.getNickname() == null) {
+            throw new BadRequestException("Required inputs are missing.");
+        }
+
         try (Connection conn = dataSource.getConnection()) {
+
             new UserDAOImpl(conn).setUserInfo(user);
+
         } catch (SQLException e) {
             connectException(e);
         }
@@ -157,6 +174,25 @@ public class AccountService extends CommonService {
     public String getUserId(String nickname) throws DatabaseConnectException {
         try (Connection conn = dataSource.getConnection()) {
             return new UserDAOImpl(conn).getUserIdByNickname(nickname);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DatabaseQueryException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public UserInfoDTO getLoginUserInfo(String userId) {
+
+        try (Connection conn = dataSource.getConnection()) {
+            UserVO vo = new UserDAOImpl(conn).getCurrentUserInfo(userId);
+
+            return UserInfoDTO.builder().name(vo.getName())
+                    .email(vo.getEmail())
+                    .phoneNumber(vo.getPhoneNumber())
+                    .nickname(vo.getNickname())
+                    .bio(vo.getBio())
+                    .profileImage(vo.getProfileImage()).build();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (DatabaseQueryException e) {

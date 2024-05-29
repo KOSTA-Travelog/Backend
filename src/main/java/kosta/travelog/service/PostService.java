@@ -4,6 +4,7 @@ import kosta.travelog.dao.ImageDAOImpl;
 import kosta.travelog.dao.PostDAOImpl;
 import kosta.travelog.dao.UserDAOImpl;
 import kosta.travelog.dto.PostUserDTO;
+import kosta.travelog.dto.UserPostImageDTO;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.PostImageVO;
@@ -171,6 +172,24 @@ public class PostService {
             log.error(e.getMessage());
         }
         return num;
+    }
+
+    public List<UserPostImageDTO> getPostFirstImage(String userId) {
+        List<UserPostImageDTO> imageList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection()) {
+            List<PostVO> vo = new PostDAOImpl(conn).getPostPrimaryImageByUserId(userId);
+
+            for (PostVO post : vo) {
+                imageList.add(UserPostImageDTO.builder()
+                        .postId(post.getPostId())
+                        .imageId(post.getImageId())
+                        .images(post.getImages())
+                        .build());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return imageList;
     }
 }
 

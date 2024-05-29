@@ -4,7 +4,6 @@ public interface Query {
     String LOGIN = "SELECT user_id, nickname, profile_image,user_status FROM users WHERE email = ? AND password = ?";
     String SEARCH_USER = "SELECT user_id, nickname, bio, profile_image, user_status FROM users WHERE user_status = '1' AND nickname LIKE ? ORDER BY nickname DESC";
     String GET_PROFILE = "SELECT user_id, nickname, bio, profile_image, user_status FROM users WHERE user_id = ?";
-
     String UPDATE_USER_INFORMATION = "UPDATE users SET name=?, nickname=?, profile_image=?, password=?, phone_number=?, bio=? WHERE user_id = ?";
     String SIGN_UP = "INSERT INTO users (user_id, name, email, password, phone_number, nickname, registration_date, user_status) VALUES ((SELECT SUBSTR(RAWTOHEX(SYS_GUID()), 1, 8) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 9, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 13, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 17, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 21, 12) AS uuid FROM dual), ?, ?, ?, ?, ?, SYSDATE, 1)";
     String FIND_EMAIL = "SELECT email FROM users WHERE name = ? AND phone_number = ?";
@@ -12,6 +11,7 @@ public interface Query {
     String UPDATE_PASSWORD = "UPDATE Users SET password = ? WHERE user_id = ?";
     String WITHDRAWAL = "UPDATE Users SET user_status = 0 WHERE user_id = ?";
     String GET_USERID_BY_NICKNAME = "select user_id from users where nickname = ?";
+    String GET_CURRENT_USER_DATA = "select name, email, phone_number, nickname, bio, profile_image from users where user_id = ?";
 
 
     /*Posts + Post_images*/
@@ -26,6 +26,9 @@ public interface Query {
     String POST_IMAGE_LIST = "select image_id, images, post_id from post_images where post_id = ? ORDER BY image_id ";
     String COUNT_USER_POST = "SELECT COUNT(post_id) FROM posts WHERE user_id=?";
     String POST_WITH_IMAGES = "SELECT p.post_id, p.post_title, p.post_description, p.post_hashtag, p.post_date, p.post_status, p.user_id, i.image_id, i.images FROM Posts p INNER JOIN POST_IMAGES i on p.POST_ID = i.POST_ID WHERE p.post_id = ?";
+
+    String POST_FIRST_IMAGE_BY_USERID = "select post_id, image_id, images from (select ROW_NUMBER() OVER ( partition by p.post_id ORDER BY image_id ) rn, p.post_id, pi.image_id, pi.images from posts p inner join post_images pi on p.post_id = pi.post_id where user_id = ? order by p.post_date desc) subquery where rn = 1";
+
 
     /* Comment */
     String GET_COMMENT = "SELECT comment_id, post_comment, comment_date, comment_status, post_id FROM Comments WHERE comment_status=1 and post_id = ?";

@@ -18,4 +18,5 @@ public class LoginDTO implements Serializable {
     private String nickname;
     private char userStatus;
 
+
 }

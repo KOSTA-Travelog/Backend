@@ -8,17 +8,20 @@ import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
 import kosta.travelog.vo.UserVO;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+@Slf4j
 public class AddUserAction implements Action {
     @Override
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         ResponseModel data;
         try {
             String passwordCheck = request.getParameter("passwordCheck");
+
             boolean result = new AccountService()
                     .register(UserVO.builder()
                                     .name(request.getParameter("name"))
