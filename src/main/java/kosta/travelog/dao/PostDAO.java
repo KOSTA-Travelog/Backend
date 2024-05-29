@@ -1,5 +1,6 @@
 package kosta.travelog.dao;
 
+import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.PostImageVO;
 import kosta.travelog.vo.PostVO;
 
@@ -14,7 +15,7 @@ public interface PostDAO {
     void addImage(PostImageVO dto);
 
     /*   게시글 작성*/
-    void addPost(PostVO vo);
+    long addPost(PostVO vo) throws DatabaseQueryException;
 
     /*    공개 상태 변경(request값 받기)*/
     void setPostStatus(char postStatus, int postId);
