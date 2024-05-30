@@ -5,6 +5,7 @@ import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.AccountService;
 import kosta.travelog.servlet.Action;
+import kosta.travelog.servlet.Hashing;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
 import kosta.travelog.vo.UserVO;
@@ -22,14 +23,17 @@ public class AddUserAction implements Action {
         try {
             String passwordCheck = request.getParameter("passwordCheck");
 
+
+            String pw = request.getParameter("pw");
+            Hashing hasher = new Hashing();
             boolean result = new AccountService()
                     .register(UserVO.builder()
                                     .name(request.getParameter("name"))
                                     .email(request.getParameter("email"))
-                                    .password(request.getParameter("password"))
+                                    .password(hasher.getHex(pw))
                                     .phoneNumber(request.getParameter("phoneNumber"))
                                     .nickname(request.getParameter("nickname")).build(),
-                            passwordCheck
+                            hasher.getHex(passwordCheck)
                     );
 
             if (result) {

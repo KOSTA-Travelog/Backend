@@ -5,6 +5,7 @@ import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.service.AccountService;
 import kosta.travelog.servlet.Action;
+import kosta.travelog.servlet.Hashing;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
 import kosta.travelog.vo.UserVO;
@@ -26,10 +27,11 @@ public class LoginAction implements Action {
         log.info("req: {}", request.getParameter("id"));
         log.info("req: {}", request.getParameter("pw"));
         try {
+            String pw = request.getParameter("pw");
             AccountService service = new AccountService();
             LoginDTO member = service.login(UserVO.builder()
                     .email(request.getParameter("id"))
-                    .password(request.getParameter("pw"))
+                    .password(new Hashing().getHex(pw))
                     .build());
             log.info("member: {}", member);
             if (member != null) {
