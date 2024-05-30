@@ -12,7 +12,7 @@ import lombok.*;
 public class UserPostImageDTO {
     private int postId;
     private int imageId;
-    private String images;
+    private String image;
 
     @Override
     public String toString() {
@@ -20,7 +20,7 @@ public class UserPostImageDTO {
 
         json.addProperty("postId", this.getPostId());
         json.addProperty("imageId", this.getImageId());
-        json.addProperty("images", this.getImages());
+        json.addProperty("image", this.getImage());
 
         return json.toString();
     }

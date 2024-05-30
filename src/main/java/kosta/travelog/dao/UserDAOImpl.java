@@ -246,5 +246,24 @@ public class UserDAOImpl implements UserDAO {
         return null;
     }
 
+    @Override
+    public UserVO getPostWriterNickname(int postId) throws DatabaseQueryException {
+        String sql = Query.POST_USER_IMAGE_AND_NICKNAME;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, postId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return UserVO.builder()
+                            .profileImage(rs.getString("profile_image"))
+                            .nickname(rs.getString("nickname")).build();
+                }
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 
 }

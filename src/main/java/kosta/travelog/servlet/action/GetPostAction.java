@@ -1,13 +1,13 @@
 package kosta.travelog.servlet.action;
 
 import com.google.gson.JsonObject;
+import kosta.travelog.dto.PostUserDTO;
 import kosta.travelog.exception.BadRequestException;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.service.PostService;
 import kosta.travelog.servlet.Action;
 import kosta.travelog.servlet.ResponseModel;
 import kosta.travelog.servlet.URLModel;
-import kosta.travelog.vo.PostVO;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ public class GetPostAction implements Action {
         try {
             JsonObject json = new JsonObject();
 
-            PostVO post = new PostService().post(Integer.parseInt(request.getParameter("postId")));
+            PostUserDTO post = new PostService().post(Integer.parseInt(request.getParameter("postId")));
             if (post == null) {
                 throw new BadRequestException("Cannot find post");
             }

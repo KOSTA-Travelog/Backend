@@ -154,8 +154,7 @@ public class PostDAOImpl implements PostDAO {
                             .postDescription(rs.getString("post_description"))
                             .postHashtag(rs.getString("post_hashtag"))
                             .postDate(rs.getDate("post_date").toLocalDate())
-                            .postStatus(rs.getString("post_status").charAt(0))
-                            .userId(rs.getString("user_id")).build();
+                            .postStatus(rs.getString("post_status").charAt(0)).build();
                 }
 
             } catch (SQLException e) {
