@@ -20,6 +20,8 @@ public class SetUserAction implements Action {
     public URLModel execute(HttpServletRequest request) throws ServletException, IOException {
         ResponseModel responseModel = null;
         try {
+            String passwordCheck = request.getParameter("passwordCheck");
+
             String name = request.getParameter("name");
             String nickname = request.getParameter("nickname");
             String profileImage = request.getParameter("profileImage");
@@ -28,20 +30,24 @@ public class SetUserAction implements Action {
             String bio = request.getParameter("bio");
             String userId = request.getParameter("userId");
 
-            if (userId == null || phoneNumber == null || password == null || nickname == null || name == null) {
-                throw new BadRequestException("Required inputs are missing.");
-            }
+            log.info(password);
+            log.info(passwordCheck);
 
-            new AccountService().editUserInfo(UserVO.builder()
+            boolean result = new AccountService().editUserInfo(UserVO.builder()
                     .name(name)
                     .nickname(nickname)
                     .profileImage(profileImage)
                     .password(password)
                     .phoneNumber(phoneNumber)
                     .bio(bio)
-                    .userId(userId).build());
+                    .userId(userId).build(), passwordCheck);
 
-            responseModel = new ResponseModel(200, "success");
+            log.info(String.valueOf(result));
+            if (result) {
+                responseModel = new ResponseModel(201, "created");
+            } else {
+                responseModel = new ResponseModel(500, "회원 정보를 수정할 수 없습니다.");
+            }
 
         } catch (DatabaseConnectException e) {
             log.error(e.getMessage());
@@ -50,7 +56,6 @@ public class SetUserAction implements Action {
             log.error(e.getMessage());
             responseModel = new ResponseModel(500, "데이터를 불러오지 못했습니다.");
         } catch (BadRequestException e) {
-            log.error(e.getMessage());
             responseModel = new ResponseModel(400, e.getMessage());
         } finally {
             request.setAttribute("data", responseModel);

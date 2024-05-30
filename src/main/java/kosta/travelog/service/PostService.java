@@ -4,6 +4,7 @@ import kosta.travelog.dao.ImageDAOImpl;
 import kosta.travelog.dao.PostDAOImpl;
 import kosta.travelog.dao.UserDAOImpl;
 import kosta.travelog.dto.PostUserDTO;
+import kosta.travelog.dto.UserPostImageDTO;
 import kosta.travelog.exception.DatabaseConnectException;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.PostImageVO;
@@ -55,11 +56,10 @@ public class PostService {
                         .postHashtag(post.getPostHashtag())
                         .postDate(post.getPostDate())
                         .postStatus(post.getPostStatus())
-                        .userId(post.getUserId())
                         .profileImage(user.getProfileImage())
                         .nickname(user.getNickname())
                         .imageId(post.getImageId())
-                        .images(imageUrl)
+                        .image(imageUrl)
                         .build());
 
             }
@@ -132,14 +132,31 @@ public class PostService {
         return true;
     }
 
-    public PostVO post(int postId) {
+    public PostUserDTO post(int postId) {
         PostVO post = null;
+        UserVO user = null;
+
         try (Connection conn = dataSource.getConnection()) {
+            user = new UserDAOImpl(conn).getPostWriterNickname(postId);
             post = new PostDAOImpl(conn).getPost(postId);
+            log.info(String.valueOf(user));
+            log.info(String.valueOf(post));
+            return PostUserDTO.builder().postId(post.getPostId())
+                    .postTitle(post.getPostTitle())
+                    .postDescription(post.getPostDescription())
+                    .postHashtag(post.getPostHashtag())
+                    .postDate(post.getPostDate())
+                    .postStatus(post.getPostStatus())
+                    .profileImage(user.getProfileImage())
+                    .nickname(user.getNickname())
+                    .build();
+
         } catch (SQLException e) {
             log.error(e.getMessage());
+        } catch (DatabaseQueryException e) {
+            throw new RuntimeException(e);
         }
-        return post;
+        return null;
     }
 
     public boolean editPost(PostVO post) {
@@ -171,6 +188,24 @@ public class PostService {
             log.error(e.getMessage());
         }
         return num;
+    }
+
+    public List<UserPostImageDTO> getPostFirstImage(String userId) {
+        List<UserPostImageDTO> imageList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection()) {
+            List<PostVO> vo = new PostDAOImpl(conn).getPostPrimaryImageByUserId(userId);
+
+            for (PostVO post : vo) {
+                imageList.add(UserPostImageDTO.builder()
+                        .postId(post.getPostId())
+                        .imageId(post.getImageId())
+                        .image(post.getImages())
+                        .build());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return imageList;
     }
 }
 

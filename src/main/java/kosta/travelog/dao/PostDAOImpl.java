@@ -154,8 +154,7 @@ public class PostDAOImpl implements PostDAO {
                             .postDescription(rs.getString("post_description"))
                             .postHashtag(rs.getString("post_hashtag"))
                             .postDate(rs.getDate("post_date").toLocalDate())
-                            .postStatus(rs.getString("post_status").charAt(0))
-                            .userId(rs.getString("user_id")).build();
+                            .postStatus(rs.getString("post_status").charAt(0)).build();
                 }
 
             } catch (SQLException e) {
@@ -233,6 +232,28 @@ public class PostDAOImpl implements PostDAO {
         }
 
         return countPost;
+    }
+
+    @Override
+    public List<PostVO> getPostPrimaryImageByUserId(String userId) {
+        List<PostVO> post = new ArrayList<>();
+        String sql = Query.POST_FIRST_IMAGE_BY_USERID;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    post.add(PostVO.builder()
+                            .postId(rs.getInt("post_id"))
+                            .imageId(rs.getInt("image_id"))
+                            .images(rs.getString("images"))
+                            .build());
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return post;
     }
 
 

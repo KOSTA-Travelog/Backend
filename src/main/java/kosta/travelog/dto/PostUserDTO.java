@@ -18,9 +18,8 @@ public class PostUserDTO {
     private String postHashtag;
     private LocalDate postDate;
     private char postStatus;
-    private String userId;
     private int imageId;
-    private String images;
+    private String image;
     private String profileImage;
     private String nickname;
 
@@ -34,9 +33,8 @@ public class PostUserDTO {
         json.addProperty("postHashtag", this.getPostHashtag());
         json.addProperty("postDate", this.getPostDate().toString());
         json.addProperty("postStatus", this.getPostStatus());
-        json.addProperty("userId", this.getUserId());
         json.addProperty("imageId", this.getImageId());
-        json.addProperty("images", this.getImages());
+        json.addProperty("images", this.getImage());
         json.addProperty("profileImage", this.getProfileImage());
         json.addProperty("nickname", this.getNickname());
         return json.toString();

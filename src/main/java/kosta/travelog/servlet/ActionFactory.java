@@ -61,26 +61,26 @@ public class ActionFactory {
             case "/posts/user/count":
                 action = new CountUserPostAction();
                 break;
-                
+
             case "/comments/create":
-            	action = new AddCommentAction();
-            	break;
-            	
+                action = new AddCommentAction();
+                break;
+
             case "/comments/edit":
-            	action = new EditCommentAction();
-            	break;
-            	
+                action = new EditCommentAction();
+                break;
+
             case "/comments/delete":
-            	action = new DeleteCommentAction();
-            	break;
-            	
+                action = new DeleteCommentAction();
+                break;
+
             case "/comments/commentList":
-            	action = new CommentListAction();
-            	break;
-            	
+                action = new CommentListAction();
+                break;
+
             case "/comments/countComment":
-            	action = new CountCommentAction();
-            	break;
+                action = new CountCommentAction();
+                break;
 
             case "/communities/detail":
                 action = new GetCommunityDetailAction();
@@ -188,6 +188,14 @@ public class ActionFactory {
 
             case "/nickname":
                 action = new GetUserNicknameAction();
+                break;
+
+            case "/userInfo":
+                action = new GetUserInfoAction();
+                break;
+
+            case "/myPage/postList":
+                action = new GetPostimageListAction();
                 break;
         }
 

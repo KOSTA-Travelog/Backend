@@ -220,4 +220,50 @@ public class UserDAOImpl implements UserDAO {
         }
         return userId;
     }
+
+    ;
+
+    @Override
+    public UserVO getCurrentUserInfo(String userId) throws DatabaseQueryException {
+        String sql = Query.GET_CURRENT_USER_DATA;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, userId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return UserVO.builder().name(rs.getString("name"))
+                            .email(rs.getString("email"))
+                            .phoneNumber(rs.getString("phone_number"))
+                            .nickname(rs.getString("nickname"))
+                            .bio(rs.getString("bio"))
+                            .profileImage(rs.getString("profile_image")).build();
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
+    public UserVO getPostWriterNickname(int postId) throws DatabaseQueryException {
+        String sql = Query.POST_USER_IMAGE_AND_NICKNAME;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, postId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return UserVO.builder()
+                            .profileImage(rs.getString("profile_image"))
+                            .nickname(rs.getString("nickname")).build();
+                }
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 }
