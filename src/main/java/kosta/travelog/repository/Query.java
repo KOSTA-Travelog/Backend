@@ -16,7 +16,7 @@ public interface Query {
 
 
     /*Posts + Post_images*/
-    String POST_LIST = "SELECT p.post_id, p.post_title, p.post_description, p.post_hashtag, p.post_date, p.post_status, p.user_id, i.image_id, i.images FROM Posts p LEFT OUTER JOIN POST_IMAGES i on p.POST_ID = i.POST_ID WHERE post_status = 1 order by post_date desc";
+    String POST_LIST = "SELECT p.post_title , p.post_description , p.post_hashtag , p.post_date , p.post_status , p.user_id , i.images FROM posts p LEFT JOIN ( SELECT post_id , images , ROW_NUMBER() OVER (PARTITION BY post_id ORDER BY image_id DESC) AS rn FROM post_images ) i ON p.post_id = i.post_id WHERE post_status = 1 AND rn = 1 ORDER BY post_date DESC";
     String INSERT_POST_IMAGE = "INSERT INTO Post_images (image_id, images, post_id) VALUES (image_id.nextval, ?, ?)";
     String INSERT_POST = "INSERT INTO Posts (post_id, post_title, post_description, post_hashtag, post_dat e, post_status, user_id) VALUES (post_id.nextval, ?, ?, ?, sysdate, ?, ?)";
     String UPDATE_POST_STATUS = "update posts set post_status = ? where post_id = ?";
