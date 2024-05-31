@@ -31,17 +31,17 @@ public class PostDAOImpl implements PostDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-
-                postList.add(new PostVO(rs.getInt("post_id"),
-                        rs.getString("post_title"),
-                        rs.getString("post_description"),
-                        rs.getString("post_hashtag"),
-                        rs.getDate("post_date").toLocalDate(),
-                        rs.getString("post_status").charAt(0),
-                        rs.getString("user_id"),
-                        rs.getInt("image_id"),
-                        rs.getString("images")
-                ));
+                postList.add(PostVO.builder()
+                        .postId(rs.getInt("post_id"))
+                        .postTitle(rs.getString("post_title"))
+                        .postDescription(rs.getString("post_description"))
+                        .postHashtag(rs.getString("post_hashtag"))
+                        .postDate(rs.getDate("post_date").toLocalDate())
+                        .postStatus(rs.getString("post_status").charAt(0))
+                        .userId(rs.getString("user_id"))
+                        .images(rs.getString("images"))
+                        .build()
+                );
             }
 
             return postList;
@@ -92,6 +92,7 @@ public class PostDAOImpl implements PostDAO {
                 }
             }
         } catch (SQLException e) {
+            log.error(e.getMessage());
             throw new DatabaseQueryException("Creating post failed");
         }
     }
