@@ -77,16 +77,17 @@ public class AccountService extends CommonService {
         }
         List<UserProfileDTO> dto = new ArrayList<>();
         try (Connection conn = dataSource.getConnection()) {
-            List<UserVO> vo = (ArrayList<UserVO>) new UserDAOImpl(conn).searchUser(nickname);
-
-            for (UserVO user : vo) {
-                dto.add(UserProfileDTO.builder()
-                        .userId(user.getUserId())
-                        .nickname(user.getNickname())
-                        .bio(user.getBio())
-                        .profileImage(user.getProfileImage())
-                        .userStatus(user.getUserStatus()).build());
-            }
+            dto = (ArrayList<UserProfileDTO>) new UserDAOImpl(conn).searchUser(nickname);
+//            for (UserProfileDTO user : dto) {
+//                dto.add(UserProfileDTO.builder()
+//                        .userId(user.getUserId())
+//                        .nickname(user.getNickname())
+//                        .bio(user.getBio())
+//                        .profileImage(user.getProfileImage())
+//                        .userStatus(user.getUserStatus())
+//                        .communityMemberStatus(user.getCommunityMemberStatus())
+//                        .build());
+//            }
         } catch (SQLException e) {
             connectException(e);
         }

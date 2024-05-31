@@ -2,7 +2,7 @@ package kosta.travelog.repository;
 
 public interface Query {
     String LOGIN = "SELECT user_id, nickname, profile_image,user_status FROM users WHERE email = ? AND password = ?";
-    String SEARCH_USER = "SELECT user_id, nickname, bio, profile_image, user_status FROM users WHERE user_status = '1' AND nickname LIKE ? ORDER BY nickname DESC";
+    String SEARCH_USER = "SELECT u.user_id, u.nickname, u.bio, u.profile_image, u.user_status, cu.community_member_status FROM users u inner join communities_users cu on cu.user_id = u.user_id WHERE user_status = '1' AND nickname LIKE ? ORDER BY nickname DESC";
     String GET_PROFILE = "SELECT user_id, nickname, bio, profile_image, user_status FROM users WHERE user_id = ?";
     String UPDATE_USER_INFORMATION = "UPDATE users SET name=?, nickname=?, profile_image=?, password=?, phone_number=?, bio=? WHERE user_id = ?";
     String SIGN_UP = "INSERT INTO users (user_id, name, email, password, phone_number, nickname, registration_date, user_status) VALUES ((SELECT SUBSTR(RAWTOHEX(SYS_GUID()), 1, 8) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 9, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 13, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 17, 4) || '-' || SUBSTR(RAWTOHEX(SYS_GUID()), 21, 12) AS uuid FROM dual), ?, ?, ?, ?, ?, SYSDATE, 1)";

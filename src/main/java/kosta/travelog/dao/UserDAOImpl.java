@@ -1,5 +1,6 @@
 package kosta.travelog.dao;
 
+import kosta.travelog.dto.UserProfileDTO;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.repository.Query;
 import kosta.travelog.vo.UserVO;
@@ -44,21 +45,25 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException {
+    public Collection<UserProfileDTO> searchUser(String nickname) throws DatabaseQueryException {
         String sql = Query.SEARCH_USER;
-        Collection<UserVO> result = new ArrayList<>();
+        Collection<UserProfileDTO> result = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, '%' + nickname + '%');
             try (ResultSet rs = ps.executeQuery()) {
-                //                user_id, nickname, bio, profile_image, user_status
+
                 while (rs.next()) {
-                    result.add(UserVO.builder()
+                    result.add(UserProfileDTO.builder()
                             .userId(rs.getString("user_id"))
                             .nickname(rs.getString("nickname"))
                             .bio(rs.getString("bio"))
                             .profileImage(rs.getString("profile_image"))
-                            .userStatus(rs.getString("user_status").charAt(0)).build());
+                            .userStatus(rs.getString("user_status").charAt(0))
+                            .communityMemberStatus(rs.getString("community_member_status").charAt(0))
+                            .build());
+
                 }
+
             }
         } catch (SQLException e) {
             throw new DatabaseQueryException("프로필 검색 쿼리 실행에 실패했습니다. \n" + e.getMessage());

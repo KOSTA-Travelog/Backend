@@ -1,5 +1,6 @@
 package kosta.travelog.dao;
 
+import kosta.travelog.dto.UserProfileDTO;
 import kosta.travelog.exception.DatabaseQueryException;
 import kosta.travelog.vo.UserVO;
 
@@ -7,7 +8,7 @@ import java.util.Collection;
 
 public interface UserDAO {
 
-    Collection<UserVO> searchUser(String nickname) throws DatabaseQueryException;
+    Collection<UserProfileDTO> searchUser(String nickname) throws DatabaseQueryException;
 
     UserVO login(UserVO user) throws DatabaseQueryException;
 

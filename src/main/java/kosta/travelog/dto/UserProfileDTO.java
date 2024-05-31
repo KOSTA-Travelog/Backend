@@ -15,6 +15,7 @@ public class UserProfileDTO {
     private String bio;
     private String profileImage;
     private char userStatus;
+    private char communityMemberStatus;
 
     @Override
     public String toString() {
@@ -24,6 +25,7 @@ public class UserProfileDTO {
         json.addProperty("profileImage", this.getProfileImage());
         json.addProperty("userStatus", this.getUserStatus());
         json.addProperty("bio", this.getBio());
+        json.addProperty("communityMemberStatus", this.getCommunityMemberStatus());
         return json.toString();
     }
 }
